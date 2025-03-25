@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OmniNav - 一站式智能导航平台</title>
+  <script>
+    // 根据浏览器语言重定向到相应的语言版本
+    (function() {
+      var userLang = navigator.language || navigator.userLanguage;
+      var path = userLang.startsWith('en') ? '/zh/' : '/en/';
+      
+      // 获取当前URL的路径部分
+      var currentPath = window.location.pathname;
+      
+      // 检查是否在GitHub Pages环境下（有/omninav前缀）
+      if (currentPath.includes('/omninav')) {
+        path = '/omninav' + path;
+      }
+      
+      window.location.replace(path);
+    })();
+  </script>
+</head>
+<body>
+  <p style="text-align: center; margin-top: 20%; font-family: sans-serif;">
+    正在重定向... | Redirecting...
+  </p>
+</body>
+</html>

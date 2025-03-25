@@ -14,13 +14,22 @@ let base = '/'; // 默认无基础路径
 if (IS_GITHUB) {
   site = 'https://subject-z.github.io';
   base = '/omninav';
+  console.log('使用GitHub Pages配置');
+} else if (IS_CLOUDFLARE) {
+  console.log('使用Cloudflare Pages配置');
+} else {
+  // 本地开发环境
+  console.log('使用本地开发环境配置');
 }
+
+console.log(`站点: ${site}, 基础路径: ${base}`);
 
 // https://astro.build/config
 export default defineConfig({
   site,
   base,
   outDir: './dist',
+  trailingSlash: 'always', // 确保URL末尾有斜杠，解决一些路径问题
   
   // 仅在 Netlify 部署时使用 Netlify 适配器
   output: IS_NETLIFY ? 'server' : 'static',
