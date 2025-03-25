@@ -16,31 +16,55 @@ const categoryColors = {
 
 // 根据语言选择分类显示
 const categories = lang === 'zh' ? categoriesZh : categoriesEn;
+
+// 获取基础路径
+const basePath = import.meta.env.BASE_URL || '/';
+
+// 导航链接修改为使用基础路径
+const navLinks = [
+  { path: `${basePath}${lang}/`, label: lang === 'zh' ? '首页' : 'Home' },
+  // 文章链接以对象形式添加，包含下拉菜单配置
+  { 
+    path: `${basePath}${lang}/posts/`, 
+    label: lang === 'zh' ? '文章' : 'Posts',
+    hasDropdown: true 
+  },
+  { path: `${basePath}${lang}/about/`, label: lang === 'zh' ? '关于' : 'About' }
+];
+
+// 语言切换链接也需要修改
+const toggleLang = lang === 'zh' ? 'en' : 'zh';
+// 保持相同页面路径，只切换语言部分
+const currentPath = Astro.url.pathname.replace(/^\/(zh|en)\//, '/');
+const togglePath = `${basePath}${toggleLang}${currentPath}`;
 ---
 
 <nav class="nav-bar" lang={lang}>
   <div class="nav-container">
     <ul class="nav-links">
-      <li><a href={`/${lang}/`}>{lang === 'zh' ? '首页' : 'Home'}</a></li>
-      <li class="dropdown-container">
-        <a href={`/${lang}/posts`} class="posts-link">
-          {lang === 'zh' ? '文章' : 'Posts'}
-          <span class="dropdown-arrow"></span>
-        </a>
-        <div class="categories-dropdown">
-          <ul>
-            {categories.map((category, index) => (
-              <li>
-                <a href={`/${lang}/${categoriesEn[index].toLowerCase()}/1`}>
-                  {category}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </li>
-      <li><a href={`/${lang}/about`}>{lang === 'zh' ? '关于' : 'About'}</a></li>
-      <li><a href="#" class="lang-toggle" onclick="toggleLanguage(); return false;">
+      {navLinks.map(link => (
+        <li class={link.hasDropdown ? "dropdown-container" : ""}>
+          <a href={link.path} class={link.hasDropdown ? "posts-link" : ""}>
+            {link.label}
+            {link.hasDropdown && <span class="dropdown-arrow"></span>}
+          </a>
+          
+          {link.hasDropdown && (
+            <div class="categories-dropdown">
+              <ul>
+                {categories.map((category, index) => (
+                  <li>
+                    <a href={`${basePath}${lang}/${categoriesEn[index].toLowerCase()}/1/`}>
+                      {category}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </li>
+      ))}
+      <li><a href={togglePath} class="lang-toggle">
         <span class={lang === 'zh' ? 'active-lang' : ''}>中文</span> | <span class={lang === 'en' ? 'active-lang' : ''}>English</span>
       </a></li>    
     </ul>

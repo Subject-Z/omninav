@@ -34,6 +34,9 @@ function getImagePath(image: string | any): string {
   
   return '';
 }
+
+// 获取基础路径
+const basePath = import.meta.env.BASE_URL || '/';
 ---
 
 <div class="post-list-container">
@@ -46,7 +49,7 @@ function getImagePath(image: string | any): string {
           
           return (
             <li class="post-item" data-category={categoryFromPath}>
-              <a href={`/${lang}/posts/${postSlug}`} class="post-link">
+              <a href={`${basePath}${lang}/posts/${postSlug}/`} class="post-link">
                 {post.image && (
                   <div class="post-image-container">
                     <img 

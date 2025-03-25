@@ -5,23 +5,34 @@ export interface Props {
   basePath: string;
 }
 
-const { currentPage, totalPages, basePath } = Astro.props;
+const { currentPage, totalPages, basePath: pageBasePath } = Astro.props;
+
+// 获取应用的基础路径
+const appBasePath = import.meta.env.BASE_URL || '/';
+
+// 生成分页链接时，需要确保包含基础路径
+function getPageUrl(pageNum: number): string {
+  const path = pageNum === 1 
+    ? `${appBasePath}${pageBasePath}/` 
+    : `${appBasePath}${pageBasePath}/${pageNum}/`;
+  return path;
+}
 ---
 
 <nav>
   <ul class="pagination">
     <li class="page-item">
-      <a href={`${basePath}/${currentPage - 1}`} class="page-link" aria-label="Previous" class:list={{"disabled": currentPage === 1}}>
+      <a href={getPageUrl(currentPage - 1)} class="page-link" aria-label="Previous" class:list={{"disabled": currentPage === 1}}>
         &laquo;
       </a>
     </li>
     {Array.from({ length: totalPages }, (_, index) => (
       <li class="page-item" class:list={{"active": index + 1 === currentPage}}>
-        <a href={`${basePath}/${index + 1}`} class="page-link">{index + 1}</a>
+        <a href={getPageUrl(index + 1)} class="page-link">{index + 1}</a>
       </li>
     ))}
     <li class="page-item">
-      <a href={`${basePath}/${currentPage + 1}`} class="page-link" aria-label="Next" class:list={{"disabled": currentPage === totalPages}}>
+      <a href={getPageUrl(currentPage + 1)} class="page-link" aria-label="Next" class:list={{"disabled": currentPage === totalPages}}>
         &raquo;
       </a>
     </li>

@@ -7,17 +7,21 @@
     // 根据浏览器语言重定向到相应的语言版本
     (function() {
       var userLang = navigator.language || navigator.userLanguage;
-      var path = userLang.startsWith('en') ? '/zh/' : '/en/';
+      var defaultLang = userLang.startsWith('en') ? 'zh' : 'en';
       
-      // 获取当前URL的路径部分
-      var currentPath = window.location.pathname;
+      // 获取基础路径
+      var basePath = '';
       
-      // 检查是否在GitHub Pages环境下（有/omninav前缀）
-      if (currentPath.includes('/omninav')) {
-        path = '/omninav' + path;
+      // 检查是否在GitHub Pages环境下（URL中包含/omninav）
+      if (window.location.pathname.includes('/omninav')) {
+        basePath = '/omninav';
       }
       
-      window.location.replace(path);
+      // 构建完整的重定向路径
+      var redirectPath = basePath + '/' + defaultLang + '/';
+      
+      // 执行重定向
+      window.location.replace(redirectPath);
     })();
   </script>
 </head>
