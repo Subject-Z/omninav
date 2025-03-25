@@ -12,13 +12,29 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20  # 使用更稳定的版本
           cache: 'npm'
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
+        continue-on-error: false
+      - name: List installed packages
+        run: npm list --depth=0
       - name: Build site
-        run: npm run build
+        run: |
+          echo "Starting build process..."
+          npm run build --if-present
         env:
           GITHUB_ACTIONS: true
+          CI: true
+      - name: Check dist directory
+        run: |
+          if [ -d "./dist" ]; then
+            echo "Dist directory exists"
+            ls -la ./dist
+          else
+            echo "Dist directory does not exist!"
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
