@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://omninav.uk', // 替换为您的实际网站URL
+  site: 'https://Subject-Z.github.io', // 替换为您的 GitHub Pages URL
+  base: '/omninav', // 如果部署到 username.github.io/omninav，否则如果是用户站点可以删除此行
   integrations: [
     sitemap({
       // i18n设置
