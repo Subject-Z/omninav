@@ -1,28 +1,55 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import netlify from '@astrojs/netlify';
+
+// 获取部署环境
+const IS_NETLIFY = Boolean(process.env.NETLIFY);
+const IS_GITHUB = Boolean(process.env.GITHUB_ACTIONS);
+const IS_CLOUDFLARE = Boolean(process.env.CF_PAGES);
+
+// 根据环境设置站点 URL 和基础路径
+let site = 'https://omninav.uk'; // 默认为 Cloudflare/自定义域名
+let base = '/'; // 默认无基础路径
+
+if (IS_GITHUB) {
+  site = 'https://subject-z.github.io';
+  base = '/omninav';
+}
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://subject-z.github.io/omninav', 
-  base: '/omninav',
+  site,
+  base,
   outDir: './dist',
+  
+  // 仅在 Netlify 部署时使用 Netlify 适配器
+  output: IS_NETLIFY ? 'server' : 'static',
+  adapter: IS_NETLIFY ? netlify() : undefined,
+  
   integrations: [
     sitemap({
-      // i18n设置
+      // i18n 设置
       i18n: {
-        defaultLocale: 'en',  // 默认语言
+        defaultLocale: 'en',
         locales: {
           'zh': 'zh-CN',
           'en': 'en-US'
         }
       },
-      // 可选: 自定义更改频率
       changefreq: 'weekly',
-      // 可选: 自定义优先级
       priority: 0.7,
-      // 可选: 排除某些页面
       filter: (page) => !page.includes('/admin/')
     })
-  ]
+  ],
+  
+  // 构建优化
+  build: {
+    inlineStylesheets: 'auto'
+  },
+  
+  // 开发服务器配置
+  server: {
+    port: 4321,
+    host: true
+  }
 });

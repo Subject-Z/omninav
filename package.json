@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:github": "cross-env GITHUB_ACTIONS=true astro build",
+    "build:cloudflare": "cross-env CF_PAGES=true astro build",
+    "deploy:cloudflare": "npm run build:cloudflare && wrangler pages deploy dist",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -12,5 +15,9 @@
     "@astrojs/netlify": "^6.2.3",
     "@astrojs/sitemap": "^3.3.0",
     "astro": "^5.5.4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "wrangler": "^3.0.0"
   }
 }
