@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+// 定义支持的语言类型
+type SupportedLanguage = 'zh' | 'en';
+
+// 处理图片路径的辅助函数，与 PostList.astro 中保持一致
+function getImagePath(image: string | any): string {
+  if (!image) return '';
+  
+  // 如果是字符串路径
+  if (typeof image === 'string') {
+    return image.replace('/src/assets', '');
+  }
+  
+  // 如果是Astro处理过的图片对象
+  if (typeof image === 'object' && image.src) {
+    return image.src;
+  }
+  
+  return '';
+}
+
+export async function getStaticPaths() {
+  const supportedLanguages: SupportedLanguage[] = ['en', 'zh'];
+  const paths = [];
+  
+  for (const lang of supportedLanguages) {
+    // 获取对应语言的所有文章
+    const posts = await getCollection('posts', (post) => {
+      return post.id.startsWith(`${lang}/`);
+    });
+    
+    // 为每篇文章创建路径
+    for (const post of posts) {
+      const pathParts = post.id.split('/');
+      const fileName = pathParts[pathParts.length - 1];
+      const slug = fileName.replace(/\.md$/, '');
+      
+      const { Content } = await post.render();
+      
+      paths.push({
+        params: { 
+          lang, 
+          slug: slug 
+        },
+        props: { 
+          post: {
+            ...post.data,
+            originalId: post.id,
+            Content
+          },
+          lang 
+        }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { post, lang: rawLang } = Astro.props;
+const lang = (rawLang as SupportedLanguage);
+
+// 获取格式化的日期
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat(lang === 'zh' ? 'zh-CN' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(new Date(date));
+}
+
+const formattedDate = formatDate(post.date);
+---
+
+<BaseLayout lang={lang} title={post.title}>
+  <article class="post-container">
+    <header class="post-header">
+      <h1 class="post-title">{post.title}</h1>
+      
+      <div class="post-meta">
+        <span class="post-date">
+          {lang === 'zh' ? '发布于：' : 'Published: '}{formattedDate}
+        </span>
+      </div>
+      
+      {post.image && (
+        <div class="post-feature-image">
+          <img 
+            src={getImagePath(post.image)} 
+            alt={post.title}
+            loading="eager"
+          />
+        </div>
+      )}
+    </header>
+    
+    <div class="post-content">
+      <post.Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  
+  .post-header {
+    margin-bottom: 2rem;
+  }
+  
+  .post-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .post-feature-image {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .post-feature-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .post-content {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3),
+  .post-content :global(h4) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .post-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+  
+  .post-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+  }
+  
+  .post-content :global(blockquote) {
+    border-left: 4px solid #ddd;
+    padding-left: 1rem;
+    font-style: italic;
+    color: #555;
+  }
+  
+  .post-content :global(pre) {
+    background: #f6f8fa;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: auto;
+  }
+  
+  .post-content :global(code) {
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  @media (max-width: 768px) {
+    .post-container {
+      width: 95%;
+      padding: 1rem 0;
+    }
+    
+    .post-title {
+      font-size: 1.8rem;
+    }
+    
+    .post-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>

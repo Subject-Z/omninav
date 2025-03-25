@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SearchBar from '../../components/SearchBar.astro';
+import WebsiteDirectory from '../../components/WebsiteDirectory.astro';
+
+// 定义支持的语言
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'zh' } },
+    // 添加其他您支持的语言
+  ];
+}
+
+// 获取当前页面参数中的语言
+const { lang } = Astro.params;
+
+// 设置基于语言的首页标题
+const homeTitle = lang === 'zh' 
+  ? "Omninav | 一站式智能导航平台" 
+  : "Omninav | Smart Website Directory";
+
+// 搜索引擎配置
+const searchEngines = {
+  google: 'https://www.google.com/search?q=',
+  bing: 'https://www.bing.com/search?q=',
+  perplexity: 'https://www.perplexity.ai/?q=',
+};
+---
+
+<BaseLayout lang={lang} title={homeTitle}>
+    <div class="main-content">
+        <section class="search-section">
+            <SearchBar engines={searchEngines} defaultEngine="google" />
+        </section>
+
+        <section class="directory-section">
+            <WebsiteDirectory lang={lang} />
+        </section>
+    </div>
+</BaseLayout>
+
+<style>
+    .main-content {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .directory-section {
+        width: 100%;
+    }
+</style>

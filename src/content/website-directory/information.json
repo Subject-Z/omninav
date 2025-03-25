@@ -1,0 +1,109 @@
+{
+  "categories": [
+    {
+      "id": "information",
+      "name": {
+        "zh": "信息",
+        "en": "Info"
+      },
+      "subcategories": [
+        {
+          "id": "news",
+          "name": {
+            "zh": "新闻",
+            "en": "News"
+          },
+          "items": [
+            {
+              "id": "xinhua",
+              "name": {
+                "zh": "新华社",
+                "en": "Xinhua News"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.news.cn/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/20/9a/a3/209aa3ed-0cb7-86d4-2b7f-90cce2497c2f/AppIcon-0-0-1x_U007emarketing-0-6-0-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "people_daily",
+              "name": {
+                "zh": "人民日报",
+                "en": "People's Daily"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "http://www.people.com.cn/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/19/bd/94/19bd94fd-dfe4-7ad8-9f6d-6481f2fc429e/AppIcon-1x_U007ephone-0-1-0-85-220-0.png/434x0w.webp"
+            },
+            {
+              "id": "36kr",
+              "name": {
+                "zh": "36氪",
+                "en": "36Kr"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://36kr.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/98/ee/1b/98ee1b17-7188-f7b6-2735-df80d89eaec2/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "huxiu",
+              "name": {
+                "zh": "虎嗅",
+                "en": "Huxiu"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.huxiu.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/da/c1/e1/dac1e17d-2efb-354b-f341-6507845a2238/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "it_home",
+              "name": {
+                "zh": "IT之家",
+                "en": "IT Home"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.ithome.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/da/af/e4/daafe474-beba-24a2-6494-4056bea6c16f/AppIcon-0-0-2x_U007euniversal-0-5-0-85-220.png/434x0w.webp"
+            }
+          ]
+        },
+        {
+          "id": "data",
+          "name": {
+            "zh": "数据",
+            "en": "Data"
+          },
+          "items": [
+            {
+              "id": "national_data",
+              "name": {
+                "zh": "国家数据",
+                "en": "National Data"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://data.stats.gov.cn/",
+              "logo": "https://www.gdqy.gov.cn/qytjj/img/0/708/708928/1903298.png"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

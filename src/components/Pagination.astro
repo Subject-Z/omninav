@@ -1,0 +1,57 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+}
+
+const { currentPage, totalPages, basePath } = Astro.props;
+---
+
+<nav>
+  <ul class="pagination">
+    <li class="page-item">
+      <a href={`${basePath}/${currentPage - 1}`} class="page-link" aria-label="Previous" class:list={{"disabled": currentPage === 1}}>
+        &laquo;
+      </a>
+    </li>
+    {Array.from({ length: totalPages }, (_, index) => (
+      <li class="page-item" class:list={{"active": index + 1 === currentPage}}>
+        <a href={`${basePath}/${index + 1}`} class="page-link">{index + 1}</a>
+      </li>
+    ))}
+    <li class="page-item">
+      <a href={`${basePath}/${currentPage + 1}`} class="page-link" aria-label="Next" class:list={{"disabled": currentPage === totalPages}}>
+        &raquo;
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .pagination {
+    margin: 5rem 0 10rem;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+  }
+  .page-item {
+    margin: 0 5px;
+  }
+  .page-link {
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 4px;
+  }
+  .disabled {
+    color: #ccc;
+    pointer-events: none;
+  }
+  .active .page-link {
+    background-color: #007bff;
+    color: white;
+  }
+</style>

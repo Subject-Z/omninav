@@ -1,0 +1,39 @@
+{
+  "categories": [
+    {
+      "id": "aigc",
+      "name": {
+        "zh": "AI",
+        "en": "AI"
+      }
+    },
+    {
+      "id": "lifestyle",
+      "name": {
+        "zh": "生活",
+        "en": "Life"
+      }
+    },
+    {
+      "id": "information",
+      "name": {
+        "zh": "信息",
+        "en": "Info"
+      }
+    },
+    {
+      "id": "entertainment",
+      "name": {
+        "zh": "娱乐",
+        "en": "Entertainment"
+      }
+    },
+    {
+      "id": "tools",
+      "name": {
+        "zh": "工具",
+        "en": "Tools"
+      }
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+---
+interface Post {
+  title: string;
+  image?: string | any; // 更新类型以兼容字符串或Astro图片对象
+  category: string;
+  slug: string;
+}
+
+interface Props {
+  posts: Post[];
+  defaultCategory?: string;
+  lang?: 'zh' | 'en';
+}
+
+// 改进参数处理，使用类型定义提高代码可维护性
+const { posts = [], defaultCategory = 'all', lang = 'en' } = Astro.props;
+
+// 导入所有图片以便Astro可以正确处理
+const allImages = import.meta.glob('/src/assets/image/post/*.{jpg,png,jpeg,webp}');
+
+// 处理图片路径的辅助函数
+function getImagePath(image: string | any): string {
+  if (!image) return '';
+  
+  // 如果是字符串路径
+  if (typeof image === 'string') {
+    return image.replace('/src/assets', '');
+  }
+  
+  // 如果是Astro处理过的图片对象
+  if (typeof image === 'object' && image.src) {
+    return image.src;
+  }
+  
+  return '';
+}
+---
+
+<div class="post-list-container">
+  <article class="post-list">
+    {posts && posts.length > 0 ? (
+      <ul id="post-container">
+        {posts.map((post, index) => {
+          const categoryFromPath = post.category || 'uncategorized';
+          const postSlug = post.slug || `post-${index}`;
+          
+          return (
+            <li class="post-item" data-category={categoryFromPath}>
+              <a href={`/${lang}/posts/${postSlug}`} class="post-link">
+                {post.image && (
+                  <div class="post-image-container">
+                    <img 
+                      src={getImagePath(post.image)} 
+                      alt={post.title} 
+                      class="post-cover-image" 
+                      loading="lazy"
+                      width="400"
+                      height="200"
+                    />
+                  </div>
+                )}
+                <div class="post-content">
+                  <h2 class="post-title">{post.title}</h2>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <div class="no-posts">
+        {lang === 'zh' ? '暂无可显示的文章' : 'No posts available'}
+      </div>
+    )}
+  </article>
+</div>
+
+<script define:vars={{ lang, defaultCategory }}>
+  // 监听分类变更事件
+  document.addEventListener('categoryFilterChanged', (event) => {
+    filterPosts(event.detail.category);
+  });
+  
+  // 筛选文章函数
+  function filterPosts(category) {
+    const postContainer = document.getElementById('post-container');
+    const postItems = document.querySelectorAll('.post-item');
+    let noPostsElement = document.querySelector('.no-posts');
+    const postListElement = document.querySelector('.post-list');
+    
+    if (!postListElement || !postItems.length) return;
+    
+    let visibleCount = 0;
+    
+    postItems.forEach(item => {
+      const postCategory = item.getAttribute('data-category');
+      
+      if (category === 'all' || category === 'All' || postCategory === category) {
+        item.style.display = '';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    
+    handlePostVisibility(visibleCount, postContainer, noPostsElement, postListElement);
+  }
+  
+  // 处理文章可见性
+  function handlePostVisibility(visibleCount, postContainer, noPostsElement, postListElement) {
+    if (visibleCount === 0) {
+      if (postContainer) postContainer.style.display = 'none';
+      
+      if (!noPostsElement) {
+        noPostsElement = document.createElement('div');
+        noPostsElement.className = 'no-posts';
+        noPostsElement.textContent = lang === 'zh' ? 
+          '该分类下暂无文章' : 
+          'No posts available in this category';
+        
+        postListElement.appendChild(noPostsElement);
+      } else {
+        noPostsElement.style.display = 'block';
+      }
+    } else {
+      if (postContainer) postContainer.style.display = 'block';
+      if (noPostsElement) noPostsElement.style.display = 'none';
+    }
+  }
+  
+  // 页面加载时处理
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryParam = urlParams.get('category');
+      const initialCategory = categoryParam || defaultCategory;
+      
+      setTimeout(() => filterPosts(initialCategory), 100);
+    } catch (error) {
+      console.error('PostList组件错误:', error);
+    }
+
+    // 强制重排
+    const container = document.querySelector('.post-list ul');
+    if (container) {
+      container.style.display = 'none';
+      setTimeout(() => {
+        container.style.display = 'grid';
+      }, 10);
+    }
+  });
+</script>
+
+<style>
+  /* 确保容器充分利用可用空间 */
+  .post-list-container {
+    width: 100%;
+    max-width: 100%; /* 修改这里，确保不限制宽度 */
+    margin: 0 auto;
+  }
+  
+  .post-list {
+    margin: 2rem 0;
+    width: 100%;
+  }
+  
+  /* 确保网格布局正确应用 */
+  .post-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    column-count: 3; /* 改为列布局 */
+    column-gap: 1.5rem; /* 列间距 */
+    width: 100%;
+  }
+  
+  /* 确保每个项目适应列布局并保持完整性 */
+  .post-item {
+  margin-bottom: 3rem; /* 项目间的垂直间距 */
+  width: 100%;
+  display: inline-block; /* 关键：使元素完整展示在一列中 */
+  break-inside: avoid; /* 防止项目被分割到多列 */
+  overflow: hidden;
+  transition: transform 0.3s ease; /* 默认状态下定义过渡效果 */
+}
+
+.post-item:hover {
+  transform: translateY(10px); /* 鼠标悬停时向下移动 */
+}
+
+  /* 确保链接充满项目容器 */
+  .post-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .post-image-container {
+    width: 100%;
+    /* 移除固定高度，让容器高度由内容决定 */
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .post-cover-image {
+    width: 100%;
+    height: auto; /* 修改为auto以保持图片原始比例 */
+    display: block; /* 确保图片正确显示 */
+    object-fit: contain; /* 修改为contain确保图片完整显示 */
+    transition: all 0.3s ease;
+  }
+    
+  .post-item:hover .post-cover-image {
+    filter: brightness(0.5);
+  }
+  
+  .post-image-container::after {
+    content: "READ MORE";
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+    padding: 8px 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-align: center;
+  }
+  
+  .post-item:hover .post-image-container::after {
+    opacity: 1;
+  }
+  
+  .post-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .post-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+  
+  .no-posts {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    grid-column: 1 / -1;
+  }
+  
+  /* 响应式布局 */
+  @media (max-width: 768px) {
+    .post-list ul {
+      column-count: 2; /* 平板设备显示两列 */
+      column-gap: 1rem;
+    }
+    
+    .post-item {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .post-list ul {
+      column-count: 2; /* 手机设备显示两列 */
+      column-gap: 0.8rem;
+    }
+    
+    .post-item {
+      margin-bottom: 0.8rem;
+    }
+    
+    /* 移除固定高度设置 */
+    .post-image-container {
+      /* 不再需要固定高度 */
+    }
+    
+    .post-content {
+      padding: 0.8rem;
+    }
+    
+    .post-title {
+      font-size: 0.95rem;
+    }
+  }
+</style>

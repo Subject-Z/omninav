@@ -1,0 +1,302 @@
+---
+interface Engine {
+  name: string;
+  url: string;
+  logo?: ImageMetadata;
+  optimizedLogo?: string;
+}
+
+interface Props {
+  engines: { [key: string]: string };
+  defaultEngine?: string;
+}
+
+const { engines, defaultEngine = 'google' } = Astro.props;
+
+import { Image } from 'astro:assets';
+import { getImage } from "astro:assets";
+
+// 转换引擎数据为更结构化的格式
+const engineData: Record<string, Engine> = {};
+
+// 加载所有引擎的logo
+for (const [name, url] of Object.entries(engines)) {
+  engineData[name] = { name, url };
+  try {
+    const logo = await import(`../assets/image/logo/${name}.webp`);
+    engineData[name].logo = logo.default;
+    
+    // 预先优化图像
+    if (logo.default) {
+      const optimizedImage = await getImage({ src: logo.default, width: 20, height: 20 });
+      engineData[name].optimizedLogo = optimizedImage.src;
+    }
+  } catch {
+    // Logo不存在时保持默认值
+  }
+}
+
+// 获取默认引擎信息
+const selectedEngine = engineData[defaultEngine];
+---
+
+<div class="search-bar">
+  <div class="engine-dropdown">
+    <div id="selected-engine-display">
+      {selectedEngine.logo && (
+        <Image 
+          src={selectedEngine.logo} 
+          alt={`${selectedEngine.name} logo`} 
+          width={20} 
+          height={20} 
+          class="engine-logo" 
+        />
+      )}
+      <span class="engine-name hidden">{selectedEngine.name.charAt(0).toUpperCase() + selectedEngine.name.slice(1)}</span>
+    </div>
+    <div id="custom-dropdown" class="custom-dropdown">
+      {Object.values(engineData).map((engine) => (
+        <div class="dropdown-item" data-engine={engine.name}>
+          {engine.optimizedLogo && (
+            <img 
+              src={engine.optimizedLogo} 
+              alt={`${engine.name} logo`}
+              width="20"
+              height="20"
+              class="engine-logo"
+            />
+          )}
+          <span class="engine-name">{engine.name.charAt(0).toUpperCase() + engine.name.slice(1)}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+  <input type="text" id="search-input" placeholder="How to get rich..." />
+  <button id="search-button" aria-label="Search">💡</button>
+</div>
+
+<script define:vars={{ engines, engineData, defaultEngine }}>
+  // DOM 元素引用
+  const elements = {
+    selectedDisplay: document.getElementById('selected-engine-display'),
+    dropdown: document.getElementById('custom-dropdown'),
+    searchInput: document.getElementById('search-input'),
+    searchButton: document.getElementById('search-button')
+  };
+
+  // 状态管理
+  const state = {
+    currentEngine: defaultEngine
+  };
+
+  // 功能函数
+  const actions = {
+    toggleDropdown() {
+      elements.dropdown.classList.toggle('show');
+    },
+
+    updateEngineDisplay(engineName) {
+      state.currentEngine = engineName;
+      const engine = engineData[engineName];
+      const displayName = engine.name.charAt(0).toUpperCase() + engine.name.slice(1);
+      
+      elements.selectedDisplay.innerHTML = engine.optimizedLogo 
+        ? `<img src="${engine.optimizedLogo}" alt="${engine.name} logo" class="engine-logo" width="20" height="20"><span class="engine-name hidden" style="display:none !important">${displayName}</span>` 
+        : `<span class="engine-name hidden" style="display:none !important">${displayName}</span>`;
+    },
+
+    performSearch() {
+      const query = elements.searchInput.value.trim();
+      if (query && engines[state.currentEngine]) {
+        window.location.href = engines[state.currentEngine] + encodeURIComponent(query);
+      }
+    }
+  };
+
+  // 事件监听
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.engine-dropdown')) {
+      elements.dropdown.classList.remove('show');
+    }
+  });
+
+  elements.selectedDisplay.addEventListener('click', (e) => {
+    e.stopPropagation();
+    actions.toggleDropdown();
+  });
+
+  document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      actions.updateEngineDisplay(item.getAttribute('data-engine'));
+      elements.dropdown.classList.remove('show');
+    });
+  });
+
+  elements.searchInput.addEventListener('keydown', (e) => { 
+    if (e.key === 'Enter') actions.performSearch(); 
+  });
+  
+  elements.searchButton.addEventListener('click', actions.performSearch);
+</script>
+
+<style>
+  .search-bar {
+    display: flex;
+    align-items: stretch;
+    max-width: clamp(320px, 80%, 700px);
+    height: 60px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .search-bar:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .engine-dropdown {
+    position: relative;
+    min-width: 5rem; /* 确保最小宽度足够容纳图标和箭头 */
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  #selected-engine-display {
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem 0 0.75rem; /* 调整内边距使箭头有足够空间 */
+    cursor: pointer;
+    height: 100%;
+    transition: background 0.3s ease;
+    user-select: none;
+    justify-content: center;
+    width: 100%; /* 使其充满父容器 */
+    position: relative; /* 为绝对定位的箭头准备 */
+  }
+
+  #selected-engine-display:hover {
+    background: #E6EFF4;
+  }
+
+  #selected-engine-display::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #666;
+    position: absolute;
+    right: 8px; /* 固定位置 */
+    transition: transform 0.3s ease;
+  }
+
+  .engine-dropdown:has(.custom-dropdown.show) #selected-engine-display::after {
+    transform: rotate(180deg);
+  }
+
+  .custom-dropdown {
+    min-width: 150px; /* 确保下拉菜单有适当宽度 */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  }
+
+  .custom-dropdown.show {
+    max-height: 300px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap; /* 防止文本换行 */
+  }
+
+  .dropdown-item:hover {
+    background: #E6EFF4;
+  }
+
+  .engine-logo {
+    margin-right: 6px;
+    object-fit: contain;
+    flex-shrink: 0; /* 防止图标压缩 */
+  }
+
+  #search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #333;
+    font-size: 1.2em;
+    padding: 0 0.5rem;
+    height: 100%;
+    min-width: 0; /* 允许输入框缩小 */
+  }
+
+  #search-button {
+    padding: 0 1rem; /* 缩小按钮边距 */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 1.5em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px; /* 触控友好的最小尺寸 */
+  }
+
+  #search-button:hover {
+    background: #E6EFF4;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .dropdown-item .engine-name {
+    display: inline;
+  }
+
+  /* 添加媒体查询优化小屏幕显示 */
+  @media (max-width: 480px) {
+    .search-bar {
+      width: 95%;
+      height: 50px; /* 在小屏幕上降低高度 */
+    }
+    
+    #search-input {
+      font-size: 1em; /* 小屏幕上缩小字体 */
+    }
+    
+    #search-button {
+      font-size: 1.2em; /* 小屏幕上缩小按钮图标 */
+      padding: 0 0.75rem;
+    }
+    
+    .dropdown-item {
+      padding: 0.75rem;
+    }
+  }
+</style>

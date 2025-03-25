@@ -1,0 +1,199 @@
+---
+import indexData from '../content/website-directory/index.json';
+import WebsiteCategoryFilter from './WebsiteCategoryFilter.astro';
+import WebsiteCard from './WebsiteCard.astro';
+
+// 定义类型以提高代码可读性
+interface CategoryData {
+  categories: Array<{
+    id: string;
+    name: {
+      zh: string;
+      en: string;
+    };
+    subcategories?: Array<{
+      id: string;
+      name: {
+        zh: string;
+        en: string;
+      };
+      items: Array<any>; // 使用items而不是websites
+    }>;
+  }>;
+}
+
+// 接收 lang 参数
+interface Props {
+  lang: 'zh' | 'en';  // Only allow 'zh' or 'en' as valid values
+}
+
+const { lang = 'zh' } = Astro.props;
+
+// 动态导入所有类别数据
+const categoryDataMap: Record<string, CategoryData> = {};
+
+// 修改这里：确保我们使用的是id属性而不是整个对象
+for (const category of indexData.categories) {
+  try {
+    // 动态导入JSON文件，使用category.id而不是整个category对象
+    const categoryId = category.id;
+    const categoryData = await import(`../content/website-directory/${categoryId}.json`);
+    categoryDataMap[categoryId] = categoryData;
+  } catch (error) {
+    console.error(`无法加载类别数据: ${category.id}`, error);
+  }
+}
+
+// 根据索引顺序提取类别数据
+const categoriesData = indexData.categories
+  .map(category => {
+    const categoryId = category.id;
+    const categoryData = categoryDataMap[categoryId];
+    if (!categoryData) {
+      console.warn(`未找到类别数据: ${categoryId}`);
+      return null;
+    }
+    return categoryData.categories[0];
+  })
+  .filter(Boolean); // 过滤掉null值
+
+// 设置默认激活的分类为aigc
+const defaultActiveCategoryId = 'aigc';
+---
+
+<div class="website-directory">
+  <WebsiteCategoryFilter 
+    categories={categoriesData}
+    defaultActiveCategoryId={defaultActiveCategoryId}
+    lang={lang}
+  />
+  
+  <div class="categories-container">
+    {categoriesData.map(category => (
+      <div id={category.id} class:list={["category", { active: category.id === defaultActiveCategoryId }]}>
+        
+        {category.subcategories && category.subcategories.map(subcategory => (
+          <div class="subcategory">
+            <h3 class="subcategory-title">{subcategory.name[lang]}</h3>
+            
+            <div class="websites-grid">
+              {subcategory.items && subcategory.items.map(website => (
+                <div class="website-item">
+                  <WebsiteCard website={website} lang={lang} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .website-directory {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .categories-container {
+    margin-top: 2rem;
+    padding-top: 10rem;
+  }
+  
+  .category {
+    display: none;
+  }
+  
+  .category.active {
+    display: block;
+  }
+  
+  .category-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .subcategory {
+    margin-bottom: 3rem;
+  }
+  
+  .subcategory-title {
+    font-size: 1.4em;
+    margin-bottom: 1.5rem;
+    color: #444;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 0.5rem;
+  }
+  
+  .websites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .website-item {
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .website-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+
+  /* 增强响应式设计 */
+  @media screen and (max-width: 1200px) {
+    .websites-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+  
+  @media screen and (max-width: 992px) {
+    .websites-grid {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .categories-container {
+      padding-top: 5rem;
+    }
+    
+    .websites-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .category-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .subcategory-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .websites-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+  }
+
+@media screen and (max-width: 768px) {
+    .website-directory {
+    width: 90%;
+  }
+    
+}
+
+</style>

@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// 定义类型以提高代码可维护性
+interface PostData {
+  title: string;
+  excerpt: string;
+  image?: string;
+  category: string;
+  slug: string;
+  originalId: string;
+  date: Date;
+  author?: string;
+}
+
+// 定义支持的语言类型
+type SupportedLanguage = 'zh' | 'en';
+
+export async function getStaticPaths() {
+  const supportedLanguages: SupportedLanguage[] = ['en', 'zh'];
+  
+  // 从内容中获取所有可能的分类
+  const allPosts = await getCollection('posts');
+  const categories = [...new Set(allPosts.map(post => post.data.category))];
+  
+  const paths = [];
+  
+  // 为每种语言、每个分类、每一页生成路径
+  for (const lang of supportedLanguages) {
+    for (const category of categories) {
+      // 获取该语言下该分类的所有文章
+      const categoryPosts = await getCollection('posts', (post) => {
+        return post.id.startsWith(`${lang}/`) && post.data.category === category;
+      });
+      
+      // 如果没有文章，则跳过
+      if (categoryPosts.length === 0) continue;
+      
+      // 按日期排序
+      const sortedPosts = categoryPosts.sort(
+        (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+      );
+      
+      const postsPerPage = 50; // 每页显示50篇文章
+      const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+      
+      // 为每页生成路径
+      for (let page = 1; page <= Math.max(1, totalPages); page++) {
+        const pageOffset = (page - 1) * postsPerPage;
+        const pagePosts = sortedPosts
+          .slice(pageOffset, pageOffset + postsPerPage)
+          .map(post => {
+            // 提取文件名作为slug（不含扩展名）
+            const pathParts = post.id.split('/');
+            const fileName = pathParts[pathParts.length - 1];
+            const slug = fileName.replace(/\.md$/, '');
+            
+            return {
+              ...post.data,
+              slug,
+              originalId: post.id
+            };
+          });
+        
+        paths.push({
+          params: { 
+            lang, 
+            postcategory: category, 
+            page: page.toString() 
+          },
+          props: { 
+            posts: pagePosts, 
+            currentPage: page, 
+            totalPages, 
+            category, 
+            lang 
+          }
+        });
+      }
+    }
+  }
+  
+  return paths;
+}
+
+const { lang, postcategory: category } = Astro.params;
+const { posts, currentPage, totalPages } = Astro.props;
+
+// 添加中英文分类名称映射
+const categoryMappings = {
+  'business': { zh: '商业', en: 'Business' },
+  'culture': { zh: '文化', en: 'Culture' },
+  'lifestyle': { zh: '生活', en: 'Lifestyle' },
+  'technology': { zh: '技术', en: 'Technology' },
+  'travel': { zh: '旅行', en: 'Travel' }
+};
+
+// 根据当前语言和分类获取正确的分类标题
+const categoryTitle = categoryMappings[category.toLowerCase()]
+  ? categoryMappings[category.toLowerCase()][lang] 
+  : category.charAt(0).toUpperCase() + category.slice(1);
+
+// 明确设置标题格式，使用 | 作为分隔符
+const pageTitle = `${categoryTitle} | Omninav`;
+console.log(`生成分类页面: 分类=${category}, 标题="${pageTitle}"`);
+
+// 构造分页链接的基础路径
+const paginationBasePath = `/${lang}/${category}`;
+---
+
+<BaseLayout lang={lang} title={pageTitle}>
+  <div class="postcategory-container">
+    <!-- 删除了分类标题的h1元素 -->
+    
+    <PostList posts={posts} lang={lang} defaultCategory={category} />
+    
+    {totalPages > 1 && (
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        basePath={paginationBasePath}
+      />
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .postcategory-container {
+    margin: 0 auto;
+    width: 100%; /* 修改这里，确保不限制宽度 */
+    max-width: 1200px; /* 增加最大宽度 */
+    padding-top: 2rem;
+  }
+  
+  .category-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .postcategory-container {
+      width: 95%;
+      padding-top: 1rem;
+    }
+    
+    .category-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

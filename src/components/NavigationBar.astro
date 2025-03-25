@@ -1,0 +1,239 @@
+---
+const { lang } = Astro.props;
+
+// 定义分类（已移除"全部"/"All"选项）
+const categoriesEn = ['Business', 'Culture', 'Lifestyle', 'Technology', 'Travel'];
+const categoriesZh = ['商业', '文化', '生活', '技术', '旅行'];
+
+// 定义每个分类对应的主题色
+const categoryColors = {
+  'Business': '#3498db',  // 蓝色
+  'Technology': '#9b59b6', // 紫色
+  'Lifestyle': '#f0776c',  // 粉红色
+  'Culture': '#ffd071',    // 黄色
+  'Travel': '#1abc9c'      // 绿色
+};
+
+// 根据语言选择分类显示
+const categories = lang === 'zh' ? categoriesZh : categoriesEn;
+---
+
+<nav class="nav-bar" lang={lang}>
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li><a href={`/${lang}/`}>{lang === 'zh' ? '首页' : 'Home'}</a></li>
+      <li class="dropdown-container">
+        <a href={`/${lang}/posts`} class="posts-link">
+          {lang === 'zh' ? '文章' : 'Posts'}
+          <span class="dropdown-arrow"></span>
+        </a>
+        <div class="categories-dropdown">
+          <ul>
+            {categories.map((category, index) => (
+              <li>
+                <a href={`/${lang}/${categoriesEn[index].toLowerCase()}/1`}>
+                  {category}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+      <li><a href={`/${lang}/about`}>{lang === 'zh' ? '关于我们' : 'About Us'}</a></li>
+      <li><a href="#" class="lang-toggle" onclick="toggleLanguage(); return false;">
+        <span class={lang === 'zh' ? 'active-lang' : ''}>中文</span> | <span class={lang === 'en' ? 'active-lang' : ''}>English</span>
+      </a></li>    
+    </ul>
+  </div>
+</nav>
+
+<style>
+.nav-bar {
+  position: absolute;
+  width: 100%;
+  padding-top: 2vh;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 400;
+  padding: 2vh 1vw 1vh;
+  margin: 0 1vw;
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #007bff;
+}
+
+.active-lang {
+  color: #007bff;
+  font-weight: 900;
+}
+
+/* 下拉菜单样式 */
+.dropdown-container {
+  position: relative;
+}
+
+.categories-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0.5rem;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 10rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.dropdown-container:hover .categories-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.categories-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categories-dropdown li {
+  position: relative;
+}
+
+.categories-dropdown li a {
+  display: block;
+  padding: 1rem 1.5rem;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+  border-left: 5px solid;
+}
+
+/* 为每个分类设置边框颜色 */
+.categories-dropdown li:nth-child(1) a { border-left-color: #3498db; }
+.categories-dropdown li:nth-child(2) a { border-left-color: #9b59b6; }
+.categories-dropdown li:nth-child(3) a { border-left-color: #f0776c; }
+.categories-dropdown li:nth-child(4) a { border-left-color: #ffd071; }
+.categories-dropdown li:nth-child(5) a { border-left-color: #1abc9c; }
+
+/* 添加悬停后的背景色过渡效果 */
+.categories-dropdown li a:after {
+  content: "";
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 0;
+  position: absolute;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.categories-dropdown li a:hover {
+  color: white;
+}
+
+.categories-dropdown li a:hover:after {
+  width: 100%;
+}
+
+/* 设置每个分类的悬停背景色 */
+.categories-dropdown li:nth-child(1) a:after { background: #3498db; }
+.categories-dropdown li:nth-child(2) a:after { background: #9b59b6; }
+.categories-dropdown li:nth-child(3) a:after { background: #f0776c; }
+.categories-dropdown li:nth-child(4) a:after { background: #ffd071; }
+.categories-dropdown li:nth-child(5) a:after { background: #1abc9c; }
+
+.dropdown-arrow {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 0.3rem;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+  position: relative;
+  top: -2px;
+}
+
+.dropdown-container:hover .dropdown-arrow {
+  transform: rotate(-135deg);
+  top: 2px;
+}
+
+.nav-links a:hover .dropdown-arrow {
+  border-color: #007bff; /* 当鼠标悬停时，箭头也变为蓝色 */
+}
+
+@media screen and (max-width: 768px) {
+  .nav-links a, .lang-toggle {
+    padding: 1.5vh 2vw 0.8vh;
+    margin: 0 0.5vw;
+    font-size: 1.2rem;
+  }
+  
+  /* 在移动端隐藏分类下拉菜单和箭头 */
+  .categories-dropdown {
+    display: none;
+  }
+  
+  .dropdown-arrow {
+    display: none;
+  }
+}
+</style>
+
+<script is:inline>
+function toggleLanguage() {
+  const currentPath = window.location.pathname;
+  const pathSegments = currentPath.split('/').filter(segment => segment);
+  const currentLang = pathSegments[0] === 'zh' || pathSegments[0] === 'en' ? pathSegments[0] : 'zh';
+  const newLang = currentLang === 'zh' ? 'en' : 'zh';
+  document.cookie = `lang=${newLang}; path=/; max-age=${60*60*24*30}`;
+  
+  // 保留查询参数
+  const currentUrl = new URL(window.location.href);
+  const searchParams = currentUrl.searchParams;
+  
+  let newPath = pathSegments.length > 1 
+    ? '/' + newLang + '/' + pathSegments.slice(1).join('/')
+    : '/' + newLang + '/';
+    
+  // 添加所有查询参数
+  if (searchParams.toString()) {
+    newPath += '?' + searchParams.toString();
+  }
+  
+  window.location.href = newPath;
+}
+</script>

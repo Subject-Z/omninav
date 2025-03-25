@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// 定义支持的语言列表
+export async function getStaticPaths() {
+  const supportedLanguages = ['en', 'zh'];
+  
+  return await Promise.all(supportedLanguages.map(async (lang) => {
+    // 获取对应语言的文章 - 修正集合名称为 'posts'
+    const allPosts = await getCollection('posts', (post) => {
+      return post.id.startsWith(`${lang}/`);
+    });
+    
+    // 按日期排序（最新的先显示）
+    const sortedPosts = allPosts.sort(
+      (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+    );
+    
+    // 每页显示10篇文章
+    const postsPerPage = 10;
+    const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+    
+    // 准备第一页的文章数据
+    const firstPagePosts = sortedPosts.slice(0, postsPerPage).map(post => {
+      // 提取文件名作为slug
+      const pathParts = post.id.split('/');
+      const fileName = pathParts[pathParts.length - 1];
+      const slug = fileName.replace(/\.md$/, '');
+      
+      return {
+        ...post.data,
+        slug,
+        originalId: post.id
+      };
+    });
+    
+    return {
+      params: { lang },
+      props: { 
+        posts: firstPagePosts, 
+        currentPage: 1, 
+        totalPages, 
+        lang 
+      }
+    };
+  }));
+}
+
+// 从getStaticPaths中获取props
+const { posts, currentPage, totalPages, lang } = Astro.props;
+
+// 添加根据语言设置正确的页面标题
+const pageTitle = lang === 'zh' ? "文章 | Omninav" : "Posts | Omninav";
+---
+
+<BaseLayout lang={lang} title={pageTitle}>
+  <div class="postcategory-container">
+    <PostList posts={posts} lang={lang} />
+    <Pagination currentPage={currentPage} totalPages={totalPages} />
+  </div>
+</BaseLayout>
+
+
+<style>
+.postcategory-container {
+    margin: 0 auto;
+    width: 60vw;
+}
+
+@media (max-width: 768px) {
+    .postcategory-container {
+        width: 90vw;
+    }
+}
+</style>

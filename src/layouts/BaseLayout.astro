@@ -1,0 +1,60 @@
+---
+import NavigationBar from '../components/NavigationBar.astro';
+
+export interface Props {
+  lang: string;
+  title?: string;
+}
+
+const { lang, title = "Omninav | 一站式智能导航平台" } = Astro.props;
+console.log(`渲染页面: 语言=${lang}, 标题="${title}"`); // 添加这行调试代码
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <!-- 添加调试注释 -->
+    <!-- DEBUG: 当前页面标题 = {title} -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+    crossorigin="anonymous"></script>
+    <!-- 其他元素 -->
+  </head>
+  <!-- 页面结构 -->
+  <body>
+    <NavigationBar lang={lang} />
+    <main>
+      <slot />
+    </main>
+    <!-- 添加一个隐藏的调试元素 -->
+    <div style="display:none;" id="debug-title" data-title={title}></div>
+  </body>
+</html>
+
+<style>
+  /* 保持原有样式不变 */
+  body {
+    background: linear-gradient(180deg, #F3EAE6, #F3EEF6, #EFEEF5, #E6EFF4);
+    font-family: system-ui, 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+    flex: 1;
+    padding-top: 13vh;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  @media screen and (max-width: 768px) {
+    main {
+      padding-top: 10vh;
+    }
+  }
+</style>

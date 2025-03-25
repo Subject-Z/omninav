@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// 定义支持的语言类型
+type SupportedLanguage = 'zh' | 'en';
+
+export async function getStaticPaths() {
+  const supportedLanguages: SupportedLanguage[] = ['en', 'zh'];
+  const paths = [];
+  
+  for (const lang of supportedLanguages) {
+    // 获取对应语言的所有文章
+    const allPosts = await getCollection('posts', (post) => {
+      return post.id.startsWith(`${lang}/`);
+    });
+    
+    // 如果没有文章，则跳过
+    if (allPosts.length === 0) continue;
+    
+    // 按日期排序
+    const sortedPosts = allPosts.sort(
+      (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+    );
+    
+    const postsPerPage = 10;
+    const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+    
+    // 为每页生成路径
+    for (let page = 1; page <= Math.max(1, totalPages); page++) {
+      const pageOffset = (page - 1) * postsPerPage;
+      const pagePosts = sortedPosts
+        .slice(pageOffset, pageOffset + postsPerPage)
+        .map(post => {
+          // 提取文件名作为slug
+          const pathParts = post.id.split('/');
+          const fileName = pathParts[pathParts.length - 1];
+          const slug = fileName.replace(/\.md$/, '');
+          
+          return {
+            ...post.data,
+            slug,
+            originalId: post.id
+          };
+        });
+      
+      paths.push({
+        params: { 
+          lang, 
+          page: page.toString() 
+        },
+        props: { 
+          posts: pagePosts, 
+          currentPage: page, 
+          totalPages, 
+          lang 
+        }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { posts, currentPage, totalPages, lang: rawLang } = Astro.props;
+const lang = (rawLang as SupportedLanguage);
+
+// 构造分页链接的基础路径
+const paginationBasePath = `/${lang}/posts`;
+const pageTitle = `${lang === 'zh' ? '全部文章' : 'All Posts'} - OmniNav`;
+---
+
+<BaseLayout lang={lang} title={pageTitle}>
+  <div class="postcategory-container">
+    <h1 class="category-title">
+      {lang === 'zh' ? '全部文章' : 'All Posts'}
+    </h1>
+    
+    <PostList posts={posts} lang={lang} />
+    
+    {totalPages > 1 && (
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        basePath={paginationBasePath}
+      />
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .postcategory-container {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 900px;
+    padding-top: 2rem;
+  }
+  
+  .category-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .postcategory-container {
+      width: 95%;
+      padding-top: 1rem;
+    }
+    
+    .category-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

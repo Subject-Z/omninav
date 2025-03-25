@@ -1,0 +1,305 @@
+---
+const { website, lang = 'zh' } = Astro.props;
+
+const { 
+  name, 
+  url, 
+  description, 
+  logo,
+  icon,
+  promotion
+} = website;
+
+const displayLogo = logo || icon || null;
+
+const defaultIcon = "🔗";
+const displayIcon = displayLogo || defaultIcon;
+
+function formatUrl(url: string) {
+  if (!url) return '#';
+  return url.startsWith('http') ? url : `https://${url}`;
+}
+
+const formattedUrl = formatUrl(url);
+
+function extractDomain(url: string) {
+  try {
+    const domain = new URL(formattedUrl).hostname;
+    return domain.replace(/^www\./, '');
+  } catch (e) {
+    return url;
+  }
+}
+
+const domain = extractDomain(formattedUrl);
+
+const displayName = lang === 'zh' ? (name.zh || name.en) : (name.en || name.zh);
+
+const displayDescription = description ? (lang === 'zh' ? (description.zh || description.en) : (description.en || description.zh)) : '';
+
+const hasPromotion = !!promotion;
+const promotionUrl = hasPromotion ? formatUrl(promotion.url) : null;
+const promotionText = hasPromotion ? (lang === 'zh' ? (promotion.text.zh || promotion.text.en) : (promotion.text.en || promotion.text.zh)) : '';
+---
+
+{hasPromotion ? (
+  <div class="website-card-wrapper">
+    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" class="website-card website-card-with-promotion">
+      <div class="card-content">
+        <div class="icon-container">
+          {displayLogo && displayLogo.startsWith('http') ? (
+            <img 
+              src={displayLogo} 
+              alt={displayName} 
+              class="icon" 
+              onerror={`this.onerror=null; this.parentNode.innerHTML='<span class="emoji-icon">🔗</span>';`}
+            />
+          ) : (
+            <span class="emoji-icon">{displayIcon}</span>
+          )}
+        </div>
+        
+        <div class="info">
+          <h4 class="name">{displayName}</h4>
+          
+          
+          {displayDescription && (
+            <p class="description">{displayDescription}</p>
+          )}
+        </div>
+      </div>
+    </a>
+    <a href={promotionUrl} target="_blank" rel="noopener noreferrer" class="promotion-link">
+      <span class="promotion-text">{promotionText}</span>
+    </a>
+  </div>
+) : (
+  <a href={formattedUrl} target="_blank" rel="noopener noreferrer" class="website-card">
+    <div class="card-content">
+      <div class="icon-container">
+        {displayLogo && displayLogo.startsWith('http') ? (
+          <img 
+            src={displayLogo} 
+            alt={displayName} 
+            class="icon" 
+            onerror={`this.onerror=null; this.parentNode.innerHTML='<span class="emoji-icon">🔗</span>';`}
+          />
+        ) : (
+          <span class="emoji-icon">{displayIcon}</span>
+        )}
+      </div>
+      
+      <div class="info">
+        <h4 class="name">{displayName}</h4>
+        
+        
+        {displayDescription && (
+          <p class="description">{displayDescription}</p>
+        )}
+      </div>
+    </div>
+  </a>
+)}
+
+<style>
+  .website-card-wrapper {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .website-card {
+    display: block;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .website-card-with-promotion {
+    box-shadow: none;
+    border-radius: 8px 0 0 8px;
+    position: relative;
+    z-index: 1;
+    width: 75%;
+    clip-path: polygon(0 0, 95% 0, 85% 100%, 0 100%);
+    transition: all 0.3s ease;
+  }
+
+  .promotion-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40%;  
+    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 0;
+    padding-right: 0;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 5% 100%);
+    border-radius: 0 8px 8px 0;
+    overflow: hidden;
+  }
+
+  /* 悬停在主卡片上时的效果 */
+  .website-card-with-promotion:hover {
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    border-radius: 8px;
+    z-index: 10; /* 提高z-index确保覆盖 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 添加阴影增强视觉效果 */
+  }
+
+  /* 悬停在促销链接上时的效果 */
+  .promotion-link:hover {
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 10; /* 提高z-index确保覆盖 */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 添加阴影增强视觉效果 */
+  }
+
+  .promotion-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 25%,
+      rgba(255,255,255,0.3) 50%,
+      transparent 75%
+    );
+    transform: skewX(-15deg);
+    will-change: left;
+    transition: left 1s ease;
+    left: -100%;
+  }
+
+  .promotion-link:hover::before {
+    animation: shine 1.5s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  .promotion-text {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-left: 1.5rem;
+    position: relative;
+    z-index: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 60%;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .icon-container {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #f5f7f9;
+    overflow: hidden;
+  }
+
+  .icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .emoji-icon {
+    font-size: 1.5rem;
+  }
+
+  .info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    color: #333;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .name-divider {
+    margin: 0 0.25rem;
+    color: #999;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 1rem 0 0 0;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+ 
+  @media (max-width: 768px) {
+    .card-content {
+      padding: 1rem;
+    }
+    
+    .icon-container {
+      width: 45px;
+      height: 45px;
+    }
+    
+    .name {
+      font-size: 0.95rem;
+    }
+    
+    .description {
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      -webkit-line-clamp: 2;
+    }
+    
+    .promotion-text {
+      font-size: 0.95rem;
+    }
+  }
+
+</style>

@@ -1,0 +1,521 @@
+{
+  "categories": [
+    {
+      "id": "entertainment",
+      "name": {
+        "zh": "娱乐",
+        "en": "Fun"
+      },
+      "subcategories": [
+        {
+          "id": "movies_tv",
+          "name": {
+            "zh": "影视",
+            "en": "Movies & TV"
+          },
+          "items": [
+            {
+              "id": "hanju_kankan",
+              "name": {
+                "zh": "韩剧看看",
+                "en": "Hanju Kankan"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.hanjukankan.com/",
+              "logo": "https://www.hanjukankan.com/mxtheme/image/logo/favicon.png"
+            },
+            {
+              "id": "dandanzan",
+              "name": {
+                "zh": "蛋蛋赞影院",
+                "en": "Dandanzan"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.dandanzan.me/",
+              "logo": "https://www.dandanzan.me/favicon.ico"
+            },            
+            {
+              "id": "factory_resources",
+              "name": {
+                "zh": "厂长资源",
+                "en": "Factory Resources"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.czzy77.com/",
+              "logo": "https://gimg0.baidu.com/gimg/app=2001&n=0&g=0n&fmt=jpeg&src=img.czzy66.com/2024/09/fd2fa7a94afb88.jpg"
+            },
+            {
+              "id": "train_too_crowded",
+              "name": {
+                "zh": "火车太堵",
+                "en": "Train Too Crowded"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.tdgo.shop/",
+              "logo": "https://www.tdgo.shop/upload/vod/20241112-1/a0d4c333e5795f33ceede12c490b1373.png"
+            },
+            {
+              "id": "4k_movies",
+              "name": {
+                "zh": "4K影视",
+                "en": "4K Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.4kvm.tv/",
+              "logo": "https://www.4kvm.tv/wp-content/uploads/2020/07/385d1786e61233.png"
+            },
+            {
+              "id": "haina_tv",
+              "name": {
+                "zh": "海纳TV",
+                "en": "Haina TV"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.hainatv.net/",
+              "logo": "https://www.hainatv.net/upload/site/20240107-1/70a415f2fd864afd1bfedb8d33a8d0e2.png"
+            },
+            {
+              "id": "love_movies",
+              "name": {
+                "zh": "爱电影",
+                "en": "Love Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.czzy77.com/",
+              "logo": "https://obs.gduamoe.com/upload/site_ico/20240624-1/6428e35ca303d01aac03c575c9c0c3ae_180x180.png"
+            },
+            {
+              "id": "aikan_movies",
+              "name": {
+                "zh": "爱看影视",
+                "en": "AiKan Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.aikandy.pro/",
+              "logo": "https://www.aikandy.pro/favicon.ico"
+            },
+            {
+              "id": "jiaozi_movies",
+              "name": {
+                "zh": "饺子影视",
+                "en": "Jiaozi Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.jiaozi.me/",
+              "logo": "https://www.jiaozi.me/favicon.ico"
+            },
+            {
+              "id": "drama_grandpa",
+              "name": {
+                "zh": "剧爷爷",
+                "en": "Drama Grandpa"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.juyeye.cc/",
+              "logo": "https://www.juyeye.cc/mxtheme/image/logo/favicon.png"
+            },
+            {
+              "id": "gold_medal_cinema",
+              "name": {
+                "zh": "金牌影院",
+                "en": "Gold Medal Cinema"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.hskjjglo.com/",
+              "logo": "https://obs.gduamoe.com/upload/site_ico/20250210-1/82f60e82218ab42e446da3719512f6bf_180x180.png"
+            },
+            {
+              "id": "duboku",
+              "name": {
+                "zh": "独播库",
+                "en": "Duboku"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.duboku.tv/",
+              "logo": "https://www.duboku.tv/template/mytheme/statics/img/logo_min.png"
+            },
+            {
+              "id": "ju_kankan",
+              "name": {
+                "zh": "剧看看",
+                "en": "Ju Kankan"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.jukankan.tv/",
+              "logo": "https://www.jukankan.tv/template/jukankan/statics/img/logo_f.png"
+            },
+            {
+              "id": "netflix_factory",
+              "name": {
+                "zh": "奈飞工厂",
+                "en": "Netflix Factory"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.netflixgc.com/",
+              "logo": "https://www.netflixgc.com/upload/site/20241029-1/708c271d0bbf43725b96fad94d0c1eb4.png"
+            },
+            {
+              "id": "movie_fanatic",
+              "name": {
+                "zh": "看片狂人",
+                "en": "Movie Fanatic"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://kuangren.us/",
+              "logo": "https://kuangren.us/favicon.ico"
+            },
+            {
+              "id": "love_one_sail",
+              "name": {
+                "zh": "爱壹帆",
+                "en": "Love One Sail"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.iyf.lv/",
+              "logo": "https://www.iyf.lv/196.png"
+            },
+            {
+              "id": "starry_sky_movies",
+              "name": {
+                "zh": "星空影视",
+                "en": "Starry Sky Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.xkvvv.com/",
+              "logo": "https://www.xkvvv.com/favicon.ico"
+            },
+            {
+              "id": "no_video",
+              "name": {
+                "zh": "NO视频",
+                "en": "NO Video"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.novipnoad.net/",
+              "logo": "https://img.novipnoad.net/apple-touch-icon.png"
+            },
+            {
+              "id": "oule_cinema",
+              "name": {
+                "zh": "欧乐影院",
+                "en": "Oule Cinema"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.olehdtv.com/",
+              "logo": "https://static.olelive.com/upload/site/20201117-1/08aee3974ca3d001ceab066233599789.png"
+            },
+            {
+              "id": "freehd",
+              "name": {
+                "zh": "FreeHD",
+                "en": "FreeHD"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.freehd1.vip/",
+              "logo": "https://www.freehd1.vip/upload/site/20250116-1/1c3fbb7e79300f19713f65b14057b00b.png"
+            },
+            {
+              "id": "low_end_movies",
+              "name": {
+                "zh": "低端影视",
+                "en": "Low End Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://ddys.info/",
+              "logo": "https://ddys.pro/apple-touch-icon.png"
+            },
+            {
+              "id": "libvio",
+              "name": {
+                "zh": "LIBVIO",
+                "en": "LIBVIO"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://libvio.vip/",
+              "logo": "https://libvio.vip/statics/img/favicon.ico"
+            },
+            {
+              "id": "tvb_cloud_play",
+              "name": {
+                "zh": "TVB云播",
+                "en": "TVB Cloud Play"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "http://www.hktvyb.vip/",
+              "logo": "http://customer-service.cos.tx.xmcdn.com/storages/ad88-customerservice/8B/FF/GKwRIRwKbrTmAAEIPgLyyQJK.ico"
+            },
+            {
+              "id": "true_wolf_movies",
+              "name": {
+                "zh": "真狼影视",
+                "en": "True Wolf Movies"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.zhenlang.cc/",
+              "logo": "https://www.zhenlang.cc/template/conch/asset/img/favicon.png"
+            },
+            {
+              "id": "nikan_vod",
+              "name": {
+                "zh": "耐看点播",
+                "en": "Nikan VOD"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://nkvod.me/",
+              "logo": "https://nkvod.me/upload/site/20241223-1/7c00a9d60fffa62f46be199e52d6cc85.png"
+            },
+            {
+              "id": "cn_cinema",
+              "name": {
+                "zh": "CN影院",
+                "en": "CN Cinema"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://cnys.tv/",
+              "logo": "https://cnys.tv/upload/site/20241108-1/f15406810699ffec5f80135c212d08de.png"
+            },
+            {
+              "id": "ondemandchina",
+              "name": {
+                "zh": "OnDemandChina",
+                "en": "OnDemandChina"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.ondemandchina.com/zh-Hans",
+              "logo": "https://www.ondemandchina.com/favicon.ico"
+            }
+          ]
+        },
+        {
+          "id": "animation",
+          "name": {
+            "zh": "动漫",
+            "en": "Animation"
+          },
+          "items": [
+            {
+              "id": "age_anime",
+              "name": {
+                "zh": "AGE动漫",
+                "en": "AGE Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.agedm.org",
+              "logo": "https://www.agedm.org/favicon.ico"
+            },
+            {
+              "id": "dimension_city_animation",
+              "name": {
+                "zh": "次元城动画",
+                "en": "Dimension City Animation"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.cycani.org/",
+              "logo": "https://www.cycani.org/upload/site/20240319-1/67656e504da1f0c61513066dcea769fb.png"
+            },
+            {
+              "id": "233_anime",
+              "name": {
+                "zh": "233动漫",
+                "en": "233 Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.233dm.com/",
+              "logo": "https://www.233dm.com/template/the4/statics/img/favicon.ico"
+            },
+            {
+              "id": "wind_bell_anime",
+              "name": {
+                "zh": "风铃动漫",
+                "en": "Wind Bell Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.aafun.cc/",
+              "logo": "https://www.aafun.cc/favicon.ico"
+            },
+            {
+              "id": "long_journey",
+              "name": {
+                "zh": "路漫漫",
+                "en": "Long Journey"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://i.qg50.com/",
+              "logo": "https://www.lmm96.com/template/jable/statics/icon/favicon.ico"
+            },
+            {
+              "id": "fun_anime",
+              "name": {
+                "zh": "趣动漫",
+                "en": "Fun Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.qdm66.com/",
+              "logo": "https://www.qdm66.com/favicon.ico"
+            },
+            {
+              "id": "girigiri_love_anime",
+              "name": {
+                "zh": "girigiri愛動漫",
+                "en": "girigiri Love Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://anime.girigirilove.com/",
+              "logo": "https://anime.girigirilove.com/upload/site/20231121-1/fdd2694db66628a9deadd86e50aedd43.png"
+            },
+            {
+              "id": "sakura_anime",
+              "name": {
+                "zh": "樱花动漫",
+                "en": "Sakura Anime"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://www.yinghua4.com/",
+              "logo": "https://www.yinghua4.com/statics/img/favicon.ico"
+            }
+          ]
+        },
+        {
+          "id": "music",
+          "name": {
+            "zh": "音乐",
+            "en": "Music"
+          },
+          "items": [
+            {
+              "id": "lx_music",
+              "name": {
+                "zh": "LX Music",
+                "en": "LX Music"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://lxmusic.toside.cn/",
+              "logo": "https://github.com/lyswhut/lx-music-desktop/raw/master/doc/images/icon.png"
+            },
+            {
+              "id": "musicfree",
+              "name": {
+                "zh": "MusicFree",
+                "en": "MusicFree"
+              },
+              "description": {
+                "zh": "",
+                "en": ""
+              },
+              "url": "https://musicfree.catcat.work/",
+              "logo": "https://musicfree.catcat.work/img/logo.png"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
