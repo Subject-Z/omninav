@@ -57,11 +57,29 @@ const postsCollection = defineCollection({
   type: 'content',
   schema: ({ image }) => z.object({
     title: z.string(),
-    date: z.date(),
+    // 允许使用 date 或 publishDate
+    date: z.date().optional(),
+    publishDate: z.date().optional(),
+    // 添加自定义验证，确保至少有一个日期字段
     category: z.string(),
     author: z.string().optional(),
-    excerpt: z.string(),
-    image: image().optional(),
+    // excerpt 可选，因为可能使用 description 代替
+    excerpt: z.string().optional(),
+    description: z.string().optional(),
+    // 图片字段支持字符串或对象类型
+    image: z.union([
+      z.string(),
+      z.object({
+        url: z.string().optional(),
+        alt: z.string().optional(),
+        // 添加其他可能的图片对象属性
+      }).optional()
+    ]).optional(),
+    tags: z.array(z.string()).optional(),
+  }).refine(data => data.date || data.publishDate, {
+    message: "Either 'date' or 'publishDate' must be provided"
+  }).refine(data => data.excerpt || data.description, {
+    message: "Either 'excerpt' or 'description' must be provided"
   }),
 });
 

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/copy-index.js",
     "build:github": "cross-env GITHUB_ACTIONS=true astro build",
     "build:cloudflare": "cross-env CF_PAGES=true astro build",
     "deploy:cloudflare": "npm run build:cloudflare && wrangler pages deploy dist",

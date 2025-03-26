@@ -39,7 +39,7 @@ export default defineConfig({
     sitemap({
       // i18n 设置
       i18n: {
-        defaultLocale: 'en',
+        defaultLocale: 'en', // 默认语言为英文
         locales: {
           'zh': 'zh-CN',
           'en': 'en-US'

@@ -1,9 +1,14 @@
 ---
 interface Post {
   title: string;
-  image?: string | any; // 更新类型以兼容字符串或Astro图片对象
+  image?: string | { src: string; [key: string]: any };
   category: string;
   slug: string;
+}
+
+interface ProcessedPost extends Omit<Post, 'image'> {
+  image?: string;
+  originalImage?: Post['image'];
 }
 
 interface Props {
@@ -12,19 +17,36 @@ interface Props {
   lang?: 'zh' | 'en';
 }
 
-// 改进参数处理，使用类型定义提高代码可维护性
 const { posts = [], defaultCategory = 'all', lang = 'en' } = Astro.props;
 
-// 导入所有图片以便Astro可以正确处理
+// 导入所有图片
 const allImages = import.meta.glob('/src/assets/image/post/*.{jpg,png,jpeg,webp}');
 
 // 处理图片路径的辅助函数
-function getImagePath(image: string | any): string {
+async function getImagePath(image: Post['image']): Promise<string> {
   if (!image) return '';
   
-  // 如果是字符串路径
   if (typeof image === 'string') {
-    return image.replace('/src/assets', '');
+    // 处理内部图片路径
+    if (image.startsWith('/src/assets')) {
+      try {
+        const importedImage = allImages[image];
+        if (importedImage) {
+          const loadedImage = await importedImage();
+          return loadedImage.default.src || '';
+        }
+      } catch (error) {
+        console.error('Error processing image:', error);
+      }
+    }
+    
+    // 处理外部URL图片
+    if (image.startsWith('http')) {
+      return image;
+    }
+    
+    // 默认处理
+    return image;
   }
   
   // 如果是Astro处理过的图片对象
@@ -37,13 +59,26 @@ function getImagePath(image: string | any): string {
 
 // 获取基础路径
 const basePath = import.meta.env.BASE_URL || '/';
+
+// 预处理所有帖子，包括图片路径
+const processedPosts: ProcessedPost[] = await Promise.all(
+  posts.map(async (post) => {
+    const processedImage = await getImagePath(post.image);
+    
+    return {
+      ...post,
+      originalImage: post.image, // 保留原始图片引用
+      image: processedImage      // 处理后的图片路径
+    };
+  })
+);
 ---
 
 <div class="post-list-container">
   <article class="post-list">
-    {posts && posts.length > 0 ? (
+    {processedPosts && processedPosts.length > 0 ? (
       <ul id="post-container">
-        {posts.map((post, index) => {
+        {processedPosts.map((post, index) => {
           const categoryFromPath = post.category || 'uncategorized';
           const postSlug = post.slug || `post-${index}`;
           
@@ -53,7 +88,7 @@ const basePath = import.meta.env.BASE_URL || '/';
                 {post.image && (
                   <div class="post-image-container">
                     <img 
-                      src={getImagePath(post.image)} 
+                      src={post.image} 
                       alt={post.title} 
                       class="post-cover-image" 
                       loading="lazy"
@@ -143,12 +178,13 @@ const basePath = import.meta.env.BASE_URL || '/';
       console.error('PostList组件错误:', error);
     }
 
-    // 强制重排
+    // 强制重排 - 修复这里，使用与CSS一致的布局方式
     const container = document.querySelector('.post-list ul');
     if (container) {
       container.style.display = 'none';
       setTimeout(() => {
-        container.style.display = 'grid';
+        // 修改为block而不是grid，因为我们使用的是column-count布局
+        container.style.display = 'block';
       }, 10);
     }
   });

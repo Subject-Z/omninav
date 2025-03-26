@@ -80,22 +80,11 @@ const formattedDate = formatDate(post.date);
   <article class="post-container">
     <header class="post-header">
       <h1 class="post-title">{post.title}</h1>
-      
       <div class="post-meta">
         <span class="post-date">
           {lang === 'zh' ? '发布于：' : 'Published: '}{formattedDate}
         </span>
       </div>
-      
-      {post.image && (
-        <div class="post-feature-image">
-          <img 
-            src={getImagePath(post.image)} 
-            alt={post.title}
-            loading="eager"
-          />
-        </div>
-      )}
     </header>
     
     <div class="post-content">
@@ -131,17 +120,7 @@ const formattedDate = formatDate(post.date);
     font-size: 0.9rem;
   }
   
-  .post-feature-image {
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .post-feature-image img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
+  /* 删除以下特色图片样式 */
   
   .post-content {
     font-size: 1.1rem;
@@ -161,11 +140,12 @@ const formattedDate = formatDate(post.date);
   }
   
   .post-content :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin: 1.5rem 0;
-  }
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 1.5rem auto; /* 修改这里，从0改为auto实现水平居中 */
+  display: block; /* 确保图片是块级元素 */
+}
   
   .post-content :global(blockquote) {
     border-left: 4px solid #ddd;

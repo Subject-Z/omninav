@@ -54,6 +54,19 @@
                 "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/48/29/9c/48299c0f-956c-f08f-ba5c-4f3032cc2416/icon.png/434x0w.webp"
               },
               {
+                "id": "quwenjian",
+                "name": {
+                  "zh": "取文件",
+                  "en": "Quwenjian"
+                },
+                "description": {
+                  "zh": "在线传文件",
+                  "en": "Online File Transfer"
+                },
+                "url": "https://quwenjian.cc/#/send",
+                "logo": "https://quwenjian.cc/assets/logo_small.png"
+              },
+              {
                 "id": "wenshushu",
                 "name": {
                   "zh": "文叔叔",

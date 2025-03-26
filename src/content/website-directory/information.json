@@ -15,6 +15,58 @@
           },
           "items": [
             {
+              "id": "reuters",
+              "name": {
+                "zh": "路透社",
+                "en": "Reuters"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.reuters.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f9/32/17/f93217a0-c10b-3280-7135-58519f57681a/AppIcon-0-0-1x_U007emarketing-0-10-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "bloomberg",
+              "name": {
+                "zh": "彭博社",
+                "en": "Bloomberg"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.bloomberg.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/09/97/220997d8-0539-e5fd-294a-136c623ec5b5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "the-times",
+              "name": {
+                "zh": "泰晤士报",
+                "en": "The Times"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://www.thetimes.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0c/39/71/0c39716c-614e-2d73-bcda-197f4ba0f599/AppIcon-0-0-1x_U007emarketing-0-6-0-0-85-220.png/434x0w.webp"
+            },
+            {
+              "id": "time",
+              "name": {
+                "zh": "时代杂志",
+                "en": "Time"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://time.com/",
+              "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2d/8c/92/2d8c92af-8d48-45a1-9dc7-c18aa090f9f7/AppIcon-0-0-1x_U007emarketing-0-7-0-sRGB-85-220.png/434x0w.webp"
+            },
+            {
               "id": "xinhua",
               "name": {
                 "zh": "新华社",
@@ -82,6 +134,29 @@
           ]
         },
         {
+          "id": "knowledge",
+          "name": {
+            "zh": "知识",
+            "en": "Knowledge"
+          },
+          "items": [
+            {
+              "id": "arxiv",
+              "name": {
+                "zh": "ArXiv",
+                "en": "ArXiv"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://arxiv.org/",
+              "logo": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+            }
+          ]
+        }
+        ,
+        {
           "id": "data",
           "name": {
             "zh": "数据",
@@ -100,6 +175,32 @@
                 },
                 "url": "https://data.stats.gov.cn/",
               "logo": "https://www.gdqy.gov.cn/qytjj/img/0/708/708928/1903298.png"
+            },
+            {
+              "id": "peoples_court_case",
+              "name": {
+                "zh": "人民法院案例库",
+                "en": "People's Court Case Database"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://rmfyalk.court.gov.cn/home.html",
+              "logo": "https://img.alicdn.com/imgextra/i2/O1CN01OGypH91y9XO6097pW_!!6000000006536-2-tps-2116-2457.png"
+            },
+            {
+              "id": "judgement_doc",
+              "name": {
+                "zh": "裁判文书网",
+                "en": "Judgement Document"
+                },
+                "description": {
+                  "zh": "",
+                  "en": ""
+                },
+                "url": "https://rmfyalk.court.gov.cn/home.html",
+              "logo": "https://img.alicdn.com/imgextra/i2/O1CN01OGypH91y9XO6097pW_!!6000000006536-2-tps-2116-2457.png"
             }
           ]
         }

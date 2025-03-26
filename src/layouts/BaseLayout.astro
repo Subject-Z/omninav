@@ -17,8 +17,8 @@ const basePath = import.meta.env.BASE_URL || '/';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <meta name="description" content="一站式智能导航平台，覆盖AI、生活、信息、娱乐、工具等多个领域">
-    <link rel="icon" type="image/svg+xml" href={`${basePath}favicon.svg`} />
+    <meta name="description" content="一站式智能导航平台，覆盖AI、生活、信息、娱乐、工具等多个领域 | All-in-one intelligent navigation platform covering AI, lifestyle, information, entertainment, tools and more">
+    <link rel="icon" type="image/svg+xml" href={`${basePath}favicon.webp`} />
     <link rel="icon" href={`${basePath}favicon.webp`} type="image/webp" />
     <link rel="apple-touch-icon" href={`${basePath}favicon.webp`} />
     <link rel="shortcut icon" href={`${basePath}favicon.webp`} type="image/webp" />
@@ -29,6 +29,9 @@ const basePath = import.meta.env.BASE_URL || '/';
     <script define:vars={{ basePath, env: import.meta.env.MODE }}>
       console.log(`当前环境: ${env}, 基础路径: ${basePath}`);
     </script>
+    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site).toString()} />
+    <link rel="alternate" hreflang="zh" href={new URL('/zh/', Astro.site).toString()} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site).toString()} />
   </head>
   <body>
     <NavigationBar lang={lang} />
