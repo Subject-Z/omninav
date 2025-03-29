@@ -1,0 +1,162 @@
+---
+// 获取当前URL路径，用于判断当前页面和设置语言切换链接
+const currentPath = Astro.url.pathname;
+const isZh = currentPath.startsWith('/zh');
+
+// 导入翻译函数
+import { translateCategory } from '../content/config';
+
+// 定义导航类别
+const categories = ['lifestyle', 'information', 'culture', 'world'];
+
+// 辅助函数
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// 根据当前路径确定对应的语言切换链接
+function getLanguageSwitchUrl() {
+  // 如果在首页
+  if (currentPath === '/' || currentPath === '/zh/') {
+    return isZh ? '/' : '/zh/';
+  }
+  
+  // 对于其他页面，需要保持相同目录
+  // 从路径中提取类别和可能的slug
+  const pathParts = currentPath.split('/').filter(Boolean);
+  const basePath = isZh ? pathParts.slice(1) : pathParts;
+  
+  // 构建目标路径
+  return isZh ? `/${basePath.join('/')}` : `/zh/${basePath.join('/')}`;
+}
+
+// 确定当前活动类别
+function isActiveCategory(category: string) {
+  return currentPath.includes(`/${category}`) || 
+         (isZh && currentPath.includes(`/zh/${category}`));
+}
+---
+
+<nav class="Navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <a href={isZh ? "/zh/" : "/"}>OmniNav</a>
+    </div>
+    
+    <div class="nav-links">
+      {categories.map(category => (
+        <a 
+          href={isZh ? `/zh/${category}` : `/${category}`}
+          class={isActiveCategory(category) ? "active" : ""}
+        >
+          {isZh ? translateCategory(category, 'zh') : translateCategory(category, 'en')}
+        </a>
+      ))}
+    </div>
+    
+    <div class="language-switch">
+      <a href={getLanguageSwitchUrl()} class="lang-btn">
+        {isZh ? "English" : "中文"}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // 客户端脚本，如有交互需求可添加
+</script>
+
+<style>
+  .Navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+  
+  .navbar-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+  }
+  
+  .logo a {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .nav-links {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+  
+  .nav-links a, .lang-btn {
+    position: relative;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+  }
+  
+  .nav-links a:hover, .lang-btn:hover {
+      background-color: #EEE;
+    }
+  
+  .nav-links a.active {
+    font-weight: 900;
+  }
+
+  .language-switch {
+    margin-left: 1.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-container {
+      flex-wrap: wrap;
+      height: auto;
+      padding: 1rem;
+      max-width: 85%;
+    }
+    
+    .nav-links, .language-switch {
+      height: auto;
+    }
+    
+    .nav-links a, .lang-btn {
+      height: auto;
+    }
+    
+    .nav-links {
+      order: 3;
+      width: 100%;
+      margin-top: 1rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 0.5rem;
+      
+      /* 隐藏滚动条但保留滚动功能 */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    /* WebKit浏览器(Chrome/Safari)隐藏滚动条 */
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>

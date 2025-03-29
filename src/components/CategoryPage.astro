@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+import Navbar from './Navbar.astro';
+import ArticleCatalog from './ArticleCatalog.astro';
+import { translateCategory } from '../content/config';
+
+export interface Props {
+  category: string;
+  page: number;
+  lang: 'en' | 'zh';
+  articles: any[];
+}
+
+const { 
+  category, 
+  page = 1, 
+  lang = 'en',
+  articles 
+} = Astro.props;
+
+// 让ArticleCatalog处理标题逻辑
+const isFirstPage = page === 1;
+const categoryUrl = `${lang === 'zh' ? '/zh' : ''}/${category}`;
+
+// 构建页面标题
+const translatedCategory = translateCategory(category, lang);
+const pageTitle = lang === 'zh' 
+  ? `${translatedCategory}文章${page > 1 ? ` | 页码 ${page}` : ''}`
+  : `${translatedCategory} Articles${page > 1 ? ` | Page ${page}` : ''}`;
+---
+
+<Layout title={pageTitle}>
+    <Navbar />
+    <main>
+        <div class="container">
+            {isFirstPage ? (
+              <div class="redirect-message">
+                <p>
+                  {lang === 'zh' 
+                    ? `这是第一页，您应该访问 ` 
+                    : `This is the first page. You should be on the `}
+                  <a href={categoryUrl}>
+                    {lang === 'zh' 
+                      ? `${translatedCategory}文章页面` 
+                      : `main ${category} page`}
+                  </a>.
+                </p>
+              </div>
+            ) : (
+              <ArticleCatalog 
+                articles={articles} 
+                category={category} 
+                page={page} 
+                lang={lang} 
+              />
+            )}
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        margin: auto;
+        padding: 2rem 0;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .redirect-message {
+        text-align: center;
+        padding: 3rem 0;
+        font-size: 1.2rem;
+    }
+    
+    .redirect-message a {
+        color: #0066cc;
+        text-decoration: underline;
+    }
+</style>

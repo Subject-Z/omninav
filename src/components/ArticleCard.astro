@@ -1,0 +1,168 @@
+---
+// 导入需要的类型
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { title, description, pubDate, category, image, lang } = article.data;
+
+// 格式化日期
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat(lang === 'zh' ? 'zh-CN' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+}
+
+// 获取文章链接
+function getArticleLink(): string {
+  // 从article.id中提取文件名部分(不包含分类)
+  const filename = article.id.split('/').pop() || '';
+  const slug = filename.replace(/\.(en|zh)\.md$/, '');
+  
+  // 构建基础路径(语言+分类)
+  const basePath = lang === 'zh' ? `/zh/${category}` : `/${category}`;
+  return `${basePath}/${slug}`;
+}
+
+// 准备显示的日期
+const displayDate = formatDate(pubDate);
+
+// 获取默认图片（如果未提供）
+const displayImage = image || '/favicon.webp';
+---
+
+<div class="article-card">
+  <a href={getArticleLink()} class="article-link">
+    <div class="article-image">
+      <img src={displayImage} alt={title} />
+    </div>
+    <div class="article-content">
+      <h2 class="article-title">{title}</h2>
+      <p class="article-description">{description}</p>
+      <div class="article-meta">
+        <span class="article-date">{displayDate}</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .article-card {
+    background-color: #F8F8F8;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 300px; /* 设置固定高度 */
+    display: flex; /* 确保内部元素能撑满高度 */
+  }
+
+  .article-link {
+    display: flex; /* 改为flex布局，实现左右排布 */
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    width: 100%; /* 确保链接撑满卡片 */
+  }
+
+  .article-image {
+    width: 300px; /* 固定宽度 */
+    min-width: 200px; /* 最小宽度 */
+    overflow: hidden;
+    position: relative; /* 添加定位，以便放置遮罩 */
+    flex-shrink: 0; /* 防止图片区域被压缩 */
+  }
+
+  .article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .article-image::after {
+    content: "READ MORE";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色遮罩 */
+    color: white; /* 白色文字 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* 默认不可见 */
+    transition: opacity 0.3s ease;
+    font-weight: 600;
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+
+  .article-card:hover .article-image::after {
+    opacity: 1; /* 悬停时显示遮罩 */
+  }
+
+  .article-content {
+    flex: 1; /* 占据剩余空间 */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 改为space-between布局 */
+    overflow: hidden; /* 防止内容溢出 */
+    min-height: 0; /* 解决Flex布局下的溢出问题 */
+  }
+
+  .article-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: #333;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 限制标题最多2行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: auto; /* 将元数据推到底部 */
+  }
+
+  .article-date {
+    display: inline-block;
+    margin-right: 0.25rem;
+  }
+
+  /* 移动端响应式布局 */
+  @media (max-width: 768px) {
+    .article-link {
+      flex-direction: column; /* 在小屏幕上恢复垂直布局 */
+    }
+
+    .article-card {
+      height: auto; /* 在移动端允许高度自适应 */
+      min-height: 400px; /* 设置最小高度 */
+    }
+
+    .article-image {
+      width: 100%; /* 图片宽度占满 */
+      height: 200px; /* 固定高度 */
+      flex-shrink: 0; /* 防止压缩 */
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import ArticleCatalog from '../../../components/ArticleCatalog.astro';
+
+// 当前分类
+const category = 'world';
+
+// 获取该分类下的所有中文文章
+const articlesByCategory = await getCollection('articles', ({ data }) => {
+  return data.category === category && data.lang === 'zh' && !data.draft;
+});
+
+// 排序
+articlesByCategory.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 分页设置
+const articlesPerPage = 10;
+---
+
+<BaseLayout
+  title="OmniNav - 全球战略与产业洞察 | 深度解读政经军事金融农牧业"
+  description="OmniNav 聚焦全球政治时事、军事战略、财政金融、产业经济及农林牧渔等关键领域，提供实时政经态势追踪、专业行业数据解读与实用战略决策支持，助力您构建深度行业认知体系，把握全球战略机遇。"
+  lang="zh"
+>
+    <Navbar />
+    <main>
+        <div class="container">
+            <ArticleCatalog 
+              articles={articlesByCategory} 
+              category={category} 
+              page={1} 
+              articlesPerPage={articlesPerPage} 
+              lang="zh" 
+            />
+        </div>
+    </main>
+</BaseLayout>

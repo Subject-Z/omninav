@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import ArticleCatalog from '../../components/ArticleCatalog.astro';
+
+// 当前分类
+const category = 'lifestyle';
+
+// 获取该分类下的所有英文文章
+const articlesByCategory = await getCollection('articles', ({ data }) => {
+  return data.category === category && data.lang === 'en' && !data.draft;
+});
+
+// 排序
+articlesByCategory.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 分页设置
+const articlesPerPage = 10;
+---
+
+<BaseLayout
+  title="OmniNav: Curated Lifestyle & Career Growth Articles"
+  description="OmniNav is your go-to platform for curated, high-quality articles on lifestyle and career education. Explore diverse topics like social well-being, home & food, pet care, K-12 education, and professional development. Access practical knowledge and in-depth content to enhance your life, expand your horizons, and achieve career success. Start exploring OmniNav's premium articles today!"
+  lang="en"
+>
+    <Navbar />
+    <main>
+        <div class="container">
+            <ArticleCatalog 
+              articles={articlesByCategory} 
+              category={category} 
+              page={1} 
+              articlesPerPage={articlesPerPage} 
+              lang="en" 
+            />
+        </div>
+    </main>
+</BaseLayout>

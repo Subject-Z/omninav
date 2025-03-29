@@ -1,0 +1,125 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  langPrefix?: string;
+  lang?: 'en' | 'zh';
+}
+
+const { currentPage, totalPages, baseUrl, langPrefix = '', lang = 'en' } = Astro.props;
+
+// 构建页面URL
+function getPageUrl(pageNum: number): string {
+  if (pageNum === 1) {
+    return baseUrl;
+  }
+  return `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}page/${pageNum}`;
+}
+
+// 确定分页范围 (显示最多5个页码按钮)
+function getPaginationRange(current: number, total: number): number[] {
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  
+  if (current <= 3) {
+    return [1, 2, 3, 4, 5];
+  }
+  
+  if (current >= total - 2) {
+    return [total - 4, total - 3, total - 2, total - 1, total];
+  }
+  
+  return [current - 2, current - 1, current, current + 1, current + 2];
+}
+
+const paginationRange = getPaginationRange(currentPage, totalPages);
+
+// 翻译
+const prevText = lang === 'zh' ? '上一页' : 'Previous';
+const nextText = lang === 'zh' ? '下一页' : 'Next';
+---
+
+{totalPages > 1 && (
+  <nav class="pagination" aria-label={lang === 'zh' ? '页面导航' : 'Page navigation'}>
+    <ul>
+      {currentPage > 1 && (
+        <li class="prev-page">
+          <a href={getPageUrl(currentPage - 1)}>
+            &laquo; {prevText}
+          </a>
+        </li>
+      )}
+      
+      {paginationRange.map(pageNum => (
+        <li class={pageNum === currentPage ? 'active' : ''}>
+          <a href={getPageUrl(pageNum)}>
+            {pageNum}
+          </a>
+        </li>
+      ))}
+      
+      {currentPage < totalPages && (
+        <li class="next-page">
+          <a href={getPageUrl(currentPage + 1)}>
+            {nextText} &raquo;
+          </a>
+        </li>
+      )}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    margin: 3rem 0;
+    text-align: center;
+  }
+  
+  .pagination ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    gap: 0.5rem;
+  }
+  
+  .pagination li {
+    margin: 0 0.25rem;
+  }
+  
+  .pagination li a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #f4f4f4;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination li.active a {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
+  }
+  
+  .prev-page a, .next-page a {
+    font-weight: 500;
+  }
+  
+  @media (max-width: 768px) {
+    .pagination li a {
+      padding: 0.4rem 0.8rem;
+    }
+    
+    .pagination {
+      margin: 2rem 0;
+    }
+  }
+</style>

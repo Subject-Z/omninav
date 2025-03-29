@@ -1,11 +1,32 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import ArticleCatalog from '../components/ArticleCatalog.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// 获取所有英文文章
+const allArticles = await getCollection('articles', ({ data }) => {
+  return data.lang === 'en' && !data.draft;
+});
+
+// 按发布日期排序
+allArticles.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 分页参数
+const articlesPerPage = 10;
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title="OmniNav - Discover Quality Articles, Academic Resources & In-Depth Content"
+  description="OmniNav gathers premium articles, authoritative academic resources, cutting-edge industry reports, and in-depth analysis from around the globe. Efficiently access the information you need, expand your knowledge, and enhance your learning and research. Experience OmniNav now and start your intelligent knowledge exploration journey!"
+  lang="en"
+>
+    <Navbar />
+    <main>
+        <section id="articles" class="articles">
+            <div class="container">
+                <ArticleCatalog articles={allArticles} page={1} articlesPerPage={articlesPerPage} lang="en" />
+            </div>
+        </section>
+    </main>
+</BaseLayout>

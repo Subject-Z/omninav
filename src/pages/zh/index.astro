@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import ArticleCatalog from '../../components/ArticleCatalog.astro';
+
+// 获取所有中文文章
+const allArticles = await getCollection('articles', ({ data }) => {
+  return data.lang === 'zh' && !data.draft;
+});
+
+// 按发布日期排序
+allArticles.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 分页参数
+const articlesPerPage = 10;
+---
+
+<BaseLayout
+  title="OmniNav - 发现优质文章、学术资源与深度内容"
+  description="OmniNav 汇聚全球优质文章、权威学术资源、前沿行业报告和深度分析内容，助您高效获取所需信息，拓展知识视野，提升学习与研究效率，立即体验 OmniNav，开启您的智能知识探索之旅！"
+  lang="zh"
+>
+    <Navbar />
+    <main>
+        <!-- Article Catalog Section -->
+        <section id="articles" class="articles">
+            <div class="container">
+                <ArticleCatalog 
+                  articles={allArticles} 
+                  page={1} 
+                  articlesPerPage={articlesPerPage} 
+                  lang="zh" 
+                />
+            </div>
+        </section>
+    </main>
+</BaseLayout>

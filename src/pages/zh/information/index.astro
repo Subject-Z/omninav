@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import ArticleCatalog from '../../../components/ArticleCatalog.astro';
+
+// 当前分类
+const category = 'information';
+
+// 获取该分类下的所有中文文章
+const articlesByCategory = await getCollection('articles', ({ data }) => {
+  return data.category === category && data.lang === 'zh' && !data.draft;
+});
+
+// 排序
+articlesByCategory.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 分页设置
+const articlesPerPage = 10;
+---
+
+<BaseLayout
+  title="OmniNav - 科技与互联网学习资源中心 | 前沿科学、技术文档与行业洞察"
+  description="OmniNav 是您的专业科技与互联网学习资源中心，精准导航前沿科学研究文章、实用技术文档、行业分析报告和优质互联网学习内容，助您高效学习尖端科技知识，洞察行业发展趋势，激发创新思维与实践，立即探索 OmniNav 的科技世界！"
+  lang="zh"
+>
+    <Navbar />
+    <main>
+        <div class="container">
+            <ArticleCatalog 
+              articles={articlesByCategory} 
+              category={category} 
+              page={1} 
+              articlesPerPage={articlesPerPage} 
+              lang="zh" 
+            />
+        </div>
+    </main>
+</BaseLayout>
