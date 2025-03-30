@@ -67,29 +67,48 @@ function isActiveCategory(category: string) {
   let lastScrollTop = 0;
   const navbar = document.querySelector('.Navbar');
   const collapsibleElements = document.querySelectorAll('.collapsible-element');
+  let scrollTimer = null; // 添加节流变量
   
   function handleScroll() {
-    // 仅在移动设备宽度下启用此功能
-    if (window.innerWidth <= 768) {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // 向下滚动时显示，向上滚动时隐藏
-      if (scrollTop > lastScrollTop && scrollTop > 50) {
-        // 向下滚动超过50px
-        collapsibleElements.forEach(el => {
-          el.classList.add('collapsed');
-        });
-        navbar.classList.add('compact-nav');
-      } else {
-        // 向上滚动或在顶部附近
-        collapsibleElements.forEach(el => {
-          el.classList.remove('collapsed');
-        });
-        navbar.classList.remove('compact-nav');
+    // 避免频繁触发，使用节流机制
+    if (scrollTimer !== null) return;
+    
+    scrollTimer = setTimeout(() => {
+      // 仅在移动设备宽度下启用此功能
+      if (window.innerWidth <= 768) {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // 只有滚动变化超过一定阈值才触发状态更改
+        if (Math.abs(scrollTop - lastScrollTop) < 5) {
+          scrollTimer = null;
+          return;
+        }
+        
+        // 向下滚动时隐藏元素，向上滚动时显示元素
+        if (scrollTop > lastScrollTop && scrollTop > 50) {
+          // 向下滚动超过50px
+          navbar.classList.add('compact-nav');
+          // 稍微延迟添加collapsed类，使过渡更平滑
+          setTimeout(() => {
+            collapsibleElements.forEach(el => {
+              el.classList.add('collapsed');
+            });
+          }, 50);
+        } else {
+          // 向上滚动或在顶部附近
+          collapsibleElements.forEach(el => {
+            el.classList.remove('collapsed');
+          });
+          // 稍微延迟移除compact-nav类，避免过早改变布局
+          setTimeout(() => {
+            navbar.classList.remove('compact-nav');
+          }, 100);
+        }
+        
+        lastScrollTop = scrollTop;
       }
-      
-      lastScrollTop = scrollTop;
-    }
+      scrollTimer = null;
+    }, 50); // 50ms的节流时间
   }
   
   // 添加滚动事件监听
@@ -178,6 +197,7 @@ function isActiveCategory(category: string) {
       height: auto;
       padding: 1rem;
       transition: padding 0.3s ease;
+      position: relative; /* 添加相对定位 */
     }
     
     .nav-links, .language-switch {
@@ -198,7 +218,7 @@ function isActiveCategory(category: string) {
       /* 隐藏滚动条但保留滚动功能 */
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* IE and Edge */
-      transition: margin-top 0.3s ease;
+      transition: margin-top 0.3s ease, opacity 0.3s ease;
     }
     
     /* WebKit浏览器(Chrome/Safari)隐藏滚动条 */
@@ -206,23 +226,27 @@ function isActiveCategory(category: string) {
       display: none;
     }
     
-    /* 折叠状态样式 */
+    /* 折叠状态样式 - 使用transform和opacity代替height变化 */
     .collapsible-element {
-      transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: top center;
+      opacity: 1;
       overflow: hidden;
-      max-height: 50px;
     }
     
     .collapsible-element.collapsed {
-      max-height: 0;
+      transform: scaleY(0);
       opacity: 0;
-      margin: 0;
-      padding: 0;
+      height: 0;
+      margin: 0 !important;
+      padding: 0 !important;
+      position: absolute; /* 使折叠元素脱离文档流 */
     }
     
+    /* 优化导航栏紧凑模式过渡 */
     .compact-nav .navbar-container {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
     }
     
     .compact-nav .nav-links {

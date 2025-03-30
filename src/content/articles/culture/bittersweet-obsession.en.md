@@ -7,12 +7,13 @@ lang: "en"
 image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275939/17/13159/94942/67e99b8bFe9244b2d/b4a91fd6db036b03.webp"
 ---
 
-OMG you guys! I just finished binge-watching *Bittersweet Obsession* starring Ma Qiuyuan and He Congrui, and NOW I’M OBSESSED.
-
-This drama is like crack – messy yet addictive, with all the tropes you love but fresh enough to keep you hooked!
-
-While the script isn’t perfect (more on that later), the chemistry between the leads?
-Chef’s kiss 👌
+> OMG you guys! I just finished binge-watching *Bittersweet Obsession* starring Ma Qiuyuan and He Congrui, and NOW I’M OBSESSED.
+> 
+> This drama is like crack – messy yet addictive, with all the tropes you love but fresh enough to keep you hooked!
+> 
+> While the script isn’t perfect (more on that later), the chemistry between the leads?
+> 
+> Chef’s kiss 👌
 
 ## **The Story**
 
