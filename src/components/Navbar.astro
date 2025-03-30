@@ -39,7 +39,7 @@ function isActiveCategory(category: string) {
 
 <nav class="Navbar">
   <div class="navbar-container">
-    <div class="logo">
+    <div class="logo collapsible-element">
       <a href={isZh ? "/zh/" : "/"}>OmniNav</a>
     </div>
     
@@ -54,7 +54,7 @@ function isActiveCategory(category: string) {
       ))}
     </div>
     
-    <div class="language-switch">
+    <div class="language-switch collapsible-element">
       <a href={getLanguageSwitchUrl()} class="lang-btn">
         {isZh ? "English" : "中文"}
       </a>
@@ -63,7 +63,51 @@ function isActiveCategory(category: string) {
 </nav>
 
 <script>
-  // 客户端脚本，如有交互需求可添加
+  // 滚动控制导航栏行为
+  let lastScrollTop = 0;
+  const navbar = document.querySelector('.Navbar');
+  const collapsibleElements = document.querySelectorAll('.collapsible-element');
+  
+  function handleScroll() {
+    // 仅在移动设备宽度下启用此功能
+    if (window.innerWidth <= 768) {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // 向下滚动时显示，向上滚动时隐藏
+      if (scrollTop > lastScrollTop && scrollTop > 50) {
+        // 向下滚动超过50px
+        collapsibleElements.forEach(el => {
+          el.classList.add('collapsed');
+        });
+        navbar.classList.add('compact-nav');
+      } else {
+        // 向上滚动或在顶部附近
+        collapsibleElements.forEach(el => {
+          el.classList.remove('collapsed');
+        });
+        navbar.classList.remove('compact-nav');
+      }
+      
+      lastScrollTop = scrollTop;
+    }
+  }
+  
+  // 添加滚动事件监听
+  window.addEventListener('scroll', handleScroll);
+  
+  // 在窗口大小改变时重新检查
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      // 在桌面模式下恢复正常显示
+      collapsibleElements.forEach(el => {
+        el.classList.remove('collapsed');
+      });
+      navbar.classList.remove('compact-nav');
+    } else {
+      // 在移动模式下立即检查当前滚动位置
+      handleScroll();
+    }
+  });
 </script>
 
 <style>
@@ -75,6 +119,7 @@ function isActiveCategory(category: string) {
     z-index: 1000;
     width: 100%;
     font-size: 1.2rem;
+    transition: height 0.3s ease;
   }
   
   .navbar-container {
@@ -84,6 +129,7 @@ function isActiveCategory(category: string) {
     justify-content: space-between;
     align-items: center;
     height: 70px;
+    transition: height 0.3s ease;
   }
   
   .logo a {
@@ -97,6 +143,7 @@ function isActiveCategory(category: string) {
     display: flex;
     height: 100%;
     align-items: center;
+
   }
   
   .nav-links a, .lang-btn {
@@ -111,8 +158,8 @@ function isActiveCategory(category: string) {
   }
   
   .nav-links a:hover, .lang-btn:hover {
-      background-color: #EEE;
-    }
+    background-color: #EEE;
+  }
   
   .nav-links a.active {
     font-weight: 900;
@@ -130,7 +177,7 @@ function isActiveCategory(category: string) {
       flex-wrap: wrap;
       height: auto;
       padding: 1rem;
-      max-width: 85%;
+      transition: padding 0.3s ease;
     }
     
     .nav-links, .language-switch {
@@ -147,16 +194,39 @@ function isActiveCategory(category: string) {
       margin-top: 1rem;
       overflow-x: auto;
       white-space: nowrap;
-      padding-bottom: 0.5rem;
       
       /* 隐藏滚动条但保留滚动功能 */
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* IE and Edge */
+      transition: margin-top 0.3s ease;
     }
     
     /* WebKit浏览器(Chrome/Safari)隐藏滚动条 */
     .nav-links::-webkit-scrollbar {
       display: none;
+    }
+    
+    /* 折叠状态样式 */
+    .collapsible-element {
+      transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+      overflow: hidden;
+      max-height: 50px;
+    }
+    
+    .collapsible-element.collapsed {
+      max-height: 0;
+      opacity: 0;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .compact-nav .navbar-container {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .compact-nav .nav-links {
+      margin-top: 0;
     }
   }
 </style>
