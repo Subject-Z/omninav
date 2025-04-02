@@ -10,6 +10,14 @@ image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275939/17/13159/94942/67
 > 刚刷完马秋元和何聪睿主演的《咬清梨》，整个人还陷在顾珩和沈清梨的BE美学里出不来！
 > 这部剧以**甜虐交织的狗血剧情+高能CP化学反应**，成功打造了一场让人欲罢不能的「真香BE盛宴」。
 
+## 观看链接
+
+- **YouTube**: [https://www.youtube.com/watch?v=EJnLdni_yEU](https://www.youtube.com/watch?v=EJnLdni_yEU)
+- **YouTube**: [https://www.youtube.com/watch?v=66QYHdcee9Q](https://www.youtube.com/watch?v=66QYHdcee9Q)
+- **YouTube**: [https://www.youtube.com/watch?v=k8Mh3idvZZQ](https://www.youtube.com/watch?v=k8Mh3idvZZQ)
+- **YouTube**: [https://www.youtube.com/watch?v=2zkp5FQV3Hw](https://www.youtube.com/watch?v=2zkp5FQV3Hw)
+- **DailyMotion**: [https://www.dailymotion.com/video/x9h0sfi](https://www.dailymotion.com/video/x9h0sfi)
+
 ---
 
 ## 剧情解析：套路与新意并存的虐恋风暴

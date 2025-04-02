@@ -62,70 +62,39 @@ function isActiveCategory(category: string) {
   </div>
 </nav>
 
-<script>
-  // 滚动控制导航栏行为
-  let lastScrollTop = 0;
-  const navbar = document.querySelector('.Navbar');
-  const collapsibleElements = document.querySelectorAll('.collapsible-element');
-  let scrollTimer = null; // 添加节流变量
-  
-  function handleScroll() {
-    // 避免频繁触发，使用节流机制
-    if (scrollTimer !== null) return;
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.Navbar');
+    const collapsibleElements = document.querySelectorAll('.collapsible-element');
+    let ticking = false;
     
-    scrollTimer = setTimeout(() => {
-      // 仅在移动设备宽度下启用此功能
+    function updateNavbar(scrollTop) {
       if (window.innerWidth <= 768) {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // 只有滚动变化超过一定阈值才触发状态更改
-        if (Math.abs(scrollTop - lastScrollTop) < 5) {
-          scrollTimer = null;
-          return;
-        }
-        
-        // 向下滚动时隐藏元素，向上滚动时显示元素
         if (scrollTop > lastScrollTop && scrollTop > 50) {
-          // 向下滚动超过50px
           navbar.classList.add('compact-nav');
-          // 稍微延迟添加collapsed类，使过渡更平滑
-          setTimeout(() => {
-            collapsibleElements.forEach(el => {
-              el.classList.add('collapsed');
-            });
-          }, 50);
-        } else {
-          // 向上滚动或在顶部附近
           collapsibleElements.forEach(el => {
-            el.classList.remove('collapsed');
+            el.style.maxHeight = '0'; // 使用 max-height 实现折叠效果
           });
-          // 稍微延迟移除compact-nav类，避免过早改变布局
-          setTimeout(() => {
-            navbar.classList.remove('compact-nav');
-          }, 100);
+        } else {
+          collapsibleElements.forEach(el => {
+            el.style.maxHeight = '70px'; // 设置初始高度以显示内容
+          });
+          navbar.classList.remove('compact-nav');
         }
-        
         lastScrollTop = scrollTop;
       }
-      scrollTimer = null;
-    }, 50); // 50ms的节流时间
-  }
-  
-  // 添加滚动事件监听
-  window.addEventListener('scroll', handleScroll);
-  
-  // 在窗口大小改变时重新检查
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      // 在桌面模式下恢复正常显示
-      collapsibleElements.forEach(el => {
-        el.classList.remove('collapsed');
-      });
-      navbar.classList.remove('compact-nav');
-    } else {
-      // 在移动模式下立即检查当前滚动位置
-      handleScroll();
     }
+    
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavbar(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
   });
 </script>
 
@@ -138,7 +107,6 @@ function isActiveCategory(category: string) {
     z-index: 1000;
     width: 100%;
     font-size: 1.2rem;
-    transition: height 0.3s ease;
   }
   
   .navbar-container {
@@ -148,7 +116,12 @@ function isActiveCategory(category: string) {
     justify-content: space-between;
     align-items: center;
     height: 70px;
-    transition: height 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .logo {
+    display: flex; /* 新增：启用弹性布局 */
+    align-items: center; /* 新增：垂直居中对齐 */
   }
   
   .logo a {
@@ -162,7 +135,6 @@ function isActiveCategory(category: string) {
     display: flex;
     height: 100%;
     align-items: center;
-
   }
   
   .nav-links a, .lang-btn {
@@ -196,8 +168,8 @@ function isActiveCategory(category: string) {
       flex-wrap: wrap;
       height: auto;
       padding: 1rem;
-      transition: padding 0.3s ease;
-      position: relative; /* 添加相对定位 */
+      position: relative;
+      transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .nav-links, .language-switch {
@@ -214,36 +186,20 @@ function isActiveCategory(category: string) {
       margin-top: 1rem;
       overflow-x: auto;
       white-space: nowrap;
-      
-      /* 隐藏滚动条但保留滚动功能 */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-      transition: margin-top 0.3s ease, opacity 0.3s ease;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* WebKit浏览器(Chrome/Safari)隐藏滚动条 */
     .nav-links::-webkit-scrollbar {
       display: none;
     }
     
-    /* 折叠状态样式 - 使用transform和opacity代替height变化 */
     .collapsible-element {
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      transform-origin: top center;
-      opacity: 1;
-      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
     }
-    
-    .collapsible-element.collapsed {
-      transform: scaleY(0);
-      opacity: 0;
-      height: 0;
-      margin: 0 !important;
-      padding: 0 !important;
-      position: absolute; /* 使折叠元素脱离文档流 */
-    }
-    
-    /* 优化导航栏紧凑模式过渡 */
+
     .compact-nav .navbar-container {
       padding-top: 0.3rem;
       padding-bottom: 0.3rem;
@@ -251,6 +207,16 @@ function isActiveCategory(category: string) {
     
     .compact-nav .nav-links {
       margin-top: 0;
+    }
+    
+    .logo, .language-switch {
+      max-height: 70px; /* 初始高度 */
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .compact-nav .logo, .compact-nav .language-switch {
+      max-height: 0; /* 折叠时高度为 0 */
     }
   }
 </style>
