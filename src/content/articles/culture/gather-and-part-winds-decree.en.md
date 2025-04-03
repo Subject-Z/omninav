@@ -1,15 +1,21 @@
 ---
-title: "Gather and Part, Wind’s Decree (Alias: Windblown fate): Battlefield Rose, Reborn in Gunsmoke from a Shattered Marriage"
-description: "An in-depth plot analysis of the short drama 'Gather and Part, Wind's Decree': War correspondent Hao Jia, betrayed in her marriage, resolutely returns to the front lines. Witness her awakening amidst family strife and the fires of war as she uncovers the truth and reclaims her life. A must-watch drama celebrating female strength!"
+title: "Gather and Part, Wind’s Decree (Alias: Windblown Fate): Battlefield Rose, Reborn in Gunsmoke from a Shattered Marriage"
+description: "An in-depth plot analysis of the Chinese drama 'Gather and Part, Wind's Decree': War correspondent Hao Jia, betrayed in her marriage, resolutely returns to the front lines. Witness her awakening amidst family strife and the fires of war as she uncovers the truth and reclaims her life. A must-watch drama celebrating female strength!"
 pubDate: 2025-04-03
 category: "culture"
 lang: "en" 
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275161/12/15357/54431/67eda090Feba19123/60d67ee0383c2d3f.jpg"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/gather-and-part-winds-decree.webp"
 ---
 
-### Watching Link
+## Watching Link
 
-**[bilibili](https://www.bilibili.com/video/BV1fFZtYfEAx/)**
+#### [DailyMotion 1 ](https://www.dailymotion.com/video/x9h8kfi)
+
+#### [DailyMotion 2](https://www.dailymotion.com/video/x9h8oqy)
+
+#### [DailyMotion 3](https://www.dailymotion.com/video/x9h8opo)
+
+#### [bilibili](https://www.bilibili.com/video/BV1fFZtYfEAx/)
 
 ---
 

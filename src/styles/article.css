@@ -1,7 +1,7 @@
 /* 文章容器 */
 .article-container {
   max-width: 800px;
-  margin: 0 auto 10rem;
+  margin: 0 auto 5rem;
   padding: 2rem;
     background-color: #F8F8F8;
 }

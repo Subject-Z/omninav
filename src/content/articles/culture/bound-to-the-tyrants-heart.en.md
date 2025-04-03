@@ -4,7 +4,7 @@ description: "Modern PR expert Song Yaozhi dies suddenly and transmigrates into 
 pubDate: 2025-03-29
 category: "culture"
 lang: "en"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/272695/22/12329/239972/67e79b85F41993a71/45bb384faa6d6f1b.webp"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/bound-to-the-tyrants-heart.webp"
 ---
 
 ## Watching Links

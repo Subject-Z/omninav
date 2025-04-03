@@ -4,7 +4,7 @@ description: "马秋元与何聪睿主演版《咬清梨》深度剧评，解析
 pubDate: 2025-03-31
 category: "culture"
 lang: "zh"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275939/17/13159/94942/67e99b8bFe9244b2d/b4a91fd6db036b03.webp"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/bittersweet-obsession.webp"
 ---
 
 > 刚刷完马秋元和何聪睿主演的《咬清梨》，整个人还陷在顾珩和沈清梨的BE美学里出不来！

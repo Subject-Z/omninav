@@ -4,7 +4,7 @@ description: "Exploring China's recent policy shifts: compensating grain regions
 pubDate: 2025-03-29
 category: "world"
 lang: "en"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/272380/20/12347/10436/67e7ab11Fc23fbdf4/630fcad123ac0c36.webp"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/a-new-era-is-coming-from-grain-subsidies-to-enforced-weekends.webp"
 ---
 
 Recently, a series of policy shifts have made it feel like China is entering a whole new phase—**grain-producing regions are finally going to make money, 996 is being cracked down on, childcare subsidies are actually happening, and even holidays are increasing!** These seemingly unrelated adjustments all point in the same direction: **China is shifting from an “export-at-all-costs“ model to a new approach focused on “making life better for its own people.“**

@@ -9,3 +9,15 @@ main {
   max-width: 1000px;
   margin: 0 auto;
 }
+
+.footer {
+    padding: 20px 0;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+}
+.footer a {
+    color: #007bff;
+    text-decoration: none;
+}

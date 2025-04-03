@@ -4,12 +4,19 @@ description: "深入解析短剧《风中聚散不由你我》剧情：战地记
 pubDate: 2025-04-03
 category: "culture"
 lang: "zh"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275161/12/15357/54431/67eda090Feba19123/60d67ee0383c2d3f.jpg"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/gather-and-part-winds-decree.webp"
 ---
 
-### 观看链接
+## 观看链接
 
-**[bilibili](https://www.bilibili.com/video/BV1fFZtYfEAx/)**
+#### [DailyMotion 1（Full Movie）](https://www.dailymotion.com/video/x9h8kfi)
+
+#### [DailyMotion 2（Full Movie）](https://www.dailymotion.com/video/x9h8oqy)
+
+#### [DailyMotion 3（Full Movie）](https://www.dailymotion.com/video/x9h8opo)
+
+#### [bilibili（Full Movie）](https://www.bilibili.com/video/BV1fFZtYfEAx/)
+
 
 ---
 

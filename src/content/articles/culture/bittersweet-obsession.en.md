@@ -1,10 +1,10 @@
 ---
-title: "Bittersweet Obsession: A Bittersweet Love Story You Can’t Miss!"
+title: "Bittersweet Obsession (Alias: Pear Perfect): A Bittersweet Love Story You Can’t Miss!"
 description: "Review of the Chinese drama 'Bittersweet Obsession' starring Ma Qiuyuan and He Congrui, highlighting its addictive plot, lead chemistry, and emotional rollercoaster despite script flaws."
 pubDate: 2025-03-31
 category: "culture"
 lang: "en"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/275939/17/13159/94942/67e99b8bFe9244b2d/b4a91fd6db036b03.webp"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/bittersweet-obsession.webp"
 ---
 
 > OMG you guys! I just finished binge-watching *Bittersweet Obsession* starring Ma Qiuyuan and He Congrui, and NOW I’M OBSESSED.

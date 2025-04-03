@@ -4,7 +4,7 @@ description: "探讨中国近期政策转向：粮食主产区补偿、整治996
 pubDate: 2025-03-29
 category: "world"
 lang: "zh"
-image: "https://img20.360buyimg.com/openfeedback/jfs/t1/272380/20/12347/10436/67e7ab11Fc23fbdf4/630fcad123ac0c36.webp"
+image: "https://pub-c751e4224003498982487755418625dd.r2.dev/a-new-era-is-coming-from-grain-subsidies-to-enforced-weekends.webp"
 ---
 
 最近，一系列政策变化让人感觉中国正在进入一个全新的阶段——**粮食主产区终于要赚钱了，996要被整治了，育儿补贴真的来了，甚至连放假都变多了！**这些看似不相关的调整，其实都在指向同一个方向：**中国正在从“拼命干出口”转向“让自家老百姓过好日子”的新模式。**
