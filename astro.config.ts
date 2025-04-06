@@ -1,8 +1,7 @@
-// @ts-check
+// astro.config.ts
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://omninav.uk',
   i18n: {
@@ -10,18 +9,18 @@ export default defineConfig({
     locales: ['en', 'zh'],
     routing: {
       prefixDefaultLocale: false,
-    }
+    },
   },
   integrations: [
     sitemap({
-      // i18n 配置
       i18n: {
         defaultLocale: 'en',
         locales: {
           en: 'en-US',
-          zh: 'zh-CN'
-        }
-      }
-    })
-  ]
+          zh: 'zh-CN',
+        },
+      },
+      lastmod: new Date(),
+    }),
+  ],
 });
