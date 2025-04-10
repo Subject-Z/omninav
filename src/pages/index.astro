@@ -2,7 +2,8 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
-import ArticleCatalog from '../components/ArticleCatalog.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Pagination from '../components/Pagination.astro';
 
 // 获取所有英文文章
 const allArticles = await getCollection('articles', ({ data }) => {
@@ -13,20 +14,40 @@ const allArticles = await getCollection('articles', ({ data }) => {
 allArticles.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
 // 分页参数
-const articlesPerPage = 10;
----
+const articlesPerPage = 30;
 
+// 获取当前页码（从查询参数中读取）
+const url = new URL(Astro.request.url);
+const currentPage = parseInt(url.searchParams.get('page') || '1', 10);
+
+// 计算分页范围
+const startIndex = (currentPage - 1) * articlesPerPage;
+const endIndex = startIndex + articlesPerPage;
+const paginatedArticles = allArticles.slice(startIndex, endIndex);
+
+// 总页数
+const totalPages = Math.ceil(allArticles.length / articlesPerPage);
+---
 <BaseLayout
-  title="OmniNav - Discover Quality Articles, Academic Resources & In-Depth Content"
-  description="OmniNav gathers premium articles, authoritative academic resources, cutting-edge industry reports, and in-depth analysis from around the globe. Efficiently access the information you need, expand your knowledge, and enhance your learning and research. Experience OmniNav now and start your intelligent knowledge exploration journey!"
+  title="OmniNav - Discover Curated In-Depth Articles"
+  description="OmniNav is a premium content curation platform that gathers the highest-quality in-depth articles and industry analyses from across the web. Our smart algorithm filters out information noise, saving you 70% of search time. Experience efficient knowledge discovery today!"
   lang="en"
 >
     <Navbar />
     <main>
         <section id="articles" class="articles">
             <div class="container">
-                <ArticleCatalog articles={allArticles} page={1} articlesPerPage={articlesPerPage} lang="en" />
+                {paginatedArticles.map(article => (
+                    <ArticleCard article={article} />
+                ))}
             </div>
         </section>
+        {/* 添加分页组件 */}
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          baseUrl="/" 
+          lang="en" 
+        />
     </main>
 </BaseLayout>

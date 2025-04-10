@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { article } = Astro.props;
-const { title, description, pubDate, category, image, lang } = article.data;
+const { title, description, pubDate, image, lang } = article.data;
 
 // 格式化日期
 function formatDate(date: Date): string {
@@ -24,8 +24,8 @@ function getArticleLink(): string {
   const filename = article.id.split('/').pop() || '';
   const slug = filename.replace(/\.(en|zh)\.md$/, '');
   
-  // 构建基础路径(语言+分类)
-  const basePath = lang === 'zh' ? `/zh/${category}` : `/${category}`;
+  // 构建完整路径(包含articles目录)
+  const basePath = lang === 'zh' ? `/zh/articles` : `/articles`;
   return `${basePath}/${slug}`;
 }
 
@@ -53,27 +53,32 @@ const displayImage = image || '/favicon.webp';
 
 <style>
   .article-card {
-    background-color: #F8F8F8;
+    max-width: 90%;
+    background-color: #f5f2ec;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 300px; /* 设置固定高度 */
-    display: flex; /* 确保内部元素能撑满高度 */
+    height: 250px; /* 固定卡片高度 */
+    margin: 0 auto 2rem; /* 左右居中并保留底部间距 */
+    border-radius: 8px; /* 可选：添加圆角使卡片更美观 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 可选：添加轻微阴影 */
   }
 
   .article-link {
-    display: flex; /* 改为flex布局，实现左右排布 */
+    display: flex;
+    flex-direction: row; /* 水平布局 - 左图右文 */
     color: inherit;
     text-decoration: none;
     height: 100%;
-    width: 100%; /* 确保链接撑满卡片 */
+    width: 100%;
   }
 
+  /* 图片区域调整 */
   .article-image {
-    width: 300px; /* 固定宽度 */
-    min-width: 200px; /* 最小宽度 */
+    width: 35%; /* 固定图片区域宽度比例 */
+    min-width: 150px; /* 设置最小宽度 */
+    height: 100%; /* 设置为100%以填充整个卡片高度 */
     overflow: hidden;
-    position: relative; /* 添加定位，以便放置遮罩 */
-    flex-shrink: 0; /* 防止图片区域被压缩 */
+    position: relative;
   }
 
   .article-image img {
@@ -106,14 +111,14 @@ const displayImage = image || '/favicon.webp';
     opacity: 1; /* 悬停时显示遮罩 */
   }
 
+  /* 文字内容区域调整 */
   .article-content {
     flex: 1; /* 占据剩余空间 */
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 改为space-between布局 */
-    overflow: hidden; /* 防止内容溢出 */
-    min-height: 0; /* 解决Flex布局下的溢出问题 */
+    justify-content: space-between;
+    overflow: hidden;
   }
 
   .article-title {
@@ -122,7 +127,7 @@ const displayImage = image || '/favicon.webp';
     margin: 0 0 0.5rem;
     color: #333;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 限制标题最多2行 */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -150,19 +155,60 @@ const displayImage = image || '/favicon.webp';
 
   /* 移动端响应式布局 */
   @media (max-width: 768px) {
-    .article-link {
-      flex-direction: column; /* 在小屏幕上恢复垂直布局 */
-    }
-
     .article-card {
-      height: auto; /* 在移动端允许高度自适应 */
-      min-height: 400px; /* 设置最小高度 */
+      max-width: 95%; /* 略微增加移动端下的卡片宽度 */
     }
-
+    
+    .article-title {
+      font-size: 1.3rem; /* 调整标题大小 */
+      margin-bottom: 0.5rem;
+    }
+    
+    .article-description {
+      -webkit-line-clamp: 2; /* 限制描述文本行数 */
+    }
+  }
+  
+  /* 425px-768px的平板布局 - 左右结构 */
+  @media (min-width: 426px) and (max-width: 768px) {
+    .article-card {
+      height: 200px; /* 稍微降低卡片高度 */
+    }
+    
+    .article-link {
+      flex-direction: row; /* 保持水平布局 */
+    }
+    
     .article-image {
-      width: 100%; /* 图片宽度占满 */
-      height: 200px; /* 固定高度 */
-      flex-shrink: 0; /* 防止压缩 */
+      width: 40%; /* 调整图片区域宽度 */
+      min-width: 120px;
+      height: 100%;
+    }
+    
+    .article-content {
+      padding: 1rem;
+    }
+  }
+  
+  /* 425px及以下的小屏幕布局 - 上下结构 */
+  @media (max-width: 425px) {
+    .article-card {
+      height: auto; /* 取消固定高度，根据内容自适应 */
+    }
+    
+    .article-link {
+      flex-direction: column; /* 垂直布局 - 上图下文 */
+    }
+    
+    .article-image {
+      width: 100%; /* 图片占满宽度 */
+      height: 180px; /* 设置图片高度 */
+      min-width: auto; /* 移除最小宽度限制 */
+    }
+    
+    .article-content {
+      padding: 1rem; /* 减少内边距 */
+      min-height: 150px; /* 确保内容区域有足够的高度 */
     }
   }
 </style>

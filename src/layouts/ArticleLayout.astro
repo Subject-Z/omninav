@@ -1,5 +1,5 @@
 ---
-import '../styles/article.css';
+import '../styles/global.css';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -7,8 +7,13 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, pubDate, image, lang } = entry.data;
-const { Content } = await entry.render();
+
+// 添加防御性检查
+if (!entry) {
+  throw new Error('ArticleLayout 需要提供 "entry" 属性');
+}
+
+const { title, pubDate, image, lang = 'en' } = entry.data || {};
 
 // 格式化日期
 function formatDate(date: Date | string) {
@@ -19,7 +24,8 @@ function formatDate(date: Date | string) {
   }).format(new Date(date));
 }
 
-const formattedDate = formatDate(pubDate);
+const formattedDate = pubDate ? formatDate(pubDate) : '';
+const { Content } = await entry.render();
 ---
 
 <main class="article-container">
@@ -39,7 +45,7 @@ const formattedDate = formatDate(pubDate);
     
     <div class="article-content">
       <div class="content">
-        <Content />
+        {Content && <Content />}
       </div>
     </div>
   </article>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+
+// 导出 getStaticPaths 函数以生成所有可能的路由
+export async function getStaticPaths() {
+  // 获取所有中文文章
+  const articles = await getCollection('articles', (article) => article.data.lang === 'zh');
+  
+  // 为每篇文章生成一个路径
+  return articles.map(article => {
+    const parts = article.id.split('/');
+    const lastPart = parts.pop() || '';
+    const slug = lastPart.replace(/\.(en|zh)\.md$/, '');
+    return {
+      params: { slug },
+      props: { article },
+    };
+  });
+}
+
+// 从 props 中获取预先查找的文章
+const { article } = Astro.props;
+
+// 获取文章的标题和描述用于meta信息
+const { title, description, lang = 'zh' } = article.data;
+
+// 渲染文章内容
+const { Content } = await article.render();
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <Navbar />
+  <ArticleLayout entry={article}>
+    <Content />
+  </ArticleLayout>
+</BaseLayout>
