@@ -1,53 +1,85 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import Pagination from '../components/Pagination.astro';
+import NavigationBar from '../components/NavigationBar.astro';
+import ContentList from '../components/ContentList.astro';
+import MasonryLayout from '../components/MasonryLayout.astro';
+import { validCategories } from '../content/config';
 
-// 获取所有英文文章
-const allArticles = await getCollection('articles', ({ data }) => {
-  return data.lang === 'en' && !data.draft;
-});
+// 存储所有分类的内容
+const allContent = [];
 
-// 按发布日期排序
-allArticles.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+// 获取每个分类的内容
+for (const category of validCategories) {
+  try {
+    const typedCategory = category as keyof import('astro:content').DataEntryMap;
+    const categoryContent = await getCollection(typedCategory).catch(() => []);
+    
+    const filteredContent = categoryContent
+      .filter(item => item.data && item.data.date)
+      .map(item => {
+        return {
+          ...item,
+          category
+        };
+      });
+    
+    allContent.push(...filteredContent);
+  } catch (error) {
+    console.error(`Error loading content for ${category}:`, error);
+  }
+}
 
-// 分页参数
-const articlesPerPage = 30;
+// 按日期从新到旧排序
+const sortedContent = allContent.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// 获取当前页码（从查询参数中读取）
-const url = new URL(Astro.request.url);
-const currentPage = parseInt(url.searchParams.get('page') || '1', 10);
-
-// 计算分页范围
-const startIndex = (currentPage - 1) * articlesPerPage;
-const endIndex = startIndex + articlesPerPage;
-const paginatedArticles = allArticles.slice(startIndex, endIndex);
-
-// 总页数
-const totalPages = Math.ceil(allArticles.length / articlesPerPage);
+// 确保tags总是数组类型
+function ensureTagsArray(tags: string | string[] | undefined): string[] {
+  if (!tags) return [];
+  return Array.isArray(tags) ? tags : [tags];
+}
 ---
-<BaseLayout
-  title="OmniNav - Discover Curated In-Depth Articles"
-  description="OmniNav is a premium content curation platform that gathers the highest-quality in-depth articles and industry analyses from across the web. Our smart algorithm filters out information noise, saving you 70% of search time. Experience efficient knowledge discovery today!"
-  lang="en"
->
-    <Navbar />
-    <main>
-        <section id="articles" class="articles">
-            <div class="container">
-                {paginatedArticles.map(article => (
-                    <ArticleCard article={article} />
-                ))}
-            </div>
-        </section>
-        {/* 添加分页组件 */}
-        <Pagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          baseUrl="/" 
-          lang="en" 
-        />
-    </main>
+
+<BaseLayout>
+  <NavigationBar />
+  <main class="container">
+    {sortedContent.length === 0 ? (
+      <div class="empty-state">
+        暂无内容
+      </div>
+    ) : (
+      <MasonryLayout initialLoadCount={16}>
+        {sortedContent.map(item => (
+          <ContentList
+            title={item.data.title || "Untitled"}
+            description={item.data.description || ""}
+            image={item.data.image}
+            date={item.data.date}
+            tags={ensureTagsArray(item.data.tags)}
+            slug={item.slug}
+            category={item.category}
+          />
+        ))}
+      </MasonryLayout>
+    )}
+  </main>
 </BaseLayout>
+
+<style>
+  body {
+    background-color: #E6E1D6;
+  }
+
+  .container {
+    margin: 7rem auto;
+    max-width: 1200px;
+  }
+  
+  .empty-state {
+    margin: 3rem auto;
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #777;
+    font-size: 1.2rem;
+  }
+</style>

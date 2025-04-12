@@ -1,22 +1,19 @@
 ---
-import '../styles/global.css';
-
 interface Props {
   title?: string;
   description?: string;
-  lang?: 'en' | 'zh';
   canonicalUrl?: string;
+  imageUrl?: string;
 }
 
 const { 
-  title = 'OmniNav - Your Intelligent Compass for Navigating the Ocean of Knowledge', 
-  description = 'OmniNav is your intelligent compass for exploring the ocean of knowledge, delivering precise recommendations for quality articles, academic resources, and in-depth content to help you acquire valuable information efficiently.',
-  lang = 'en',
-  canonicalUrl = Astro.url.href,
+  title = 'OmniNav | Your Guide to Chinese Culture: Film, Food & Travel',
+  description = 'Discover China with OmniNav! Get reviews & recommendations for Chinese dramas, movies, anime, games & novels. Explore authentic food, travel guides & cultural insights.',
+  canonicalUrl = 'https://www.omninav.uk',
+  imageUrl = 'https://chat.deepseek.com/deepseek-chat.jpeg'
 } = Astro.props;
 
-// 设置HTML文档的语言属性
-const htmlLang = lang; // 修复语言设置，直接使用传入的语言
+const htmlLang = 'en';
 ---
 
 <!DOCTYPE html>
@@ -27,14 +24,13 @@ const htmlLang = lang; // 修复语言设置，直接使用传入的语言
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="OmniNav, knowledge discovery, quality articles, AI recommendations, content curation, academic resources, information filtering, knowledge management" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://chat.deepseek.com/deepseek-chat.jpeg" />
+    <meta property="og:image" content={imageUrl} />
     <meta property="og:site_name" content="OmniNav" />
     
     <!-- Twitter -->
@@ -42,14 +38,12 @@ const htmlLang = lang; // 修复语言设置，直接使用传入的语言
     <meta property="twitter:url" content={canonicalUrl} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content="https://chat.deepseek.com/deepseek-chat.jpeg" />
+    <meta property="twitter:image" content={imageUrl} />
     
-    <!-- 规范链接 -->
-    <link rel="canonical" href={canonicalUrl} />
-
     <!-- Favicon -->
     <link rel="icon" href="/images/favicon.webp" type="image/webp">
     <link rel="apple-touch-icon" href="/images/favicon.webp">
+    <link rel="canonical" href={canonicalUrl} />
     
     <!-- 移动优化 -->
     <meta name="theme-color" content="#2A5CAA">
@@ -60,8 +54,8 @@ const htmlLang = lang; // 修复语言设置，直接使用传入的语言
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "OmniNav",
-      "description": "An intelligent knowledge discovery tool that helps users find premium articles and resources.",
-      "url": "https://www.omninav.uk",
+      "description": "{description}",
+      "url": "{canonicalUrl}",
       "applicationCategory": "Blog"
     }
     </script>
@@ -80,10 +74,5 @@ const htmlLang = lang; // 修复语言设置，直接使用传入的语言
   </head>
   <body>
     <slot />
-    <footer class="footer">
-      <div class="container">
-          <p>Contact: <a href="mailto:william@omninav.uk">william@omninav.uk</a></p>
-      </div>
-  </footer>
   </body>
 </html>
