@@ -5,187 +5,153 @@ import NavigationBar from "../components/NavigationBar.astro";
 
 <BaseLayout>
     <NavigationBar />
-
-    <main class="container">
+    <main class="page-container">
         <div class="contact-info-container">
-            <h1>About Us</h1>
+            <h1 class="page-title">ABOUT</h1>
 
             <div class="about-section">
                 <p>
-                    OmniNav is your ultimate guide to exploring Chinese culture!
-                    Dive into curated reviews and recommendations for Chinese
-                    dramas, movies, anime, games, and novels. Discover authentic
-                    cuisine, hidden travel gems, and rich cultural insights—all
-                    in one place. Whether you're a film buff, foodie, or travel
-                    enthusiast, let OmniNav navigate your journey through
-                    China's vibrant traditions and modern trends. Start your
-                    cultural adventure today!
+                    OmniNav is designed to guide you through the diverse wonders of China. With curated recommendations, we connect you to the stories, flavors, and experiences of China’s rich heritage and vibrant present. From captivating Chinese dramas, movies, anime, games, and novels to authentic cuisine, hidden travel gems, and the dynamic Chinese lifestyle, we celebrate it all!
                 </p>
             </div>
-
             <div class="contact-section">
-                <h2>Contact Information</h2>
                 <p>
                     For questions, suggestions, or collaboration opportunities,
                     please reach out to us through:
                 </p>
-                <div class="contact-methods">
-                    <div class="email-container">
-                        <a
-                            href="mailto:william@omninav.uk"
-                            class="contact-link"
-                        >
-                            <span class="contact-icon">✉️</span>
-                            <span id="email-text">william@omninav.uk</span>
-                        </a>
-                        <button class="copy-btn" id="copy-button">Copy</button>
-                    </div>
+                <div class="email-container">
+                    <span class="email-label">Email:&nbsp;</span>
+                    <span id="email-text" class="copyable-email">william@omninav.uk</span>
+                    <span id="copy-status" class="copy-status"></span>
                 </div>
-                <p class="contact-note">
-                    Click on the email to directly open the mail client, or
-                    click the copy button to copy the address.
-                </p>
             </div>
         </div>
     </main>
 </BaseLayout>
 
+<style>
+    .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .contact-info-container {
+        background-color: #F5F2EC;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        margin: 5rem auto;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        padding-bottom: 1rem;
+    }
+    
+    .about-section {
+        margin-bottom: 3rem;
+        line-height: 1.6;
+        font-size: 1.1rem;
+    }
+          
+    .contact-methods {
+        margin-top: 1.5rem;
+    }
+    
+    .email-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        position: relative;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        margin-top: 1rem;
+    }
+    
+    .email-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .email-container:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+    
+    .copyable-email, .email-label {
+        font-size: 1.1rem;
+        color: #black;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding: 0.5rem 0;
+    }
+    
+    .copy-status {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #8B2E2E;
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+        
+        .contact-info-container {
+            padding: 1.5rem;
+        }
+        
+        .email-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const copyButton = document.getElementById("copy-button");
+        const emailContainer = document.querySelector(".email-container");
         const emailText = document.getElementById("email-text");
+        const copyStatus = document.getElementById("copy-status");
 
-        if (copyButton && emailText) {
-            copyButton.addEventListener("click", () => {
-                const textToCopy = emailText.textContent || ""; // 添加空值检查，确保始终是字符串
+        if (emailContainer && emailText && copyStatus) {
+            emailContainer.addEventListener("click", () => {
+                const textToCopy = emailText.textContent || "";
                 navigator.clipboard
                     .writeText(textToCopy)
                     .then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = "Copied!";
+                        copyStatus.textContent = "Copied!";
+                        copyStatus.style.opacity = "1";
+                        
                         setTimeout(() => {
-                            copyButton.textContent = originalText;
+                            copyStatus.style.opacity = "0";
                         }, 2000);
                     })
                     .catch((err) => {
-                        console.error("Failed to copy: ", err);
+                        console.error("Failed: ", err);
                     });
             });
         }
     });
 </script>
-
-<style>
-    body {
-        background-color: #e6e1d6;
-    }
-
-    .container {
-        margin: 7rem auto;
-        max-width: 800px;
-        padding: 0 1rem;
-    }
-
-    .contact-info-container {
-        background-color: #f5f2ec;
-        border-radius: 8px;
-        padding: 2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        color: #2a5caa;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-
-    h2 {
-        color: #2a5caa;
-        font-size: 1.5rem;
-        margin: 2rem 0 1rem;
-    }
-
-    .about-section,
-    .contact-section {
-        margin-bottom: 2rem;
-    }
-
-    p {
-        color: #333;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-    }
-
-    .contact-methods {
-        margin: 1.5rem 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .email-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .contact-link {
-        display: flex;
-        align-items: center;
-        color: #2a5caa;
-        text-decoration: none;
-        font-size: 1.2rem;
-        transition: color 0.2s;
-        width: fit-content;
-    }
-
-    .contact-link:hover {
-        color: #1e4686;
-    }
-
-    .contact-icon {
-        margin-right: 0.75rem;
-        font-size: 1.4rem;
-    }
-
-    .contact-note {
-        font-size: 0.9rem;
-        color: #666;
-        font-style: italic;
-    }
-
-    .copy-btn {
-        background-color: #2a5caa;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 4px 10px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .copy-btn:hover {
-        background-color: #1e4686;
-    }
-
-    /* Responsive design */
-    @media (max-width: 480px) {
-        .container {
-            margin-top: 5rem;
-        }
-
-        .contact-info-container {
-            padding: 1.5rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-        }
-
-        h2 {
-            font-size: 1.3rem;
-        }
-    }
-</style>

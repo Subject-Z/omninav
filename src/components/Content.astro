@@ -2,11 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 
 type AnyCollectionEntry = CollectionEntry<
-    keyof import("astro:content").DataEntryMap
+  keyof import("astro:content").DataEntryMap
 >;
 
 interface Props {
-    entry: AnyCollectionEntry;
+  entry: AnyCollectionEntry;
 }
 
 const { entry } = Astro.props;
@@ -15,383 +15,197 @@ const tags = entry.data.tags || [];
 ---
 
 <article class="content-detail">
-    <div class="content-body">
-        <EntryContent />
-    </div>
+  <div class="content-body">
+    <EntryContent />
+  </div>
 </article>
 
 <script define:vars={{ tags }}>
-    // 动态替换标签
-    document.addEventListener("DOMContentLoaded", () => {
-        const imageTextBlocks = document.querySelectorAll(".image-text-block");
-
-        imageTextBlocks.forEach((block) => {
-            const tagsContainer = block.querySelector(".content-tags");
-            if (tagsContainer) {
-                // 清空容器
-                tagsContainer.innerHTML = "";
-
-                // 添加标签
-                tags.forEach((tag) => {
-                    const tagSpan = document.createElement("span");
-                    tagSpan.className = "tag";
-                    tagSpan.textContent = tag;
-                    tagsContainer.appendChild(tagSpan);
-                });
-            }
+  document.addEventListener("DOMContentLoaded", () => {
+    const imageTextBlocks = document.querySelectorAll(".image-text-block");
+    imageTextBlocks.forEach((block) => {
+      const tagsContainer = block.querySelector(".content-tags");
+      if (tagsContainer) {
+        tagsContainer.innerHTML = "";
+        tags.forEach((tag) => {
+          const tagSpan = document.createElement("span");
+          tagSpan.className = "tag";
+          tagSpan.textContent = tag;
+          tagsContainer.appendChild(tagSpan);
         });
-
-        // 图片轮播功能
-        const carousels = document.querySelectorAll(".image-carousel");
-        carousels.forEach((carousel) => {
-            const images = carousel.querySelectorAll(".carousel-image");
-            const prevButton = carousel.querySelector(".carousel-prev");
-            const nextButton = carousel.querySelector(".carousel-next");
-            const dotsContainer = carousel.querySelector(".carousel-dots");
-
-            let currentIndex = 0;
-
-            // 创建指示点
-            if (dotsContainer) {
-                images.forEach((_, index) => {
-                    const dot = document.createElement("span");
-                    dot.className = "carousel-dot";
-                    if (index === 0) dot.classList.add("active");
-                    dot.addEventListener("click", () => {
-                        showImage(index);
-                    });
-                    dotsContainer.appendChild(dot);
-                });
-            }
-
-            // 显示指定索引的图片
-            function showImage(index) {
-                images.forEach((img, i) => {
-                    img.classList.toggle("active", i === index);
-                });
-
-                const dots = dotsContainer.querySelectorAll(".carousel-dot");
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle("active", i === index);
-                });
-
-                currentIndex = index;
-            }
-
-            // 显示下一张图片
-            function showNextImage() {
-                let nextIndex = currentIndex + 1;
-                if (nextIndex >= images.length) {
-                    nextIndex = 0;
-                }
-                showImage(nextIndex);
-            }
-
-            // 显示上一张图片
-            function showPrevImage() {
-                let prevIndex = currentIndex - 1;
-                if (prevIndex < 0) {
-                    prevIndex = images.length - 1;
-                }
-                showImage(prevIndex);
-            }
-
-            // 添加事件监听
-            if (prevButton) {
-                prevButton.addEventListener("click", showPrevImage);
-            }
-
-            if (nextButton) {
-                nextButton.addEventListener("click", showNextImage);
-            }
-
-            // 触摸滑动支持
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            const container = carousel.querySelector(".carousel-container");
-            if (container) {
-                container.addEventListener("touchstart", (e) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                });
-
-                container.addEventListener("touchend", (e) => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                });
-            }
-
-            function handleSwipe() {
-                const threshold = 50;
-                if (touchEndX < touchStartX - threshold) {
-                    showNextImage();
-                }
-                if (touchEndX > touchStartX + threshold) {
-                    showPrevImage();
-                }
-            }
-        });
+      }
     });
+    
+    const contentBlocks = document.querySelectorAll(".content-block");
+    contentBlocks.forEach((block) => {
+      const tagsContainer = block.querySelector(".content-tags");
+      if (tagsContainer) {
+        tagsContainer.innerHTML = "";
+        tags.forEach((tag) => {
+          const tagSpan = document.createElement("span");
+          tagSpan.className = "tag";
+          tagSpan.textContent = tag;
+          tagsContainer.appendChild(tagSpan);
+        });
+      }
+    });
+
+    // 添加图片错误处理
+    const contentImages = document.querySelectorAll(".image-text-block img");
+    contentImages.forEach(img => {
+      img.onerror = function() {
+        this.classList.add("error");
+        this.src = "/images/image-placeholder.webp"; // 替换为占位图的路径
+      };
+    });
+
+    // 为中文标题添加横线
+    const chineseTitles = document.querySelectorAll(".chinese-title");
+    chineseTitles.forEach(title => {
+      const divider = document.createElement("hr");
+      divider.className = "title-divider";
+      title.insertAdjacentElement('afterend', divider);
+    });
+  });
 </script>
 
 <style is:global>
-    /* 全局样式 */
+  .content-detail {
+    margin: 5rem auto;
+    background-color: #f5f2ec;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .content-body p {
+    margin-bottom: 1.5rem;
+  }
+
+  .content-body h1 {
+    margin-top: 0;
+  }
+  
+  .english-title {
+    color: #8b2e2e;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .chinese-title {
+    color: #333;
+    font-size: 1.4rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .title-divider {
+    border: 0;
+    height: 1px;
+    background-color: #E6E1D6;
+    margin: 0.5rem 0 1.5rem;
+    width: 100%;
+  }
+  
+  .content-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 2rem;
+  }
+  
+  .content-tags .tag {
+    background: #E6E1D6;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #555;
+    display: inline-block;
+  }
+  
+  .image-text-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    clear: both;
+    margin-bottom: 3rem;
+  }
+
+  .image-text-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .image-container {
+    flex-basis: 50%;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f0f0f0; /* 占位背景色 */
+    height: auto; /* 自动高度 */
+  }
+  
+  .image-text-block img {
+    position: relative; /* 改为相对定位而非绝对定位 */
+    width: 100%;
+    height: auto; /* 自动高度，保持图片比例 */
+    object-fit: cover;
+    border-radius: 8px;
+    display: block; /* 避免底部间隙 */
+  }
+
+  /* 添加图片加载失败的备用样式 */
+  .image-text-block img.error {
+    object-fit: contain;
+    background-color: #f5f5f5;
+  }
+
+  .image-text-block .text-content {
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
     .content-detail {
-        margin: 0 auto;
-        background-color: #f5f2ec;
-        border-radius: 8px;
-        padding: 2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
     }
-
-    .content-body p {
-        margin-bottom: 1.5rem;
-    }
-
-    .content-body h1 {
-        margin-top: 0;
-    }
-    /* 图文块样式 */
-    .image-text-block {
-        display: flex;
-        align-items: flex-start;
-        gap: 25px;
-        clear: both;
-        margin-bottom: 3rem; /* 添加每个季度之间的间距 */
-        padding-bottom: 2rem; /* 添加内边距 */
-    }
-
-    /* 最后一个图文块不需要底部边框和边距 */
-    .image-text-block:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-
-    .image-text-block img {
-        width: 400px;
-        height: auto;
-        flex-shrink: 0;
-        object-fit: cover;
-    }
-
-    .image-text-block .text-content {
-        flex-grow: 1;
-    }
-
-    .image-text-block .title-block {
-        margin-bottom: 1rem;
-    }
-
-    .image-text-block .english-title {
-        display: block;
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #8b2e2e;
-        line-height: 1.3;
-        margin-bottom: 0.3rem;
-    }
-
-    .image-text-block .chinese-title {
-        display: block;
-        font-size: 1.2rem;
-        color: #6c757d;
-        line-height: 1.4;
-    }
-
-    .image-text-block .english-description {
-        margin-top: 1.5rem;
-    }
-
-    .image-text-block .chinese-description {
-        margin-top: 1.5rem;
-    }
-
-    .image-text-block .english-description p {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        color: #333;
-        font-size: 1.2rem;
-    }
-
-    .image-text-block .english-description p:last-child {
-        margin-bottom: 0;
-    }
-
-    .image-text-block .chinese-description p {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        color: #555;
-        font-size: 1rem;
-    }
-
-    .image-text-block .chinese-description p:last-child {
-        margin-bottom: 0;
-    }
-
-    /* 标签样式 */
-    .content-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-    }
-
-    .tag {
-        background: #e6e1d6;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        color: #555;
-    }
-
-    /* 图片轮播样式 */
-    .image-carousel {
-        position: relative;
-        width: 400px;
-        flex-shrink: 0;
-    }
-
-    .carousel-container {
-        position: relative;
-        width: 100%;
-        height: 550px; /* 设定适合的高度 */
-        overflow: hidden;
-        border-radius: 8px;
-    }
-
-    .carousel-image {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: opacity 0.5s ease;
-        opacity: 0;
-        border-radius: 8px;
-    }
-
-    .carousel-image.active {
-        opacity: 1;
-        z-index: 1;
-    }
-
-    .carousel-controls {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 8px;
-    }
-
-    .carousel-prev,
-    .carousel-next {
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        z-index: 2;
-    }
-
-    .carousel-prev:hover,
-    .carousel-next:hover {
-        background: rgba(0, 0, 0, 0.8);
-    }
-
-    .carousel-dots {
-        display: flex;
-        gap: 5px;
-    }
-
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #bbb;
-        cursor: pointer;
-    }
-
-    .carousel-dot.active {
-        background-color: #555;
-    }
-
+    
     .coupon-list {
-        list-style-type: none;
-        padding: 0;
-        margin: 20px 0;
-        width: 45%;
+      width: 100%;
     }
-
-    .coupon-item {
-        display: flex;
-        justify-content: space-between; /* 保留原有布局 */
-        align-items: center;
-        margin-bottom: 12px;
-        padding: 8px;
-        border: 1px solid #eee;
-        border-radius: 6px;
+    
+    .english-title {
+      font-size: 1.5rem;
     }
-
-    .coupon-description {
-        font-weight: bold;
-        color: #333;
-        flex: 1; /* 让描述文字占据可用空间 */
-        margin-right: 15px; /* 添加右侧间距 */
+    
+    .chinese-title {
+      font-size: 1.2rem;
     }
-
-    .coupon-link {
-        background-color: #ff6a00;
-        color: white;
-        padding: 8px 12px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        flex-shrink: 0; /* 防止按钮被压缩 */
+  }
+  
+  @media (max-width: 425px) {
+    .image-text-block {
+      flex-direction: column;
+      gap: 15px;
     }
-
-    .coupon-link:hover {
-        background-color: #e85d00;
+    
+    .image-container {
+      width: 100%;
     }
-
-    /* 响应式样式更新 */
-    @media (max-width: 768px) {
-        .content-detail {
-            padding: 1.5rem;
-        }
-
-        .image-text-block {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .image-text-block img {
-            width: 80%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .image-text-block .text-content {
-            width: 100%;
-        }
-
-        .image-carousel {
-            width: 100%;
-        }
-
-        .carousel-container {
-            height: 250px;
-        }
-
-        .coupon-list {
-            width: 100%;
-        }
+    
+    .text-content {
+      width: 100%;
     }
+    
+    .image-text-block img {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
 </style>

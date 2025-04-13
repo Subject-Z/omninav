@@ -1,0 +1,44 @@
+/* 全局基础样式 */
+body {
+  background-color: #E6E1D6;
+  max-width: 100vw;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 页面容器通用样式 */
+.masonry-container {
+    width: 100%;
+    margin: 5rem auto;
+    position: relative;
+  }
+
+.page-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 50px 0 0 0;
+}
+
+.contact-info-container {
+  background-color: #f5f2ec;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .masonry-container, .page-container {
+        width: 80vw;
+    }
+}
+
+@media (max-width: 768px) {
+  .contact-info-container {
+    padding: 1.5rem;
+  }
+
+  .page-container {
+    padding: 25px 0.5rem 0;
+  }
+}

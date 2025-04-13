@@ -20,30 +20,32 @@ export async function getStaticPaths() {
 
 // 获取当前分类
 const { category } = Astro.params;
-const safeCategory = category as CategoryKey;
+const safeCategory = category || '';
 
 // 如果分类无效，返回404
 if (!validCategories.includes(safeCategory)) {
   return Astro.redirect('/404');
 }
 
+// 安全地将字符串转换为 CategoryKey 类型
+const typedCategory = safeCategory as CategoryKey;
+
 // 为页面标题使用metaTitleNames
-const metaCategoryName = metaTitleNames[safeCategory];
+const metaCategoryName = metaTitleNames[typedCategory];
 const pageTitle = `${metaCategoryName} | OmniNav`;
 const pageDescription = `${metaCategoryName}`;
 
 // 获取当前分类的所有内容
 let categoryContent: Array<ContentItem> = [];
 try {
-  const typedCategory = safeCategory as CategoryKey;
   const allContent = await getCollection(typedCategory);
   
   // 过滤并按发布日期排序
   categoryContent = allContent
     .filter(item => item.data && item.data.date)
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-} catch (error) {
-  console.error(`Error loading content for ${safeCategory}:`, error);
+} catch {
+  // 静默失败，保持空数组
 }
 
 // 确保tags总是数组类型
@@ -56,12 +58,7 @@ function ensureTagsArray(tags: string | string[] | undefined): string[] {
 <BaseLayout title={pageTitle} description={pageDescription}>
   <NavigationBar />
   
-  <main class="container">
-    {categoryContent.length === 0 ? (
-      <div class="empty-state">
-        该分类暂无内容
-      </div>
-    ) : (
+  <main class="page-container">
       <MasonryLayout initialLoadCount={16}>
         {categoryContent.map((item) => (
           <ContentList
@@ -71,29 +68,9 @@ function ensureTagsArray(tags: string | string[] | undefined): string[] {
             date={item.data.date}
             tags={ensureTagsArray(item.data.tags)}
             slug={item.slug}
-            category={safeCategory}
+            category={typedCategory}
           />
         ))}
       </MasonryLayout>
-    )}
   </main>
 </BaseLayout>
-
-<style>
-  body {
-    background-color: #E6E1D6;
-  }
-
-  .container {
-    margin: 7rem auto;
-    max-width: 1200px;
-  }
-
-  .empty-state {
-    margin: 3rem auto;
-    padding: 3rem 1rem;
-    text-align: center;
-    color: #777;
-    font-size: 1.2rem;
-  }
-</style>

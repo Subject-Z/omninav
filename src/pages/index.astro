@@ -1,37 +1,36 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import NavigationBar from '../components/NavigationBar.astro';
-import ContentList from '../components/ContentList.astro';
-import MasonryLayout from '../components/MasonryLayout.astro';
-import { validCategories } from '../content/config';
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavigationBar from "../components/NavigationBar.astro";
+import ContentList from "../components/ContentList.astro";
+import MasonryLayout from "../components/MasonryLayout.astro";
+import { validCategories } from "../content/config";
 
 // 存储所有分类的内容
 const allContent = [];
 
 // 获取每个分类的内容
 for (const category of validCategories) {
-  try {
-    const typedCategory = category as keyof import('astro:content').DataEntryMap;
-    const categoryContent = await getCollection(typedCategory).catch(() => []);
-    
-    const filteredContent = categoryContent
-      .filter(item => item.data && item.data.date)
-      .map(item => {
-        return {
-          ...item,
-          category
-        };
-      });
-    
-    allContent.push(...filteredContent);
-  } catch (error) {
-    console.error(`Error loading content for ${category}:`, error);
-  }
+  const typedCategory =
+    category as keyof import("astro:content").DataEntryMap;
+  const categoryContent = await getCollection(typedCategory).catch(() => []);
+
+  const filteredContent = categoryContent
+    .filter((item) => item.data && item.data.date)
+    .map((item) => {
+      return {
+        ...item,
+        category,
+      };
+    });
+
+  allContent.push(...filteredContent);
 }
 
 // 按日期从新到旧排序
-const sortedContent = allContent.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const sortedContent = allContent.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
 
 // 确保tags总是数组类型
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
@@ -42,14 +41,10 @@ function ensureTagsArray(tags: string | string[] | undefined): string[] {
 
 <BaseLayout>
   <NavigationBar />
-  <main class="container">
-    {sortedContent.length === 0 ? (
-      <div class="empty-state">
-        暂无内容
-      </div>
-    ) : (
-      <MasonryLayout initialLoadCount={16}>
-        {sortedContent.map(item => (
+  <main class="page-container">
+    <MasonryLayout initialLoadCount={16}>
+      {
+        sortedContent.map((item) => (
           <ContentList
             title={item.data.title || "Untitled"}
             description={item.data.description || ""}
@@ -59,27 +54,8 @@ function ensureTagsArray(tags: string | string[] | undefined): string[] {
             slug={item.slug}
             category={item.category}
           />
-        ))}
-      </MasonryLayout>
-    )}
+        ))
+      }
+    </MasonryLayout>
   </main>
 </BaseLayout>
-
-<style>
-  body {
-    background-color: #E6E1D6;
-  }
-
-  .container {
-    margin: 7rem auto;
-    max-width: 1200px;
-  }
-  
-  .empty-state {
-    margin: 3rem auto;
-    padding: 3rem 1rem;
-    text-align: center;
-    color: #777;
-    font-size: 1.2rem;
-  }
-</style>

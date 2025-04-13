@@ -13,8 +13,6 @@ image: "https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2022/12/cou
       <span class="english-title">Taobao</span>
       <span class="chinese-title">淘宝</span>
     </h1>
-    <div class="content-tags">
-    </div>
     <div class="english-description">
       <ul class="coupon-list">
         <li class="coupon-item">
@@ -45,8 +43,6 @@ image: "https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2022/12/cou
       <span class="english-title">JD.com</span>
       <span class="chinese-title">京东</span>
     </h1>
-    <div class="content-tags">
-    </div>
     <div class="english-description">
       <ul class="coupon-list">
         <li class="coupon-item">

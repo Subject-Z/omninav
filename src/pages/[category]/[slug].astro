@@ -50,26 +50,7 @@ const canonicalUrl = `https://www.omninav.uk/${category}/${slug}`;
 <BaseLayout title={pageTitle} description={pageDescription} canonicalUrl={canonicalUrl} imageUrl={data.image}>
   <NavigationBar />
 
-  <main class="container">
+  <main class="page-container">
     <Content entry={entry} />
   </main>
 </BaseLayout>
-
-<style>
-  body {
-    background-color: #E6E1D6;
-  }
-
-  .container {
-    max-width: 1200px;
-    margin: 7rem auto 2rem auto;
-    padding: 0 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 0.5rem;
-      margin-top: 4rem;
-    }
-  }
-</style>

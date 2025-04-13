@@ -7,14 +7,14 @@ image: "https://bookcover.yuewen.com/qdbimg/349573/1041637443/600.webp"
 ---
 
 <div class="image-text-block">
+<div class="image-container">
   <img src="https://bookcover.yuewen.com/qdbimg/349573/1041637443/600.webp" alt="Corpse Retriever Poster">
+  </div>
   <div class="text-content">
     <h1 class="title">
       <span class="english-title">Corpse Retriever</span>
       <span class="chinese-title">捞尸人</span>
     </h1>
-    <div class="content-tags">
-    </div>
     <div class="english-description">
       <p>People fear the terror of ghosts, but ghosts know the poison of human hearts.</p>
       <p>This is a traditional supernatural novel.</p>

@@ -9,46 +9,45 @@ const currentCategory = pathname.split('/')[1] || '';
 ---
 
 <header class="header">
-  <div class="container">
+  <div class="nav-container">
     <nav class="nav">
-      <div class="menu-toggle" id="menuToggle">
-        <span class="menu-icon"></span>
+      <div class="nav-scroller">
+        <ul class="nav-list" id="navList">
+          <!-- 添加Home链接 -->
+          <li class="nav-item">
+            <a 
+              href="/"
+              class={`nav-link ${pathname === '/' ? 'active' : ''}`}
+            >
+              <span class="category-name">Home</span>
+            </a>
+          </li>
+          {validCategories.map((category) => {
+            const categoryKey = category as CategoryKey;
+            return (
+              <li class="nav-item">
+                <a 
+                  href={`/${category}`}
+                  class={`nav-link ${currentCategory === category ? 'active' : ''}`}
+                >
+                  <span class="category-name">
+                    {categoryNames[categoryKey] || category}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+          <!-- 添加联系我们链接 -->
+          <li class="nav-item">
+            <a 
+              href="/contact"
+              class={`nav-link ${currentCategory === 'contact' ? 'active' : ''}`}
+            >
+              <span class="category-name">Contact</span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <ul class="nav-list" id="navList">
-        <!-- 添加Home链接 -->
-        <li class="nav-item">
-          <a 
-            href="/"
-            class={`nav-link ${pathname === '/' ? 'active' : ''}`}
-          >
-            <span class="category-name">Home</span>
-          </a>
-        </li>
-        {validCategories.map((category) => {
-          const categoryKey = category as CategoryKey;
-          return (
-            <li class="nav-item">
-              <a 
-                href={`/${category}`}
-                class={`nav-link ${currentCategory === category ? 'active' : ''}`}
-              >
-                <span class="category-name">
-                  {categoryNames[categoryKey] || category}
-                </span>
-              </a>
-            </li>
-          );
-        })}
-        <!-- 添加联系我们链接 -->
-        <li class="nav-item">
-          <a 
-            href="/contact"
-            class={`nav-link ${currentCategory === 'contact' ? 'active' : ''}`}
-          >
-            <span class="category-name">Contact</span>
-          </a>
-        </li>
-      </ul>
     </nav>
   </div>
 </header>
@@ -57,14 +56,12 @@ const currentCategory = pathname.split('/')[1] || '';
   .header {    
     position: absolute;
     width: 100%;
-    top: 0;
-    left: 0;
   }
 
-  .container {
-    max-width: 1000px;
+  .nav-container {
+    max-width: min(95vw, 1000px);
     margin: 0 auto;
-    padding: 0 1rem;
+
   }
 
   .nav {
@@ -72,6 +69,17 @@ const currentCategory = pathname.split('/')[1] || '';
     align-items: center;
     justify-content: space-between;
     height: 70px;
+  }
+  
+  .nav-scroller {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* 增强iOS的滚动体验 */
+    scrollbar-width: none; /* 隐藏Firefox滚动条 */
+  }
+  
+  .nav-scroller::-webkit-scrollbar {
+    display: none; /* 隐藏Chrome/Safari滚动条 */
   }
 
   .nav-list {
@@ -81,6 +89,7 @@ const currentCategory = pathname.split('/')[1] || '';
     padding: 0;
     gap: 1rem;
     align-items: center;
+    white-space: nowrap; /* 防止项目换行 */
   }
 
   .nav-link {
@@ -106,95 +115,24 @@ const currentCategory = pathname.split('/')[1] || '';
     font-weight: 600;
   }
 
-  .menu-toggle {
-    display: none;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    position: relative;
-  }
-
-  .menu-icon,
-  .menu-icon::before,
-  .menu-icon::after {
-    position: absolute;
-    height: 3px;
-    width: 24px;
-    background-color: #333;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-  }
-
-  .menu-icon {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .menu-icon::before {
-    content: '';
-    top: -8px;
-  }
-
-  .menu-icon::after {
-    content: '';
-    top: 8px;
-  }
-
   /* 响应式设计 */
   @media (max-width: 768px) {
-    .menu-toggle {
-      display: block;
-      z-index: 100;
+    .nav-container {
+      width: 100%;
     }
-
+    
     .nav-list {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 30%;
-      height: 100vh;
-      background-color: #fff;
-      flex-direction: column;
-      padding: 80px 1rem 2rem;
-      transition: right 0.3s ease;
-      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-      z-index: 99; /* 添加 z-index 确保菜单在其他内容之上 */
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
-
-    .nav-list.show {
-      right: 0;
+    
+    .nav-item:first-child {
+      margin-left: 0;
     }
-
-    .nav-link {
-      padding: 1rem;
+    
+    .nav-item:last-child {
+      margin-right: 0;
+      padding-right: 1rem; /* 确保最后一项有足够的右侧空间 */
     }
   }
 </style>
-
-<script>
-  // 移动端菜单切换功能
-  document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const navList = document.getElementById('navList');
-    
-    // 点击菜单切换按钮时
-    menuToggle?.addEventListener('click', () => {
-      navList?.classList.toggle('show');
-      
-      // 添加点击菜单按钮时的动画效果（可选）
-      menuToggle.classList.toggle('active');
-    });
-    
-    // 添加点击菜单外区域关闭菜单功能（可选）
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (navList?.classList.contains('show') && 
-          !navList.contains(target) && 
-          target !== menuToggle && 
-          !menuToggle?.contains(target)) {
-        navList.classList.remove('show');
-        menuToggle?.classList.remove('active');
-      }
-    });
-  });
-</script>
