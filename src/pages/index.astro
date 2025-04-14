@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NavigationBar from "../components/NavigationBar.astro";
-import ContentList from "../components/ContentList.astro";
+import ContentCard from "../components/ContentCard.astro";
 import MasonryLayout from "../components/MasonryLayout.astro";
 import { validCategories } from "../content/config";
 
@@ -42,10 +42,10 @@ function ensureTagsArray(tags: string | string[] | undefined): string[] {
 <BaseLayout>
   <NavigationBar />
   <main class="page-container">
-    <MasonryLayout initialLoadCount={16}>
+    <MasonryLayout initialLoadCount={16} adInterval={5}>
       {
         sortedContent.map((item) => (
-          <ContentList
+          <ContentCard
             title={item.data.title || "Untitled"}
             description={item.data.description || ""}
             image={item.data.image}

@@ -1,18 +1,28 @@
 ---
-// 瀑布流布局组件
+import { initLazyLoading } from '../utils/lazyLoad.js';
+
 interface Props {
-  initialLoadCount?: number; // 初始加载的条目数量
-  itemSelector?: string; // 条目选择器
+  initialLoadCount?: number;
+  adInterval?: number;
+  columns?: number;
 }
 
 const { 
   initialLoadCount = 12,
-  itemSelector = ".content-card-wrapper" 
+  adInterval = 4,
+  columns = 4
 } = Astro.props;
+
+// 导入广告卡片组件
+import AdCard from "./AdCard.astro";
 ---
 
 <div class="masonry-container">
-  <div class="masonry-grid" data-initial-load={initialLoadCount} data-item-selector={itemSelector}>
+  <div class="masonry-grid" 
+       data-initial-load={initialLoadCount} 
+       data-item-selector=".card-wrapper"
+       data-ad-interval={adInterval}
+       data-columns={columns}>
     <slot />
   </div>
   <div class="loading-indicator">
@@ -21,10 +31,15 @@ const {
   </div>
 </div>
 
-<style>
+<!-- 广告模板 -->
+<template id="ad-template" style="display:none">
+  <AdCard />
+</template>
+
+<style define:vars={{ columns }}>
   .masonry-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--columns, 4), 1fr);
     gap: 1.5rem;
     margin: 0 auto;
   }
@@ -49,9 +64,7 @@ const {
   }
 
   @keyframes spinner {
-    to {
-      transform: rotate(360deg);
-    }
+    to { transform: rotate(360deg); }
   }
 
   @media (max-width: 1024px) {
@@ -69,27 +82,105 @@ const {
 </style>
 
 <script>
+  import { setupLazyLoading } from '../utils/lazyLoad';
+
   document.addEventListener('DOMContentLoaded', () => {
+    // 初始化懒加载
+    setupLazyLoading();
+    
     const masonryGrid = document.querySelector('.masonry-grid');
     if (!masonryGrid) return;
 
     const initialLoadCount = parseInt(masonryGrid.getAttribute('data-initial-load') || '12');
-    const itemSelector = masonryGrid.getAttribute('data-item-selector') || '.content-card-wrapper';
-    const loadingIndicator = document.querySelector('.loading-indicator') as HTMLElement;
+    const itemSelector = masonryGrid.getAttribute('data-item-selector') || '.card-wrapper';
+    const adInterval = parseInt(masonryGrid.getAttribute('data-ad-interval') || '4');
+    const loadingIndicator = document.querySelector('.loading-indicator');
+    const adTemplate = document.querySelector('#ad-template');
     
     // 获取所有内容项
-    const allItems = Array.from(document.querySelectorAll(itemSelector));
-    let visibleCount = initialLoadCount;
+    const allItems = Array.from(document.querySelectorAll(itemSelector)).filter(
+      item => !item.classList.contains('ad-card-wrapper')
+    );
+    
+    let visibleCount = 0;
     let loading = false;
 
-    // 初始隐藏超出初始加载数量的项目
-    allItems.forEach((item, index) => {
-      if (index >= initialLoadCount) {
-        (item as HTMLElement).style.display = 'none';
-      }
-    });
+    // 初始化布局并插入广告
+    function initLayout() {
+      // 隐藏所有内容项
+      allItems.forEach(item => {
+        item.style.display = 'none';
+      });
 
-    // 检查是否有更多内容可以加载
+      // 显示初始内容并插入广告
+      loadBatch(initialLoadCount, true);
+      
+      // 显示或隐藏加载指示器
+      if (loadingIndicator) {
+        loadingIndicator.style.display = hasMoreContent() ? 'flex' : 'none';
+      }
+    }
+
+    // 加载一批内容
+    function loadBatch(count, isInitial = false) {
+      const nextBatch = Math.min(allItems.length - visibleCount, count);
+      let contentLoaded = 0;
+      
+      for (let i = 0; contentLoaded < nextBatch && (visibleCount + contentLoaded) < allItems.length; i++) {
+        // 检查是否需要插入广告
+        if (!isInitial && (visibleCount + contentLoaded) > 0 && 
+            (visibleCount + contentLoaded) % adInterval === 0) {
+          insertAd();
+        }
+        
+        // 显示下一个内容项
+        const itemToShow = allItems[visibleCount + contentLoaded];
+        if (itemToShow) {
+          itemToShow.style.display = '';
+          contentLoaded++;
+        }
+      }
+      
+      visibleCount += contentLoaded;
+      
+      // 初始布局时插入广告
+      if (isInitial) {
+        for (let i = adInterval; i < visibleCount; i += adInterval) {
+          insertAdAt(i);
+        }
+      }
+    }
+
+    // 在当前位置插入广告
+    function insertAd() {
+      const currentItems = Array.from(masonryGrid.children);
+      insertAdAt(currentItems.length);
+    }
+    
+    // 在指定位置插入广告
+    function insertAdAt(position) {
+      if (!adTemplate) return;
+      
+      const adNode = adTemplate.content.cloneNode(true);
+      const adWrapper = document.createElement('div');
+      adWrapper.className = 'ad-card-wrapper';
+      adWrapper.appendChild(adNode);
+      
+      const items = Array.from(masonryGrid.children);
+      
+      if (position >= items.length) {
+        masonryGrid.appendChild(adWrapper);
+      } else {
+        masonryGrid.insertBefore(adWrapper, items[position]);
+      }
+      
+      // 初始化广告代码
+      const adScript = document.createElement('script');
+      adScript.textContent = '(adsbygoogle = window.adsbygoogle || []).push({});';
+      adWrapper.appendChild(adScript);
+    }
+
+    // 检查是否有更多内容
     function hasMoreContent() {
       return visibleCount < allItems.length;
     }
@@ -103,24 +194,8 @@ const {
 
       // 模拟加载延迟
       setTimeout(() => {
-        const nextBatch = Math.min(allItems.length - visibleCount, 8); // 每次加载8个
+        loadBatch(8);  // 每次加载8个
         
-        for (let i = 0; i < nextBatch; i++) {
-          const itemToShow = allItems[visibleCount + i] as HTMLElement;
-          if (itemToShow) {
-            itemToShow.style.display = '';
-            // 触发可能的懒加载图片
-            const lazyImages = itemToShow.querySelectorAll('img[loading="lazy"]');
-            lazyImages.forEach(img => {
-              const imgElement = img as HTMLImageElement;
-              if (imgElement.dataset.src) {
-                imgElement.src = imgElement.dataset.src;
-              }
-            });
-          }
-        }
-        
-        visibleCount += nextBatch;
         loading = false;
         
         if (loadingIndicator) {
@@ -129,7 +204,7 @@ const {
       }, 500);
     }
 
-    // 监听滚动事件，接近底部时加载更多
+    // 监听滚动事件
     function handleScroll() {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
         loadMoreContent();
@@ -139,9 +214,7 @@ const {
     // 添加滚动监听
     window.addEventListener('scroll', handleScroll);
     
-    // 初始检查是否需要显示加载指示器
-    if (loadingIndicator) {
-      loadingIndicator.style.display = hasMoreContent() ? 'flex' : 'none';
-    }
+    // 初始化布局
+    initLayout();
   });
 </script>
