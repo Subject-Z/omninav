@@ -92,37 +92,3 @@ const sortedItems = [...items]
     }
   }
 </style>
-
-<script>
-  function handleImageLoaded() {
-    document.querySelectorAll('.card-img-container img').forEach(img => {
-      if (img instanceof HTMLImageElement) {
-        if (img.complete) {
-          const skeleton = img.closest('.card-img-container')?.querySelector('.skeleton-loader');
-          if (skeleton) skeleton.classList.add('loaded');
-        } else {
-          img.addEventListener('load', () => {
-            const skeleton = img.closest('.card-img-container')?.querySelector('.skeleton-loader');
-            if (skeleton) skeleton.classList.add('loaded');
-          });
-        }
-      }
-    });
-  }
-  
-  document.addEventListener('DOMContentLoaded', handleImageLoaded);
-  
-  // 为可能的动态加载内容添加 MutationObserver
-  const observer = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'childList' && mutation.addedNodes.length) {
-        handleImageLoaded();
-      }
-    }
-  });
-  
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-</script>
