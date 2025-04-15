@@ -12,14 +12,12 @@ for (const category of validCategories) {
     category as keyof import("astro:content").DataEntryMap;
   const categoryContent = await getCollection(typedCategory).catch(() => []);
 
-  const filteredContent = categoryContent
-    .filter((item) => item.data && item.data.date)
-    .map((item) => {
-      return {
-        ...item,
-        category,
-      };
-    });
+  const filteredContent = categoryContent.map((item) => {
+    return {
+      ...item,
+      category,
+    };
+  });
 
   allContent.push(...filteredContent);
 }

@@ -2,7 +2,6 @@
 title: "Genshin Impact"
 description: "Explore Teyvat, a land of seven elements, in Genshin Impact. Journey with companions, seek the Archons, and uncover mysteries with your lost sibling."
 tags: [Adventure, Fantasy, RPG, Open-World, Anime]
-date: 2025-04-15
 image: "https://blog.playstation.com/uploads/2054/01/ec5a590feb74ab73a2ac9e8f800b23312b40e910.jpeg"
 ---
 

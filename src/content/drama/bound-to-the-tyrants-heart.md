@@ -2,7 +2,6 @@
 title: "Bound to the Tyrant's Heart"
 description: "PR expert Song Yaozhi transmigrates into a noble's daughter, planning a lazy life—until fate ties her to a tyrant in a deadly bond. With wit and mutual protection, love blooms. Can she break free and lift the curse?"
 tags: [Romance, Historical]
-date: 2025-03-20
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCYGf7xJzIJb0-s8WTv54owgzNTGwAA-mtMRtqd9lHGaxzVgI_I-YBAAMCAAN5AAM2BA.png"
 ---
 

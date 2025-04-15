@@ -2,7 +2,6 @@
 title: "Lanling Confused"
 description: "A tale of betrayal and rebirth, where a woman seeks vengeance against her treacherous husband and his allies, reclaiming her honor and justice."
 tags: [Historical, Rebirth, Revenge]
-date: 2025-04-10
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCXGf7wWNa0H4tjdW5Iv4YDztCdM6vAALmrTEbanfZRz41PX3SYuGrAQADAgADeAADNgQ.png"
 ---
 

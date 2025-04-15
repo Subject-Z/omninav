@@ -8,7 +8,6 @@ const contentSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
     tags: z.union([z.string(), z.array(z.string())]).optional(),
-    date: z.date(),
     image: z.string().url().optional(),
 });
 

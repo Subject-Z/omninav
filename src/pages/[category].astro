@@ -33,8 +33,7 @@ let categoryContent: Array<ContentItem> = [];
 try {
   const allContent = await getCollection(typedCategory);
   
-  categoryContent = allContent
-    .filter(item => item.data && item.data.date);
+  categoryContent = allContent;
     
   function shuffleArray<T>(array: T[]): T[] {
     const shuffled = [...array];

@@ -27,18 +27,24 @@ const {
   className = "",
   showCategory = false,
 } = Astro.props;
+
+const limitedItems = items.slice(0, 48);
+const hasMoreItems = items.length > 48;
 ---
 
-<div class={`responsive-grid ${className}`}>
-  {items.map((item) => (
-    <Card
-      title={item.title}
-      image={item.image}
-      category={item.category}
-      slug={item.slug}
-      showCategory={showCategory}
-    />
-  ))}
+<div class="grid-container">
+  <div class={`responsive-grid ${className}`}>
+    {limitedItems.map((item) => (
+      <Card
+        title={item.title}
+        image={item.image}
+        category={item.category}
+        slug={item.slug}
+        showCategory={showCategory}
+      />
+    ))}
+  </div>
+  {hasMoreItems && <button id="view-more-button">View More</button>}
 </div>
 
 <style define:vars={{ 
@@ -48,12 +54,39 @@ const {
   tabletColumns: columns.tablet, 
   mobileColumns: columns.mobile 
 }}>
+  .grid-container {
+    position: relative;
+    width: 100%;
+
+  }
+
   .responsive-grid {
     display: grid;
-    margin: 5rem auto;
+    margin: 5rem auto 3rem;
     grid-template-columns: repeat(var(--defaultColumns), minmax(0, 1fr));
     gap: var(--gap);
     width: 100%;
+  }
+
+  #view-more-button {
+    display: block;
+    margin: 0 auto 5rem;
+    padding: 0.8rem 2rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #view-more-button:hover {
+    background-color: #444;
+  }
+
+  #view-more-button:active {
+    transform: scale(0.98);
   }
 
   @media (max-width: 1200px) {
@@ -76,3 +109,34 @@ const {
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const viewMoreButton = document.getElementById('view-more-button') as HTMLButtonElement;
+    
+    if (viewMoreButton) {
+      viewMoreButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        
+        viewMoreButton.disabled = true;
+        viewMoreButton.style.opacity = '0.7';
+        
+        const rotateAnimation = viewMoreButton.animate(
+          [
+            { transform: 'scale(1)' },
+            { transform: 'scale(0.95)' },
+            { transform: 'scale(1)' }
+          ],
+          {
+            duration: 300,
+            iterations: 1
+          }
+        );
+        
+        rotateAnimation.onfinish = () => {
+          window.location.reload();
+        };
+      });
+    }
+  });
+</script>

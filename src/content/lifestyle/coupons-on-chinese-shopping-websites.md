@@ -2,7 +2,6 @@
 title: "Coupons on Chinese Shopping Websites"
 description: "Explore coupon deals and tips for saving on Taobao and JD.com, popular Chinese shopping platforms."
 tags: [Shopping, Coupons, E-commerce, Online Deals]
-date: 2025-03-27
 image: "https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2022/12/coupon_create_cover1.jpg"
 ---
 
