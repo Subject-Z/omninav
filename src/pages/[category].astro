@@ -32,21 +32,8 @@ const pageDescription = `${metaCategoryName}`;
 let categoryContent: Array<ContentItem> = [];
 try {
   const allContent = await getCollection(typedCategory);
-  
   categoryContent = allContent;
-    
-  function shuffleArray<T>(array: T[]): T[] {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
-    
-  categoryContent = shuffleArray(categoryContent);
 } catch {
-  // 静默失败，保持空数组
 }
 
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
@@ -59,7 +46,8 @@ const gridItems = categoryContent.map(item => ({
   image: item.data.image,
   tags: ensureTagsArray(item.data.tags),
   category: typedCategory,
-  slug: item.slug
+  slug: item.slug,
+  date: item.data.date
 }));
 ---
 

@@ -22,28 +22,18 @@ for (const category of validCategories) {
   allContent.push(...filteredContent);
 }
 
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-const randomContent = shuffleArray(allContent);
-
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
   if (!tags) return [];
   return Array.isArray(tags) ? tags : [tags];
 }
 
-const gridItems = randomContent.map(item => ({
+const gridItems = allContent.map(item => ({
   title: item.data.title || "Untitled",
   image: item.data.image,
   tags: ensureTagsArray(item.data.tags),
   category: item.category,
-  slug: item.slug
+  slug: item.slug,
+  date: item.data.date
 }));
 ---
 

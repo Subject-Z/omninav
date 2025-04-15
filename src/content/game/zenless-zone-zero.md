@@ -2,6 +2,7 @@
 title: "Zenless Zone Zero"
 description: "Explore Zenless Zone Zero, miHoYo's 3D action game set in a disaster-ridden future. Survive the Hollows with allies and a Proxy in New Eridu."
 tags: [Anime-style, ARPG, Action, Real-time Combat, Sci-Fi, Adventure]
+date: "2024-07-04"
 image: "https://image.api.playstation.com/vulcan/ap/rnd/202412/1102/dc9e7018ffc289daa7cd007a015b79aa2f1e93689181b0e7.png"
 ---
 

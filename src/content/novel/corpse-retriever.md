@@ -2,6 +2,7 @@
 title: "Corpse Retriever"
 description: "A supernatural tale of Li Zhuiyuan, a gifted young man uncovering dark secrets and mastering the art of corpse retrieval in a haunted world."
 tags: [Urban, Supernatural, Mystery, Horror]
+date: "2024-09-01"
 image: "https://bookcover.yuewen.com/qdbimg/349573/1041637443/600.webp"
 ---
 

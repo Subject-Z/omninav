@@ -8,6 +8,7 @@ interface Props {
     tags?: string[];
     category?: string;
     slug?: string;
+    date?: Date | string;
   }>;
   columns?: {
     default: number;
@@ -28,13 +29,18 @@ const {
   showCategory = false,
 } = Astro.props;
 
-const limitedItems = items.slice(0, 48);
-const hasMoreItems = items.length > 48;
+const sortedItems = [...items]
+  .sort((a, b) => {
+    const dateA = a.date ? new Date(a.date).getTime() : 0;
+    const dateB = b.date ? new Date(b.date).getTime() : 0;
+    return dateB - dateA;
+  })
+  .slice(0, 12);
 ---
 
 <div class="grid-container">
   <div class={`responsive-grid ${className}`}>
-    {limitedItems.map((item) => (
+    {sortedItems.map((item) => (
       <Card
         title={item.title}
         image={item.image}
@@ -44,7 +50,6 @@ const hasMoreItems = items.length > 48;
       />
     ))}
   </div>
-  {hasMoreItems && <button id="view-more-button">View More</button>}
 </div>
 
 <style define:vars={{ 
@@ -57,36 +62,14 @@ const hasMoreItems = items.length > 48;
   .grid-container {
     position: relative;
     width: 100%;
-
   }
 
   .responsive-grid {
     display: grid;
-    margin: 5rem auto 3rem;
+    margin: 8rem auto 3rem;
     grid-template-columns: repeat(var(--defaultColumns), minmax(0, 1fr));
     gap: var(--gap);
     width: 100%;
-  }
-
-  #view-more-button {
-    display: block;
-    margin: 0 auto 5rem;
-    padding: 0.8rem 2rem;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  #view-more-button:hover {
-    background-color: #444;
-  }
-
-  #view-more-button:active {
-    transform: scale(0.98);
   }
 
   @media (max-width: 1200px) {
@@ -97,7 +80,7 @@ const hasMoreItems = items.length > 48;
 
   @media (max-width: 768px) {
     .responsive-grid {
-      margin: 3rem auto;
+      margin: 6rem auto;
       grid-template-columns: repeat(var(--tabletColumns), minmax(0, 1fr));
       gap: 0.5rem;
     }
@@ -111,32 +94,35 @@ const hasMoreItems = items.length > 48;
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const viewMoreButton = document.getElementById('view-more-button') as HTMLButtonElement;
-    
-    if (viewMoreButton) {
-      viewMoreButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        
-        viewMoreButton.disabled = true;
-        viewMoreButton.style.opacity = '0.7';
-        
-        const rotateAnimation = viewMoreButton.animate(
-          [
-            { transform: 'scale(1)' },
-            { transform: 'scale(0.95)' },
-            { transform: 'scale(1)' }
-          ],
-          {
-            duration: 300,
-            iterations: 1
-          }
-        );
-        
-        rotateAnimation.onfinish = () => {
-          window.location.reload();
-        };
-      });
+  function handleImageLoaded() {
+    document.querySelectorAll('.card-img-container img').forEach(img => {
+      if (img instanceof HTMLImageElement) {
+        if (img.complete) {
+          const skeleton = img.closest('.card-img-container')?.querySelector('.skeleton-loader');
+          if (skeleton) skeleton.classList.add('loaded');
+        } else {
+          img.addEventListener('load', () => {
+            const skeleton = img.closest('.card-img-container')?.querySelector('.skeleton-loader');
+            if (skeleton) skeleton.classList.add('loaded');
+          });
+        }
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', handleImageLoaded);
+  
+  // 为可能的动态加载内容添加 MutationObserver
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList' && mutation.addedNodes.length) {
+        handleImageLoaded();
+      }
     }
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
 </script>

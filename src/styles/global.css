@@ -14,11 +14,6 @@ body {
 }
 
 /* 页面容器通用样式 */
-.masonry-container {
-    width: 100%;
-    margin: 5rem auto;
-    position: relative;
-  }
 
 .page-container {
   margin: 0 auto;

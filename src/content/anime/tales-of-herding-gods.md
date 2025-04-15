@@ -2,6 +2,7 @@
 title: "Tales of Herding Gods"
 description: "Follow Qin Mu's epic journey from an orphan to a powerful Cult Master and Human Emperor, uncovering secrets and reforming divine arts."
 tags: [Fantasy, Adventure, Cultivation, Mystery, Action]
+date: "2024-10-27"
 image: "https://img20.360buyimg.com/openfeedback/jfs/t1/277278/36/21454/2337964/67fe047fF57befaeb/809898286651d45a.png"
 ---
 

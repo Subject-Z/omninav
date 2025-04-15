@@ -9,6 +9,7 @@ const contentSchema = z.object({
     description: z.string().optional(),
     tags: z.union([z.string(), z.array(z.string())]).optional(),
     image: z.string().url().optional(),
+    date: z.coerce.date().optional(),
 });
 
 export const collections = {
