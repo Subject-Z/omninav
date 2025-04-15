@@ -2,14 +2,11 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NavigationBar from "../components/NavigationBar.astro";
-import ContentCard from "../components/ContentCard.astro";
-import MasonryLayout from "../components/MasonryLayout.astro";
+import ResponsiveGrid from "../components/ResponsiveGrid.astro";
 import { validCategories } from "../content/config";
 
-// 存储所有分类的内容
 const allContent = [];
 
-// 获取每个分类的内容
 for (const category of validCategories) {
   const typedCategory =
     category as keyof import("astro:content").DataEntryMap;
@@ -27,35 +24,34 @@ for (const category of validCategories) {
   allContent.push(...filteredContent);
 }
 
-// 按日期从新到旧排序
-const sortedContent = allContent.sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-// 确保tags总是数组类型
+const randomContent = shuffleArray(allContent);
+
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
   if (!tags) return [];
   return Array.isArray(tags) ? tags : [tags];
 }
+
+const gridItems = randomContent.map(item => ({
+  title: item.data.title || "Untitled",
+  image: item.data.image,
+  tags: ensureTagsArray(item.data.tags),
+  category: item.category,
+  slug: item.slug
+}));
 ---
 
 <BaseLayout>
   <NavigationBar />
   <main class="page-container">
-    <MasonryLayout initialLoadCount={16} adInterval={5}>
-      {
-        sortedContent.map((item) => (
-          <ContentCard
-            title={item.data.title || "Untitled"}
-            description={item.data.description || ""}
-            image={item.data.image}
-            date={item.data.date}
-            tags={ensureTagsArray(item.data.tags)}
-            slug={item.slug}
-            category={item.category}
-          />
-        ))
-      }
-    </MasonryLayout>
+    <ResponsiveGrid items={gridItems} showCategory={true} />
   </main>
 </BaseLayout>

@@ -1,0 +1,78 @@
+---
+import Card from "./Card.astro";
+
+interface Props {
+  items: Array<{
+    title?: string;
+    image?: string;
+    tags?: string[];
+    category?: string;
+    slug?: string;
+  }>;
+  columns?: {
+    default: number;
+    desktop: number;
+    tablet: number;
+    mobile: number;
+  };
+  gap?: string;
+  className?: string;
+  showCategory?: boolean;
+}
+
+const { 
+  items = [],
+  columns = { default: 4, desktop: 3, tablet: 3, mobile: 2 },
+  gap = "2rem",
+  className = "",
+  showCategory = false,
+} = Astro.props;
+---
+
+<div class={`responsive-grid ${className}`}>
+  {items.map((item) => (
+    <Card
+      title={item.title}
+      image={item.image}
+      category={item.category}
+      slug={item.slug}
+      showCategory={showCategory}
+    />
+  ))}
+</div>
+
+<style define:vars={{ 
+  gap, 
+  defaultColumns: columns.default, 
+  desktopColumns: columns.desktop, 
+  tabletColumns: columns.tablet, 
+  mobileColumns: columns.mobile 
+}}>
+  .responsive-grid {
+    display: grid;
+    margin: 5rem auto;
+    grid-template-columns: repeat(var(--defaultColumns), minmax(0, 1fr));
+    gap: var(--gap);
+    width: 100%;
+  }
+
+  @media (max-width: 1200px) {
+    .responsive-grid {
+      grid-template-columns: repeat(var(--desktopColumns), minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .responsive-grid {
+      margin: 3rem auto;
+      grid-template-columns: repeat(var(--tabletColumns), minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .responsive-grid {
+      grid-template-columns: repeat(var(--mobileColumns), minmax(0, 1fr));
+    }
+  }
+</style>

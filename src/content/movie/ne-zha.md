@@ -1,7 +1,7 @@
 ---
 title: "Ne Zha"
 description: "A tale of destiny and defiance, where Nezha, born as the Demon Orb, struggles against his fate and the world's prejudice to become a true hero."
-tags: [Movie, Comedy, Fantasy, Adventure]
+tags: [Comedy, Fantasy, Adventure]
 date: 2025-01-29
 image: "https://vcover-vt-pic.puui.qpic.cn/vcover_vt_pic/0/mzc00200tjkzeps1733816869241/0?max_age=7776000"
 ---

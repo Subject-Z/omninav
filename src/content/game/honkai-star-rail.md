@@ -1,14 +1,14 @@
 ---
 title: "Honkai: Star Rail"
 description: "Join a cosmic journey aboard the Astral Express, exploring bizarre worlds, meeting allies, and uncovering mysteries among the stars."
-tags: [Game, Role-Playing, Adventure, Turn-Based, Anime]
+tags: [Role-Playing, Adventure, Turn-Based, Anime]
 date: 2023-10-11
-image: "https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/68cb0aafe36833679d3e72ca4c03dc59_7246227443111169704.png"
+image: "https://image.api.playstation.com/vulcan/ap/rnd/202308/1103/8c3ce3611a4bb187418bb5e24924a055ba33d3046a7aaacb.png"
 ---
 
 <div class="image-text-block">
 <div class="image-container">
-  <img src="https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/68cb0aafe36833679d3e72ca4c03dc59_7246227443111169704.png" alt="Honkai: Star Rail Poster">
+  <img src="https://image.api.playstation.com/vulcan/ap/rnd/202308/1103/8c3ce3611a4bb187418bb5e24924a055ba33d3046a7aaacb.png" alt="Honkai: Star Rail Poster">
   </div>
   <div class="text-content">
     <h1 class="title">

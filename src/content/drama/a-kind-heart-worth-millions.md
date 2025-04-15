@@ -1,7 +1,7 @@
 ---
 title: "A Kind Heart Worth Millions"
 description: "Betrayed and bankrupt, Chen Shu rebuilds with Lin Group's help. Leading his team to victory in a chip competition, he secures a key partnership while his betrayers face justice."
-tags: [Drama, Urban, Business, Redemption]
+tags: [Urban, Business, Redemption]
 date: 2025-04-10
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCXWf7wgma6adADM7J6Zuto7hiBgwUAAJCrDEb81LhR7-UJ7zXoPZ-AQADAgADeQADNgQ.png"
 ---

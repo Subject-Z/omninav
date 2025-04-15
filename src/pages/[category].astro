@@ -2,75 +2,72 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavigationBar from '../components/NavigationBar.astro';
-import ContentCard from '../components/ContentCard.astro';
-import MasonryLayout from '../components/MasonryLayout.astro';
+import Card from '../components/Card.astro';
+import ResponsiveGrid from '../components/ResponsiveGrid.astro';
 import { validCategories, categoryNames, metaTitleNames } from '../content/config';
 import type { CategoryKey } from '../content/config'; 
 import type { CollectionEntry } from 'astro:content';
 
-// 定义内容项目类型
 type ContentItem = CollectionEntry<CategoryKey>;
 
-// 定义静态路径生成函数
 export async function getStaticPaths() {
   return validCategories.map(category => ({
     params: { category }
   }));
 }
 
-// 获取当前分类
 const { category } = Astro.params;
 const safeCategory = category || '';
 
-// 如果分类无效，返回404
 if (!validCategories.includes(safeCategory)) {
   return Astro.redirect('/404');
 }
 
-// 安全地将字符串转换为 CategoryKey 类型
 const typedCategory = safeCategory as CategoryKey;
 
-// 为页面标题使用metaTitleNames
 const metaCategoryName = metaTitleNames[typedCategory];
 const pageTitle = `${metaCategoryName} | OmniNav`;
 const pageDescription = `${metaCategoryName}`;
 
-// 获取当前分类的所有内容
 let categoryContent: Array<ContentItem> = [];
 try {
   const allContent = await getCollection(typedCategory);
   
-  // 过滤并按发布日期排序
   categoryContent = allContent
-    .filter(item => item.data && item.data.date)
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+    .filter(item => item.data && item.data.date);
+    
+  function shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+    
+  categoryContent = shuffleArray(categoryContent);
 } catch {
   // 静默失败，保持空数组
 }
 
-// 确保tags总是数组类型
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
   if (!tags) return [];
   return Array.isArray(tags) ? tags : [tags];
 }
+
+const gridItems = categoryContent.map(item => ({
+  title: item.data.title || "Untitled",
+  image: item.data.image,
+  tags: ensureTagsArray(item.data.tags),
+  category: typedCategory,
+  slug: item.slug
+}));
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <NavigationBar />
   
   <main class="page-container">
-      <MasonryLayout initialLoadCount={16} adInterval={5}>
-        {categoryContent.map((item) => (
-          <ContentCard
-            title={item.data.title || "Untitled"}
-            description={item.data.description || ""}
-            image={item.data.image}
-            date={item.data.date}
-            tags={ensureTagsArray(item.data.tags)}
-            slug={item.slug}
-            category={typedCategory}
-          />
-        ))}
-      </MasonryLayout>
+    <ResponsiveGrid items={gridItems} />
   </main>
 </BaseLayout>

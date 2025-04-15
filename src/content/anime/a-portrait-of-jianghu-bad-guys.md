@@ -1,7 +1,7 @@
 ---
 title: "A Portrait of Jianghu: Bad Guys"
 description: "Orphan Li Xingyun holds the Dragon Spring Sword, key to Tang Dynasty's treasure and power. As factions clash, he must choose: restore glory or leave Jianghu. Across seasons, conspiracies, battles, and love unfold in a turbulent martial world."
-tags: [Anime, Action, Martial Arts, Historical]
+tags: [Action, Martial Arts, Historical]
 date: 2025-03-27
 image: "https://vcover-vt-pic.puui.qpic.cn/vcover_vt_pic/0/mzc00200s5j9upv1737603032866/0?max_age=7776000"
 ---

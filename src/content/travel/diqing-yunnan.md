@@ -1,7 +1,7 @@
 ---
 title: "Diqing Yunnan"
 description: "Explore Diqing, a hidden gem in Yunnan with stunning landscapes, sacred mountains, and rich cultural heritage."
-tags: [Travel, Nature, Yunnan, Adventure, Landscape, Hiking]
+tags: [Nature, Yunnan, Adventure, Landscape, Hiking]
 date: 2025-04-12
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCVmf7usSMgZdUsyUOvsiDhAqWDDcrAALdrTEbanfZRzugpPJ04pGUAQADAgADdwADNgQ.png"
 ---

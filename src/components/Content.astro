@@ -24,47 +24,55 @@ const tags = entry.data.tags || [];
   document.addEventListener("DOMContentLoaded", () => {
     const imageTextBlocks = document.querySelectorAll(".image-text-block");
     imageTextBlocks.forEach((block) => {
-      const tagsContainer = block.querySelector(".content-tags");
-      if (tagsContainer) {
-        tagsContainer.innerHTML = "";
+      const chineseTitle = block.querySelector(".chinese-title");
+      if (chineseTitle) {
+        let tagsContainer = document.createElement("div");
+        tagsContainer.className = "content-tags";
         tags.forEach((tag) => {
           const tagSpan = document.createElement("span");
           tagSpan.className = "tag";
           tagSpan.textContent = tag;
           tagsContainer.appendChild(tagSpan);
         });
+        chineseTitle.insertAdjacentElement('afterend', tagsContainer);
       }
     });
     
     const contentBlocks = document.querySelectorAll(".content-block");
     contentBlocks.forEach((block) => {
-      const tagsContainer = block.querySelector(".content-tags");
-      if (tagsContainer) {
-        tagsContainer.innerHTML = "";
+      const chineseTitle = block.querySelector(".chinese-title");
+      if (chineseTitle) {
+        let tagsContainer = document.createElement("div");
+        tagsContainer.className = "content-tags";
         tags.forEach((tag) => {
           const tagSpan = document.createElement("span");
           tagSpan.className = "tag";
           tagSpan.textContent = tag;
           tagsContainer.appendChild(tagSpan);
         });
+        chineseTitle.insertAdjacentElement('afterend', tagsContainer);
       }
     });
 
-    // 添加图片错误处理
     const contentImages = document.querySelectorAll(".image-text-block img");
     contentImages.forEach(img => {
       img.onerror = function() {
         this.classList.add("error");
-        this.src = "/images/image-placeholder.webp"; // 替换为占位图的路径
+        this.src = "/images/image-placeholder.webp";
       };
     });
 
-    // 为中文标题添加横线
-    const chineseTitles = document.querySelectorAll(".chinese-title");
-    chineseTitles.forEach(title => {
+    const textContentChineseTitles = document.querySelectorAll(".text-content .chinese-title");
+    textContentChineseTitles.forEach(title => {
       const divider = document.createElement("hr");
       divider.className = "title-divider";
-      title.insertAdjacentElement('afterend', divider);
+      
+      const nextElement = title.nextElementSibling;
+      if (nextElement && nextElement.classList.contains("content-tags")) {
+        nextElement.insertAdjacentElement('afterend', divider);
+      } else {
+        title.insertAdjacentElement('afterend', divider);
+      }
     });
   });
 </script>
@@ -76,6 +84,11 @@ const tags = entry.data.tags || [];
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    font-size: 2.2rem;
+    color: #8b2e2e;
   }
 
   .content-body p {
@@ -115,7 +128,7 @@ const tags = entry.data.tags || [];
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 1rem 0 2rem;
+    margin: 1rem 0;
   }
   
   .content-tags .tag {
@@ -150,20 +163,19 @@ const tags = entry.data.tags || [];
     position: relative;
     overflow: hidden;
     border-radius: 8px;
-    background-color: #f0f0f0; /* 占位背景色 */
-    height: auto; /* 自动高度 */
+    background-color: #f0f0f0;
+    height: auto;
   }
   
   .image-text-block img {
-    position: relative; /* 改为相对定位而非绝对定位 */
+    position: relative;
     width: 100%;
-    height: auto; /* 自动高度，保持图片比例 */
+    height: auto;
     object-fit: cover;
     border-radius: 8px;
-    display: block; /* 避免底部间隙 */
+    display: block;
   }
 
-  /* 添加图片加载失败的备用样式 */
   .image-text-block img.error {
     object-fit: contain;
     background-color: #f5f5f5;
@@ -173,6 +185,101 @@ const tags = entry.data.tags || [];
     flex: 1;
   }
 
+  .coupon-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .coupon-item {
+    background: linear-gradient(135deg, #fff5ea 0%, #ffefdc 100%);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.1);
+    transition: all 0.3s ease;
+    border-left: 5px solid #ff6b6b;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .coupon-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.15);
+    background: linear-gradient(135deg, #fff2e3 0%, #ffe6c9 100%);
+  }
+
+  .coupon-item:before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: linear-gradient(to bottom, #ff5252, #ff8b8b);
+  }
+
+  .coupon-item:after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-right: 2.5px solid #ff6b6b;
+    border-bottom: 2.5px solid #ff6b6b;
+    rotate: -45deg;
+  }
+
+  .coupon-item a.coupon-description {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: block;
+    padding-right: 25px;
+    transition: all 0.2s ease;
+  }
+
+  .coupon-item a.coupon-description:hover {
+    color: #e94949;
+  }
+
+  .coupon-item::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    height: 100%;
+    width: 5px;
+    top: 0;
+    background: linear-gradient(to bottom, #ff5252, #ff8b8b);
+  }
+
+  .coupon-item::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-right: 2.5px solid #ff6b6b;
+    border-bottom: 2.5px solid #ff6b6b;
+    rotate: -45deg;
+    transition: all 0.2s ease;
+  }
+
+  .coupon-item:hover::after {
+    right: 8px;
+    border-right: 2.5px solid #e94949;
+    border-bottom: 2.5px solid #e94949;
+  }
+
   @media (max-width: 768px) {
     .content-detail {
       padding: 1.5rem;
@@ -180,6 +287,7 @@ const tags = entry.data.tags || [];
     
     .coupon-list {
       width: 100%;
+      gap: 14px;
     }
     
     .english-title {
@@ -188,6 +296,18 @@ const tags = entry.data.tags || [];
     
     .chinese-title {
       font-size: 1.2rem;
+    }
+    
+    .coupon-item {
+      padding: 12px 15px;
+    }
+
+    .coupon-item a.coupon-description {
+      font-size: 0.95rem;
+    }
+
+    .title {
+      font-size: 1.8rem;
     }
   }
   
@@ -211,6 +331,29 @@ const tags = entry.data.tags || [];
       margin-right: auto;
       display: block;
       margin-bottom: 10px;
+    }
+    
+    .coupon-item {
+      padding: 10px 12px;
+    }
+
+    .coupon-item a.coupon-description {
+      font-size: 0.9rem;
+      padding-right: 20px;
+    }
+    
+    .coupon-item::after {
+      width: 10px;
+      height: 10px;
+      right: 10px;
+    }
+    
+    .coupon-item:hover::after {
+      right: 7px;
+    }
+    
+    .title {
+      font-size: 1.6rem;
     }
   }
 </style>

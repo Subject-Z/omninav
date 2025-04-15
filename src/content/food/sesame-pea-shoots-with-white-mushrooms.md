@@ -1,7 +1,7 @@
 ---
 title: "Sesame Pea Shoots with White Mushrooms"
 description: "A refreshing, tangy, low-calorie dish of pea shoots and white mushrooms, ready in just 5 minutes. Healthy, quick, and delicious vegetarian recipe."
-tags: [Recipe, Vegetarian, Quick Meal, Healthy, Salad, Easy]
+tags: [Vegetarian, Quick Meal, Healthy, Salad, Easy]
 date: 2025-04-12
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCVGf7tIL6WSqYu8ifFSuBFLb-eVK3AALbrTEbanfZRx_kCmE-QJnyAQADAgADdwADNgQ.png"
 ---

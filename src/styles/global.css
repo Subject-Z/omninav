@@ -15,7 +15,7 @@ body {
 
 .page-container {
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 1300px;
   padding: 50px 0 0 0;
 }
 
@@ -38,6 +38,9 @@ body {
     padding: 1.5rem;
   }
 
+  .masonry-container {
+    margin: 3em auto;
+  }
   .page-container {
     padding: 25px 0.5rem 0;
   }

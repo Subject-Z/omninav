@@ -1,7 +1,7 @@
 ---
 title: "Heavenly Sword, Mortal Fate"
 description: "Sword Saint Ren Wushuang reincarnates into Ouyang Fan, a talentless heir. Shunned by his sect and with his mother humiliated, he defies fate. Witness his epic comeback, protecting his mother and reclaiming his sword supremacy."
-tags: [Drama, Historical, Revenge, Faction]
+tags: [Historical, Revenge, Faction]
 date: 2025-04-08
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCXmf7wpxAvUFRE9iGUTXf8zueMw9uAALnrTEbanfZR28RbebPXnMsAQADAgADdwADNgQ.png"
 ---

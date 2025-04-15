@@ -1,7 +1,7 @@
 ---
 title: "The Day I Left Prison, I Ceased to Exist"
 description: "A story of betrayal and identity, as Lin Qian fights to reclaim her life after prison, uncovering family secrets and past grievances."
-tags: [Drama, Family, True/False Daughter, Face-Slapping, Revenge]
+tags: [Family, True/False Daughter, Face-Slapping, Revenge]
 date: 2025-04-13
 image: "https://im.gurl.eu.org/file/AgACAgEAAxkDAAJCTmf7o0paK8VGZLWHFHlPKdBuaxzVAALTrTEbanfZR66_6jLo5wiRAQADAgADdwADNgQ.jpg"
 ---
