@@ -194,3 +194,28 @@ import { categoryNames } from '../content/config';
     }
   }
 </style>
+
+<script>
+  function handleImageLoading() {
+    const images = document.querySelectorAll('.card-image');
+    
+    images.forEach(img => {
+      const imgElement = img as HTMLImageElement;
+      if (imgElement.complete && imgElement.naturalWidth > 0) {
+        imgElement.classList.add('loaded');
+      } else {
+        imgElement.addEventListener('load', () => {
+          imgElement.classList.add('loaded');
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handleImageLoading);
+  } else {
+    handleImageLoading();
+  }
+
+  window.addEventListener('load', handleImageLoading);
+</script>
