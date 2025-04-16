@@ -194,20 +194,3 @@ import { categoryNames } from '../content/config';
     }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const images = document.querySelectorAll('.card-image');
-    
-    images.forEach(img => {
-      const imgElement = img as HTMLImageElement;
-      if (imgElement.complete) {
-        imgElement.classList.add('loaded');
-      } else {
-        imgElement.addEventListener('load', () => {
-          imgElement.classList.add('loaded');
-        });
-      }
-    });
-  });
-</script>
