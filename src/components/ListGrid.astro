@@ -1,0 +1,201 @@
+---
+export interface GridItem {
+  title: string;
+  image?: string;
+  category?: string;
+  slug?: string;
+  date?: Date;
+  description?: string;
+}
+
+interface Props {
+  items: GridItem[];
+}
+
+const { 
+  items = []
+} = Astro.props;
+
+import { categoryNames } from '../content/config';
+---
+
+<div class="article-list">
+  {items.length > 0 && (
+    items.map(item => {
+      const articleLink = item.category && item.slug ? `/${item.category}/${item.slug}` : "#";
+      
+      return (
+        <article class="article-item">
+          <a href={articleLink} class="article-link">
+            <div class="article-layout">
+              {item.image && (
+                <div class="article-image">
+                  <img src={item.image} alt={item.title} />
+                </div>
+              )}
+              <div class="article-content">
+                <h2 class="article-title">{item.title}</h2>
+                
+                <div class="article-spacer"></div>
+                
+                {item.description && (
+                  <p class="article-description">{item.description}</p>
+                )}
+              </div>
+            </div>
+          </a>
+        </article>
+      )
+    })
+  )}
+</div>
+
+<style>
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 10rem auto 5rem;
+  }
+
+  .article-item {
+    border-radius: 12px;
+    background-color: #F5F2EC;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+  }
+
+  .article-item:hover .article-image::after {
+    opacity: 1;
+  }
+
+  .article-link {
+    display: block;
+    padding: 1rem;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  .article-layout {
+    display: flex;
+    gap: 1.5rem;
+    height: 100%;
+  }
+
+  .article-image {
+    position: relative;
+    flex-shrink: 0;
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .article-image::after {
+    content: "READ MORE";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .article-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .article-title {
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.3;
+  }
+  
+  .article-spacer {
+    flex-grow: 1;
+  }
+
+  .article-description {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  .empty-state {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    background: #f9f9f9;
+    border-radius: 12px;
+  }
+
+  .empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #666;
+  }
+
+  .empty-content svg {
+    color: #999;
+  }
+
+  .empty-content p {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: 480px) {
+    .article-layout {
+      flex-direction: column;
+    }
+
+    .article-image {
+      width: 100%;
+      height: 400px;
+    }
+    
+    .article-link {
+      padding: 1.25rem;
+    }
+    
+    .article-title {
+      font-size: 1.25rem;
+    }
+    
+    .article-description {
+      font-size: 0.9rem;
+    }
+
+    .article-list {
+    margin: 7rem auto 5rem;
+  }
+  }
+</style>

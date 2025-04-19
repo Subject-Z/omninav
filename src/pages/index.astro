@@ -2,44 +2,70 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NavigationBar from "../components/NavigationBar.astro";
-import ResponsiveGrid from "../components/ResponsiveGrid.astro";
-import { validCategories } from "../content/config";
+import Pagination from "../components/Pagination.astro";
+import ListGrid from "../components/ListGrid.astro";
+import type { GridItem } from "../components/ListGrid.astro";
+import { 
+  validCategories, 
+  type ContentEntry, 
+  pageSize, 
+  ensureTagsArray, 
+  homepageMetaTitle, 
+  homepageMetaDescription 
+} from "../content/config";
 
-const allContent = [];
+let allContent: ContentEntry[] = [];
 
 for (const category of validCategories) {
-  const typedCategory =
-    category as keyof import("astro:content").DataEntryMap;
-  const categoryContent = await getCollection(typedCategory).catch(() => []);
-
-  const filteredContent = categoryContent.map((item) => {
-    return {
+  try {
+    const typedCategory = category as keyof import("astro:content").DataEntryMap;
+    const categoryContent = await getCollection(typedCategory);
+    
+    const contentWithCategory = categoryContent.map(item => ({
       ...item,
-      category,
-    };
-  });
+      collection: category
+    })) as ContentEntry[];
 
-  allContent.push(...filteredContent);
+    allContent = [...allContent, ...contentWithCategory];
+  } catch (error) {
+    console.error(`Error fetching collection ${category}:`, error);
+  }
 }
 
-function ensureTagsArray(tags: string | string[] | undefined): string[] {
-  if (!tags) return [];
-  return Array.isArray(tags) ? tags : [tags];
-}
+allContent.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return dateB - dateA;
+});
 
-const gridItems = allContent.map(item => ({
+const pageContent = allContent.slice(0, pageSize);
+
+const gridItems: GridItem[] = pageContent.map(item => ({
   title: item.data.title || "Untitled",
   image: item.data.image,
   tags: ensureTagsArray(item.data.tags),
-  category: item.category,
   slug: item.slug,
-  date: item.data.date
+  date: item.data.date ? new Date(item.data.date) : undefined,
+  description: item.data.description,
+  category: item.collection
 }));
+
+const totalItems = allContent.length;
+const totalPages = Math.ceil(totalItems / pageSize);
 ---
 
-<BaseLayout>
+<BaseLayout title={homepageMetaTitle} description={homepageMetaDescription}>
   <NavigationBar />
   <main class="page-container">
-    <ResponsiveGrid items={gridItems} showCategory={true} />
+    <section class="hero">
+    </section>
+    
+    <ListGrid items={gridItems} />
+    
+    <Pagination
+      currentPage={1}
+      totalPages={totalPages}
+      baseUrl="/"
+    />
   </main>
 </BaseLayout>

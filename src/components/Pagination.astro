@@ -1,0 +1,143 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  showPrevNext?: boolean;
+  maxPageNumbers?: number;
+}
+
+const { 
+  currentPage, 
+  totalPages, 
+  baseUrl,
+  showPrevNext = true,
+  maxPageNumbers = 5
+} = Astro.props;
+
+function getPageUrl(pageNum: number): string {
+  if (baseUrl === '/') {
+    return pageNum === 1 ? "/" : `/page/${pageNum}`;
+  }
+  
+  const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  return pageNum === 1 ? base : `${base}/${pageNum}`;
+}
+
+const getVisiblePageNumbers = () => {
+  if (totalPages <= maxPageNumbers) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  
+  const halfMaxPages = Math.floor(maxPageNumbers / 2);
+  let startPage = Math.max(currentPage - halfMaxPages, 1);
+  let endPage = Math.min(startPage + maxPageNumbers - 1, totalPages);
+  
+  if (endPage - startPage + 1 < maxPageNumbers) {
+    startPage = Math.max(endPage - maxPageNumbers + 1, 1);
+  }
+  
+  return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+};
+
+const visiblePages = getVisiblePageNumbers();
+---
+
+{totalPages > 1 && (
+  <nav aria-label="分页导航">
+    <div class="pagination">
+      {showPrevNext && (
+        <a 
+          href={currentPage > 1 ? getPageUrl(currentPage - 1) : "#"}
+          class:list={[{ disabled: currentPage === 1 }]}
+          aria-label="上一页"
+          aria-disabled={currentPage === 1}
+        >
+          &laquo;
+        </a>
+      )}
+      
+      {currentPage > 2 && visiblePages[0] > 1 && (
+        <>
+          <a href={getPageUrl(1)}>1</a>
+          
+          {visiblePages[0] > 2 && (
+            <span class="ellipsis">...</span>
+          )}
+        </>
+      )}
+      
+      {visiblePages.map(pageNum => (
+        pageNum === currentPage ? (
+          <a href="#" class="active" aria-current="page">{pageNum}</a>
+        ) : (
+          <a href={getPageUrl(pageNum)}>{pageNum}</a>
+        )
+      ))}
+      
+      {currentPage < totalPages - 1 && visiblePages[visiblePages.length - 1] < totalPages && (
+        <>
+          {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
+            <span class="ellipsis">...</span>
+          )}
+          
+          <a href={getPageUrl(totalPages)}>{totalPages}</a>
+        </>
+      )}
+      
+      {showPrevNext && (
+        <a 
+          href={currentPage < totalPages ? getPageUrl(currentPage + 1) : "#"}
+          class:list={[{ disabled: currentPage === totalPages }]}
+          aria-label="下一页"
+          aria-disabled={currentPage === totalPages}
+        >
+          &raquo;
+        </a>
+      )}
+    </div>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 2.5rem 0;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .pagination a, .pagination .ellipsis {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  
+  .pagination a.active {
+    background-color: #F44336;
+    color: white;
+  }
+  
+  .pagination a:hover:not(.active) {
+    background-color: #ddd;
+  }
+  
+  .pagination a.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  .ellipsis {
+    color: #888;
+    padding: 8px 16px;
+  }
+  
+  @media (max-width: 640px) {
+    .pagination a, .pagination .ellipsis {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+    }
+  }
+</style>

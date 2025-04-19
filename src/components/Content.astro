@@ -11,178 +11,184 @@ interface Props {
 
 const { entry } = Astro.props;
 const { Content: EntryContent } = await entry.render();
-const tags = entry.data.tags || [];
+const tags = Array.isArray(entry.data.tags)
+  ? entry.data.tags
+  : entry.data.tags
+    ? [entry.data.tags]
+    : [];
+const englishTitle = entry.data.title || "";
+const chineseTitle = entry.data.chineseTitle || "";
 ---
 
 <article class="content-detail">
+  <div class="content-header">
+    <div class="title-container">
+      <h1 class="english-title">{englishTitle}</h1>
+      {chineseTitle && <div class="chinese-title">{chineseTitle}</div>}
+      <div class="tags-container">
+        {
+          tags.map((tag, index) => (
+            <>
+              <span class="tag">{tag}</span>
+              {index < tags.length - 1 && <span class="tag-separator">/</span>}
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
   <div class="content-body">
     <EntryContent />
   </div>
 </article>
 
-<script define:vars={{ tags }}>
+<script>
   document.addEventListener("DOMContentLoaded", () => {
-    const imageTextBlocks = document.querySelectorAll(".image-text-block");
-    imageTextBlocks.forEach((block) => {
-      const chineseTitle = block.querySelector(".chinese-title");
-      if (chineseTitle) {
-        let tagsContainer = document.createElement("div");
-        tagsContainer.className = "content-tags";
-        tags.forEach((tag) => {
-          const tagSpan = document.createElement("span");
-          tagSpan.className = "tag";
-          tagSpan.textContent = tag;
-          tagsContainer.appendChild(tagSpan);
-        });
-        chineseTitle.insertAdjacentElement('afterend', tagsContainer);
-      }
-    });
-    
-    const contentBlocks = document.querySelectorAll(".content-block");
+    const contentBlocks = document.querySelectorAll(
+      ".content-block, .image-text-block",
+    );
     contentBlocks.forEach((block) => {
-      const chineseTitle = block.querySelector(".chinese-title");
-      if (chineseTitle) {
-        let tagsContainer = document.createElement("div");
-        tagsContainer.className = "content-tags";
-        tags.forEach((tag) => {
-          const tagSpan = document.createElement("span");
-          tagSpan.className = "tag";
-          tagSpan.textContent = tag;
-          tagsContainer.appendChild(tagSpan);
-        });
-        chineseTitle.insertAdjacentElement('afterend', tagsContainer);
-      }
+      block.classList.add("content-section");
     });
 
-    const contentImages = document.querySelectorAll(".image-text-block img");
-    contentImages.forEach(img => {
-      img.onerror = function() {
+    const contentImages = document.querySelectorAll("img");
+    contentImages.forEach((img) => {
+      img.onerror = function () {
         this.classList.add("error");
         this.src = "/images/image-placeholder.webp";
       };
-    });
-
-    const textContentChineseTitles = document.querySelectorAll(".text-content .chinese-title");
-    textContentChineseTitles.forEach(title => {
-      const divider = document.createElement("hr");
-      divider.className = "title-divider";
-      
-      const nextElement = title.nextElementSibling;
-      if (nextElement && nextElement.classList.contains("content-tags")) {
-        nextElement.insertAdjacentElement('afterend', divider);
-      } else {
-        title.insertAdjacentElement('afterend', divider);
-      }
     });
   });
 </script>
 
 <style is:global>
   .content-detail {
-    margin: 8rem auto;
+    max-width: 1000px;
+    margin: 10rem auto;
+    padding: 40px 20px;
     background-color: #f5f2ec;
     border-radius: 8px;
-    padding: 2rem;
+  }
+
+  .content-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #d4b483;
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .chinese-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #8b2e2e;
+    letter-spacing: 5px;
+    padding-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #5a3921;
+    margin: 0 auto 20px;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5a3921;
+    margin: 0 auto 20px;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+  }
+
+  .tag {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  .tag-separator {
+    color: #5a3921;
+    margin: 0 2px;
+  }
+
+  .content-section {
+    display: block;
+    margin-bottom: 40px;
+  }
+
+  .content-section .text-content {
+    padding: 0;
+    margin-bottom: 20px;
+  }
+
+  .content-section .image-container {
+    padding: 0;
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+  }
+
+  .content-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .title {
-    font-size: 2.2rem;
-    color: #8b2e2e;
-  }
-
-  .content-body p {
-    margin-bottom: 1.5rem;
-  }
-
-  .content-body h1 {
-    margin-top: 0;
-  }
-  
-  .english-title {
-    color: #8b2e2e;
-    font-size: 2rem;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  .chinese-title {
-    color: #333;
-    font-size: 1.4rem;
-    font-weight: 500;
-    display: block;
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .title-divider {
-    border: 0;
-    height: 1px;
-    background-color: #E6E1D6;
-    margin: 0.5rem 0 1.5rem;
-    width: 100%;
-  }
-  
-  .content-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-  
-  .content-tags .tag {
-    background: #E6E1D6;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    color: #555;
-    display: inline-block;
-  }
-  
-  .english-description {
-    font-size: 1.1rem;
-    line-height: 1.5em;
-  }
-
-  .image-text-block {
-    display: flex;
-    align-items: flex-start;
-    gap: 25px;
-    clear: both;
-    margin-bottom: 3rem;
-  }
-
-  .image-text-block:last-child {
-    margin-bottom: 0;
-  }
-
-  .image-container {
-    flex-basis: 50%;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    background-color: #f0f0f0;
-    height: auto;
-  }
-  
-  .image-text-block img {
-    position: relative;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    display: block;
-  }
-
-  .image-text-block img.error {
+  .content-section img.error {
     object-fit: contain;
     background-color: #f5f5f5;
   }
 
-  .image-text-block .text-content {
-    flex: 1;
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    color: #8b2e2e;
+    font-size: 1.5rem;
+    margin-top: 0;
+  }
+
+  p {
+    text-align: justify;
+    margin-bottom: 20px;
+  }
+
+  .content-body h1,
+  .content-body h2,
+  .content-body h3 {
+    color: #8b2e2e;
+  }
+
+  .content-body {
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   .coupon-list {
@@ -195,165 +201,61 @@ const tags = entry.data.tags || [];
   }
 
   .coupon-item {
-    background: linear-gradient(135deg, #fff5ea 0%, #ffefdc 100%);
-    border-radius: 10px;
+    background: #f9f5f0;
+    border: 1px solid #d4b483;
+    border-radius: 8px;
     padding: 16px 18px;
-    position: relative;
-    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.1);
     transition: all 0.3s ease;
-    border-left: 5px solid #ff6b6b;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
   }
 
   .coupon-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.15);
-    background: linear-gradient(135deg, #fff2e3 0%, #ffe6c9 100%);
-  }
-
-  .coupon-item:before {
-    content: "";
-    position: absolute;
-    left: -5px;
-    top: 0;
-    height: 100%;
-    width: 5px;
-    background: linear-gradient(to bottom, #ff5252, #ff8b8b);
-  }
-
-  .coupon-item:after {
-    content: "";
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    border-right: 2.5px solid #ff6b6b;
-    border-bottom: 2.5px solid #ff6b6b;
-    rotate: -45deg;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .coupon-item a.coupon-description {
-    color: #333;
+    color: #5a3921;
     text-decoration: none;
     font-weight: 600;
     font-size: 1.05rem;
     display: block;
-    padding-right: 25px;
     transition: all 0.2s ease;
   }
 
   .coupon-item a.coupon-description:hover {
-    color: #e94949;
-  }
-
-  .coupon-item::before {
-    content: "";
-    position: absolute;
-    left: -5px;
-    height: 100%;
-    width: 5px;
-    top: 0;
-    background: linear-gradient(to bottom, #ff5252, #ff8b8b);
-  }
-
-  .coupon-item::after {
-    content: "";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    border-right: 2.5px solid #ff6b6b;
-    border-bottom: 2.5px solid #ff6b6b;
-    rotate: -45deg;
-    transition: all 0.2s ease;
-  }
-
-  .coupon-item:hover::after {
-    right: 8px;
-    border-right: 2.5px solid #e94949;
-    border-bottom: 2.5px solid #e94949;
+    color: #8b2e2e;
   }
 
   @media (max-width: 768px) {
-    .content-detail {
-      padding: 1.5rem;
+    .tags-container {
+      margin-top: 10px;
     }
-    
-    .coupon-list {
-      width: 100%;
-      gap: 14px;
+
+    .tag {
+      font-size: 0.8rem;
     }
-    
-    .english-title {
-      font-size: 1.5rem;
-    }
-    
-    .chinese-title {
+
+    h1 {
       font-size: 1.2rem;
     }
-    
-    .coupon-item {
-      padding: 12px 15px;
+    h2 {
+      font-size: 1.1rem;
     }
 
-    .coupon-item a.coupon-description {
-      font-size: 0.95rem;
+    .tag {
+      font-size: 0.8rem;
     }
 
-    .title {
-      font-size: 1.8rem;
-    }
-  }
-  
-  @media (max-width: 425px) {
-    .image-text-block {
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    .image-container {
-      width: 100%;
-    }
-    
-    .text-content {
-      width: 100%;
-    }
-    
-    .image-text-block img {
-      max-width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-      margin-bottom: 10px;
-    }
-    
-    .coupon-item {
-      padding: 10px 12px;
-    }
-
-    .coupon-item a.coupon-description {
+    .chinese-title {
       font-size: 0.9rem;
-      padding-right: 20px;
     }
-    
-    .coupon-item::after {
-      width: 10px;
-      height: 10px;
-      right: 10px;
+
+    p {
+      font-size: 0.9rem;
     }
-    
-    .coupon-item:hover::after {
-      right: 7px;
-    }
-    
-    .title {
-      font-size: 1.6rem;
+
+    .content-detail {
+      margin: 7rem auto;
     }
   }
 </style>
