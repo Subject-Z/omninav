@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NavigationBar from '../components/NavigationBar.astro';
 import Pagination from '../components/Pagination.astro';
 import ListGrid from '../components/ListGrid.astro';
-import { validCategories, categoryNames, metaTitleNames } from '../content/config';
+import { validCategories, categoryNames, metaTitleNames, getCategoryMetaTitle, getCategoryMetaDescription } from '../content/config';
 import type { CategoryKey } from '../content/config'; 
 import type { CollectionEntry } from 'astro:content';
 
@@ -68,8 +68,8 @@ export async function getStaticPaths() {
 const { category, items = [], currentPage = 1, totalPages = 1 } = Astro.props;
 const typedCategory = category as CategoryKey;
 
-const pageTitle = metaTitleNames[typedCategory] || categoryNames[typedCategory] || 'OmniNav';
-const pageDescription = `${pageTitle} content${currentPage > 1 ? ` - Page ${currentPage}` : ''}`;
+const pageTitle = getCategoryMetaTitle(typedCategory);
+const pageDescription = getCategoryMetaDescription(typedCategory);
 
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
   if (!tags) return [];
@@ -102,11 +102,3 @@ const baseUrl = `/${typedCategory}/page`;
     />
   </main>
 </BaseLayout>
-
-<style>
-  .page-indicator {
-    margin-top: 0.5rem;
-    font-size: 1.2rem;
-    color: #666;
-  }
-</style>

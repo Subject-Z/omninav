@@ -4,7 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import NavigationBar from '../../../components/NavigationBar.astro';
 import Pagination from '../../../components/Pagination.astro';
 import ListGrid from '../../../components/ListGrid.astro';
-import { validCategories, categoryNames, metaTitleNames } from '../../../content/config';
+import { validCategories, categoryNames, metaTitleNames, getCategoryPagedMetaTitle, getCategoryPagedMetaDescription } from '../../../content/config';
 import type { CategoryKey } from '../../../content/config';
 
 export async function getStaticPaths() {
@@ -54,8 +54,8 @@ export async function getStaticPaths() {
 const { category, items = [], currentPage = 1, totalPages = 1 } = Astro.props;
 const typedCategory = category as CategoryKey;
 
-const pageTitle = `${metaTitleNames[typedCategory] || categoryNames[typedCategory]} - Page ${currentPage}`;
-const pageDescription = `${metaTitleNames[typedCategory] || categoryNames[typedCategory]} content - Page ${currentPage}`;
+const pageTitle = getCategoryPagedMetaTitle(typedCategory, currentPage);
+const pageDescription = getCategoryPagedMetaDescription(typedCategory, currentPage);
 
 function ensureTagsArray(tags: string | string[] | undefined): string[] {
   if (!tags) return [];

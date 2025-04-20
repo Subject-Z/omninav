@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { homepageMetaTitle, homepageMetaDescription } from '../content/config';
 
 interface Props {
   title?: string;
@@ -9,8 +10,8 @@ interface Props {
 }
 
 const { 
-  title = 'OmniNav | Your Guide to Chinese Culture: Film, Food & Travel',
-  description = 'Discover China with OmniNav! Get reviews & recommendations for Chinese dramas, movies, anime, games & novels. Explore authentic food, travel guides & cultural insights.',
+  title = homepageMetaTitle,
+  description = homepageMetaDescription,
   canonicalUrl = 'https://www.omninav.uk',
   imageUrl = 'https://chat.deepseek.com/deepseek-chat.jpeg'
 } = Astro.props;

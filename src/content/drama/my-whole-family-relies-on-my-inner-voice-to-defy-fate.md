@@ -1,5 +1,5 @@
 ---
-title: "My Whole Family Relies on My Inner Voice to Defy Fate - A Satisfying Transmigration Drama"
+title: "My Whole Family Relies on My Inner Voice to Defy Fate: A Satisfying Transmigration Drama"
 chineseTitle: "全家靠我心声逆天改命"
 description: "A hilarious, fast-paced transmigration drama where a cultivator's sarcastic inner voice saves her doomed noble family. Packed with instant karma, witty twists, and satisfying payoffs-pure binge-worthy fun!"
 tags: [transmigration, drama, review, inner-voice, family-fate, female-empowerment]

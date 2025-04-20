@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { validCategories } from "../../content/config";
 import type { CategoryKey } from "../../content/config";
+import { getHomePagedMetaTitle, getHomePagedMetaDescription } from "../../content/config";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NavigationBar from "../../components/NavigationBar.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -77,11 +78,15 @@ const gridItems = pageContent.map(item => ({
   description: item.data.description
 }));
 
-const metaTitle = `OmniNav - 第${page}页`;
-const metaDescription = `OmniNav - 第${page}页`;
+const metaTitle = getHomePagedMetaTitle(page);
+const metaDescription = getHomePagedMetaDescription(page);
+const homepageUrl = 'https://www.omninav.uk';
 ---
 
-<BaseLayout title={metaTitle} description={metaDescription}>
+<BaseLayout 
+  title={metaTitle} 
+  description={metaDescription}
+  canonicalUrl={homepageUrl}>
   <NavigationBar />
   <main class="page-container">
     <header class="category-header">

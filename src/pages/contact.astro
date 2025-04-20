@@ -4,8 +4,8 @@ import NavigationBar from "../components/NavigationBar.astro";
 ---
 
 <BaseLayout
-  title="Contact & About OmniNav | Your Guide to Chinese Culture"
-  description="Learn about OmniNav and get in touch with us. We're here to guide you through Chinese culture, entertainment, food, and travel experiences."
+    title="Contact & About OmniNav | Your Guide to Chinese Culture"
+    description="Learn about OmniNav and get in touch with us. We're here to guide you through Chinese culture, entertainment, food, and travel experiences."
 >
     <NavigationBar />
     <main class="page-container">
@@ -14,7 +14,13 @@ import NavigationBar from "../components/NavigationBar.astro";
 
             <div class="about-section">
                 <p>
-                    OmniNav is designed to guide you through the diverse wonders of China. With curated recommendations, we connect you to the stories, flavors, and experiences of China's rich heritage and vibrant present. From captivating Chinese dramas, movies, anime, games, and novels to authentic cuisine, hidden travel gems, and the dynamic Chinese lifestyle, we celebrate it all!
+                    OmniNav is designed to guide you through the diverse wonders
+                    of China. With curated recommendations, we connect you to
+                    the stories, flavors, and experiences of China's rich
+                    heritage and vibrant present. From captivating Chinese
+                    dramas, movies, anime, games, and novels to authentic
+                    cuisine, hidden travel gems, and the dynamic Chinese
+                    lifestyle, we celebrate it all!
                 </p>
             </div>
             <div class="contact-section">
@@ -24,7 +30,9 @@ import NavigationBar from "../components/NavigationBar.astro";
                 </p>
                 <div class="email-container">
                     <span class="email-label">Email:&nbsp;</span>
-                    <span id="email-text" class="copyable-email">william@omninav.uk</span>
+                    <span id="email-text" class="copyable-email"
+                        >william@omninav.uk</span
+                    >
                     <span id="copy-status" class="copy-status"></span>
                 </div>
             </div>
@@ -33,31 +41,35 @@ import NavigationBar from "../components/NavigationBar.astro";
 </BaseLayout>
 
 <style>
-     .contact-info-container {
-        background-color: #F5F2EC;
+    .contact-info-container {
+        background-color: #f5f2ec;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 2.5rem;
         margin: 10rem auto;
     }
-    
+
     .page-title {
         font-size: 2.5rem;
         margin-bottom: 1.5rem;
         text-align: center;
         padding-bottom: 1rem;
     }
-    
+
     .about-section {
         margin-bottom: 3rem;
         line-height: 1.6;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
-          
+
+    .contact-section {
+        font-size: 1.3rem;
+    }
+
     .contact-methods {
         margin-top: 1.5rem;
     }
-    
+
     .email-container {
         display: inline-flex;
         align-items: center;
@@ -72,25 +84,26 @@ import NavigationBar from "../components/NavigationBar.astro";
         border: none;
         margin-top: 1rem;
     }
-    
+
     .email-container:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-    
+
     .email-container:active {
         transform: translateY(0);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
-    
-    .copyable-email, .email-label {
+
+    .copyable-email,
+    .email-label {
         font-size: 1.1rem;
         color: #black;
         font-weight: 500;
         transition: color 0.2s;
         padding: 0.5rem 0;
     }
-    
+
     .copy-status {
         position: absolute;
         top: 0;
@@ -100,7 +113,7 @@ import NavigationBar from "../components/NavigationBar.astro";
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #8B2E2E;
+        background-color: #8b2e2e;
         color: white;
         font-size: 1rem;
         font-weight: 500;
@@ -109,13 +122,13 @@ import NavigationBar from "../components/NavigationBar.astro";
         transition: opacity 0.3s ease;
         pointer-events: none;
     }
-    
+
     @media (max-width: 768px) {
-                .contact-info-container {
+        .contact-info-container {
             padding: 1.5rem;
             margin: 7rem auto;
         }
-        
+
         .email-container {
             flex-direction: column;
             align-items: flex-start;
@@ -137,7 +150,7 @@ import NavigationBar from "../components/NavigationBar.astro";
                     .then(() => {
                         copyStatus.textContent = "Copied!";
                         copyStatus.style.opacity = "1";
-                        
+
                         setTimeout(() => {
                             copyStatus.style.opacity = "0";
                         }, 2000);

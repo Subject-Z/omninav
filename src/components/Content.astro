@@ -97,9 +97,9 @@ const chineseTitle = entry.data.chineseTitle || "";
   h1 {
     font-size: 2.5rem;
     font-weight: 700;
-    font-style: italic;
     color: #5a3921;
     margin: 0 auto 20px;
+    line-height: 1.5;
   }
 
   h2 {
@@ -109,8 +109,9 @@ const chineseTitle = entry.data.chineseTitle || "";
     margin: 0 auto 20px;
   }
 
-  p {
-    font-size: 1.2rem;
+  p, li {
+    font-size: 1.3rem;
+    line-height: 1.7;
   }
 
   .tags-container {
@@ -123,7 +124,6 @@ const chineseTitle = entry.data.chineseTitle || "";
 
   .tag {
     font-size: 0.9rem;
-    font-style: italic;
   }
 
   .tag-separator {
@@ -149,7 +149,7 @@ const chineseTitle = entry.data.chineseTitle || "";
   }
 
   .content-section img {
-    max-width: 100%;
+    max-width: 400px;
     height: auto;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -162,7 +162,7 @@ const chineseTitle = entry.data.chineseTitle || "";
 
   img {
     display: block;
-    max-width: 100%;
+    max-width: 400px;
     height: auto;
     margin: 0 auto;
     border-radius: 4px;

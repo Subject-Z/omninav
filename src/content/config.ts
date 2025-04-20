@@ -81,8 +81,32 @@ export const metaTitleNames = {
 };
 
 // 首页元数据
-export const homepageMetaTitle = "OmniNav";
-export const homepageMetaDescription = "Browse Chinese drama, anime, movies and more";
+export const homepageMetaTitle = "OmniNav | Chinese drama, anime, movies and more";
+export const homepageMetaDescription = "Discover China with OmniNav! Get reviews & recommendations for Chinese dramas, movies, anime, games & novels. Explore authentic food, travel guides & cultural insights.";
+
+// 首页分页元数据 (格式化函数)
+export function getHomePagedMetaTitle(page: number): string {
+  return `OmniNav - Page ${page}`;
+}
+export function getHomePagedMetaDescription(page: number): string {
+  return `Continue your journey with OmniNav's Page ${page}: Curated drama, anime, novels, and insider travel tips for an authentic Chinese experience. Dive deeper now!`;
+}
+
+// 分类页元数据 (格式化函数)
+export function getCategoryMetaTitle(category: CategoryKey): string {
+  return `${metaTitleNames[category]} | OmniNav`;
+}
+export function getCategoryMetaDescription(category: CategoryKey): string {
+  return `Explore the best ${metaTitleNames[category]} with OmniNav. Discover authentic recommendations, reviews, and insights into China's most popular entertainment and cultural experiences.`;
+}
+
+// 分类分页元数据 (格式化函数)
+export function getCategoryPagedMetaTitle(category: CategoryKey, page: number): string {
+  return `${metaTitleNames[category]} | Page ${page} | OmniNav`;
+}
+export function getCategoryPagedMetaDescription(category: CategoryKey, page: number): string {
+  return `Continue exploring ${metaTitleNames[category]} on page ${page}. Find more curated recommendations and authentic insights on Chinese culture with OmniNav.`;
+}
 
 // 分页设置
 export const pageSize = 10;
