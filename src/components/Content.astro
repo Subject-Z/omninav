@@ -58,6 +58,12 @@ const chineseTitle = entry.data.chineseTitle || "";
         this.classList.add("error");
         this.src = "/images/image-placeholder.webp";
       };
+      
+      const imgSrc = img.getAttribute('src');
+      if (imgSrc && imgSrc.includes('mmbiz.qpic.cn')) {
+        img.setAttribute('referrerpolicy', 'no-referrer');
+        img.setAttribute('src', `${imgSrc}?${new Date().getTime()}`);
+      }
     });
   });
 </script>
@@ -149,7 +155,7 @@ const chineseTitle = entry.data.chineseTitle || "";
   }
 
   .content-section img {
-    max-width: 400px;
+    max-width: 700px;
     height: auto;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -162,9 +168,9 @@ const chineseTitle = entry.data.chineseTitle || "";
 
   img {
     display: block;
-    max-width: 400px;
+    max-width: 700px;
     height: auto;
-    margin: 0 auto;
+    margin: 2rem auto;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }

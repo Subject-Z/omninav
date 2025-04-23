@@ -30,7 +30,7 @@ import { categoryNames } from '../content/config';
             <div class="article-layout">
               {item.image && (
                 <div class="article-image">
-                  <img src={item.image} alt={item.title} />
+                  <img src={item.image} alt={item.title} referrerpolicy="no-referrer" />
                 </div>
               )}
               <div class="article-content">
@@ -49,6 +49,22 @@ import { categoryNames } from '../content/config';
     })
   )}
 </div>
+
+<script>
+  function handleWeiatImages() {
+    const imgElements = document.querySelectorAll('.article-image img');
+    
+    imgElements.forEach(img => {
+      const imgSrc = img.getAttribute('src');
+      if (imgSrc && imgSrc.includes('mmbiz.qpic.cn')) {
+        img.setAttribute('referrerpolicy', 'no-referrer');
+        img.setAttribute('src', `${imgSrc}?${new Date().getTime()}`);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', handleWeiatImages);
+</script>
 
 <style>
   .article-list {
