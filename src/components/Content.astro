@@ -52,12 +52,6 @@ const chineseTitle = entry.data.chineseTitle || "";
         this.classList.add("error");
         this.src = "/images/image-placeholder.webp";
       };
-      
-      const imgSrc = img.getAttribute('src');
-      if (imgSrc && imgSrc.includes('mmbiz.qpic.cn')) {
-        img.setAttribute('referrerpolicy', 'no-referrer');
-        img.setAttribute('src', `${imgSrc}?${new Date().getTime()}`);
-      }
     });
   }
 
@@ -72,7 +66,6 @@ const chineseTitle = entry.data.chineseTitle || "";
     handleImages();
   });
 
-  // 添加一个MutationObserver来处理动态加载的图片
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList') {
