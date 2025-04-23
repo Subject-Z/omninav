@@ -44,17 +44,11 @@ const chineseTitle = entry.data.chineseTitle || "";
 </article>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const contentBlocks = document.querySelectorAll(
-      ".content-block, .image-text-block",
-    );
-    contentBlocks.forEach((block) => {
-      block.classList.add("content-section");
-    });
-
-    const contentImages = document.querySelectorAll("img");
-    contentImages.forEach((img) => {
-      img.onerror = function () {
+  function handleImages() {
+    const allImages = document.querySelectorAll('img');
+    
+    allImages.forEach(img => {
+      img.onerror = function() {
         this.classList.add("error");
         this.src = "/images/image-placeholder.webp";
       };
@@ -65,6 +59,37 @@ const chineseTitle = entry.data.chineseTitle || "";
         img.setAttribute('src', `${imgSrc}?${new Date().getTime()}`);
       }
     });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const contentBlocks = document.querySelectorAll(
+      ".content-block, .image-text-block",
+    );
+    contentBlocks.forEach((block) => {
+      block.classList.add("content-section");
+    });
+
+    handleImages();
+  });
+
+  // 添加一个MutationObserver来处理动态加载的图片
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        const addedNodes = Array.from(mutation.addedNodes);
+        if (addedNodes.some(node => 
+          node.nodeName === 'IMG' || 
+          (node.nodeType === 1 && (node as Element).querySelector('img'))
+        )) {
+          handleImages();
+        }
+      }
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
 </script>
 
