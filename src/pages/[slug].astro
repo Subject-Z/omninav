@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import Content from '../components/Content.astro';
+import type { GetStaticPathsResult } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Props = {
+  entry: CollectionEntry<keyof import('astro:content').DataEntryMap>;
+}
+
+export async function getStaticPaths() {
+  const paths: GetStaticPathsResult = [];
+  
+  const collections = Object.keys(await import.meta.glob('/src/content/**/*.{md,mdx}'))
+    .map(path => {
+      const match = path.match(/\/src\/content\/([^/]+)\//);
+      return match ? match[1] : null;
+    })
+    .filter((value, index, self) => value && self.indexOf(value) === index) as string[];
+  
+  for (const collection of collections) {
+    const typedCollection = collection as keyof import('astro:content').DataEntryMap;
+    try {
+      const items = await getCollection(typedCollection);
+      
+      for (const item of items) {
+        paths.push({
+          params: { 
+            slug: item.id 
+          },
+          props: { 
+            entry: item 
+          }
+        });
+      }
+    } catch (error) {
+      console.error(`Error loading collection ${collection}:`, error);
+    }
+  }
+
+  return paths;
+}
+
+const { entry } = Astro.props as Props;
+const { data } = entry;
+const { slug } = Astro.params;
+
+const pageTitle = data.title;
+const pageDescription = data.description;
+
+const canonicalUrl = `https://www.omninav.uk/${slug}`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} canonicalUrl={canonicalUrl} imageUrl={data.image}>
+  <SearchBar />
+
+  <main class="page-container">
+    <Content entry={entry} />
+  </main>
+</BaseLayout>

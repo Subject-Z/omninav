@@ -2,7 +2,6 @@
 export interface GridItem {
   title: string;
   image?: string;
-  category?: string;
   slug?: string;
   date?: Date;
   description?: string;
@@ -15,18 +14,16 @@ interface Props {
 const { 
   items = []
 } = Astro.props;
-
-import { categoryNames } from '../content/config';
 ---
 
 <div class="article-list">
   {items.length > 0 && (
     items.map(item => {
-      const articleLink = item.category && item.slug ? `/${item.category}/${item.slug}` : "#";
+      const articleLink = item.slug ? `/${item.slug}` : "#";
       
       return (
         <article class="article-item">
-          <a href={articleLink} class="article-link">
+          <a href={articleLink} class="article-link" target="_blank">
             <div class="article-layout">
               {item.image && (
                 <div class="article-image">
@@ -57,7 +54,7 @@ import { categoryNames } from '../content/config';
     gap: 1.5rem;
     width: 100%;
     max-width: 1000px;
-    margin: 10rem auto 5rem;
+    margin: 7rem auto 5rem;
   }
 
   .article-item {
@@ -195,7 +192,7 @@ import { categoryNames } from '../content/config';
     }
 
     .article-list {
-    margin: 7rem auto 5rem;
+    margin: 5rem auto 5rem;
   }
   }
 </style>

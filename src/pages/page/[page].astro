@@ -1,36 +1,16 @@
 ---
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import { validCategories } from "../../content/config";
-import type { CategoryKey } from "../../content/config";
+import { pageSize, ensureTagsArray } from "../../content/config";
 import { getHomePagedMetaTitle, getHomePagedMetaDescription } from "../../content/config";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import NavigationBar from "../../components/NavigationBar.astro";
+import SearchBar from "../../components/SearchBar.astro";
 import Pagination from "../../components/Pagination.astro";
 import ListGrid from "../../components/ListGrid.astro";
 
-type ContentItem = CollectionEntry<CategoryKey> & { category: CategoryKey };
-
 export async function getStaticPaths() {
-  let allContent: ContentItem[] = [];
-
-  for (const category of validCategories) {
-    try {
-      const typedCategory = category as CategoryKey;
-      const categoryContent = await getCollection(typedCategory);
-      
-      const contentWithCategory = categoryContent.map(item => {
-        return {
-          ...item,
-          category: typedCategory
-        } as ContentItem;
-      });
-
-      allContent = [...allContent, ...contentWithCategory];
-    } catch (error) {
-      console.error(`Error fetching collection ${category}:`, error);
-    }
-  }
+  const posts = await getCollection("posts");
+  
+  let allContent = posts;
 
   allContent.sort((a, b) => {
     const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
@@ -38,7 +18,6 @@ export async function getStaticPaths() {
     return dateB - dateA;
   });
 
-  const pageSize = 10;
   const totalPages = Math.ceil(allContent.length / pageSize);
   
   const paths = [];
@@ -63,17 +42,11 @@ export async function getStaticPaths() {
 
 const { page = 1, pageContent = [], totalPages = 1 } = Astro.props;
 
-function ensureTagsArray(tags: string | string[] | undefined): string[] {
-  if (!tags) return [];
-  return Array.isArray(tags) ? tags : [tags];
-}
-
 const gridItems = pageContent.map(item => ({
   title: item.data.title || "Untitled",
   image: item.data.image,
   tags: ensureTagsArray(item.data.tags),
-  category: item.category,
-  slug: item.slug,
+  slug: item.id,
   date: item.data.date,
   description: item.data.description
 }));
@@ -87,7 +60,7 @@ const homepageUrl = 'https://www.omninav.uk';
   title={metaTitle} 
   description={metaDescription}
   canonicalUrl={homepageUrl}>
-  <NavigationBar />
+  <SearchBar />
   <main class="page-container">
     <header class="category-header">
     </header>
@@ -106,10 +79,5 @@ const homepageUrl = 'https://www.omninav.uk';
   .category-header {
     margin-bottom: 2rem;
     text-align: center;
-  }
-  
-  .page-indicator {
-    font-size: 1.2rem;
-    color: #666;
   }
 </style>

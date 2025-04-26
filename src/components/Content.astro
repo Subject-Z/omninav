@@ -1,16 +1,15 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { type ContentEntry } from "../content/config";
 
-type AnyCollectionEntry = CollectionEntry<
-  keyof import("astro:content").DataEntryMap
->;
+type AnyCollectionEntry = CollectionEntry<keyof import("astro:content").DataEntryMap>;
 
 interface Props {
   entry: AnyCollectionEntry;
 }
 
 const { entry } = Astro.props;
-const { Content: EntryContent } = await entry.render();
+const { Content: EntryContent } = await (entry as ContentEntry).render();
 const tags = Array.isArray(entry.data.tags)
   ? entry.data.tags
   : entry.data.tags
@@ -27,7 +26,7 @@ const chineseTitle = entry.data.chineseTitle || "";
       {chineseTitle && <div class="chinese-title">{chineseTitle}</div>}
       <div class="tags-container">
         {
-          tags.map((tag, index) => (
+          tags.map((tag: string, index: number) => (
             <>
               <span class="tag">{tag}</span>
               {index < tags.length - 1 && <span class="tag-separator">/</span>}
@@ -89,7 +88,7 @@ const chineseTitle = entry.data.chineseTitle || "";
 <style is:global>
   .content-detail {
     max-width: 1000px;
-    margin: 10rem auto;
+    margin: 7rem auto;
     padding: 40px 20px;
     background-color: #f5f2ec;
     border-radius: 8px;
@@ -173,7 +172,7 @@ const chineseTitle = entry.data.chineseTitle || "";
   }
 
   .content-section img {
-    max-width: 700px;
+    max-width: 500px;
     height: auto;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -186,7 +185,7 @@ const chineseTitle = entry.data.chineseTitle || "";
 
   img {
     display: block;
-    max-width: 700px;
+    max-width: 500px;
     height: auto;
     margin: 2rem auto;
     border-radius: 4px;
@@ -258,7 +257,7 @@ const chineseTitle = entry.data.chineseTitle || "";
     }
 
     .content-detail {
-      margin: 7rem auto;
+      margin: 5rem auto;
     }
 
     .content-section img {
