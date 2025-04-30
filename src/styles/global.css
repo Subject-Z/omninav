@@ -27,6 +27,16 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.site-footer {
+  padding: 1rem 0;
+  text-align: center;
+  margin: 3rem 0 3rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
 /* 响应式调整 */
 @media (min-width: 769px) and (max-width: 1024px) {
     .masonry-container, .page-container {
