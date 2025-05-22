@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Free online Chinese-English punctuation converter – instantly switch between full-width and half-width characters, commas, quotes, and more. Perfect for bilingual writing and document formatting.">
+	<meta name="keywords"
+		content="Chinese punctuation converter, English punctuation converter, bilingual text tool, full-width to half-width, document formatting">
+	<meta property="og:title" content="Chinese-English Punctuation Converter | Free Online Tool">
+	<meta property="og:description"
+		content="Easily convert between Chinese and English punctuation marks for seamless bilingual writing and editing.">
+	<meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/chinese-english-punctuation-converter.webp" type="image/webp">
+	<title>Chinese-English Punctuation Converter | Free Online Tool</title>
+	<script src="chinese-english-punctuation-converter.js"></script>
+	<link rel="stylesheet" href="chinese-english-punctuation-converter.css">
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+		crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div class="container">
+		<textarea oninput="updateInfos()" class="text" id="text" cols="30" rows="15"></textarea>
+
+		<div class="content">
+			<div class="info">
+				<div class="info-item">
+					<h6>Total Characters</h6>
+					<p id="tol">0</p>
+				</div>
+				<div class="info-item">
+					<h6>Chinese Characters</h6>
+					<p id="chineseCharacter">0</p>
+				</div>
+				<div class="info-item">
+					<h6>English Characters</h6>
+					<p id="englishCharacter">0</p>
+				</div>
+
+				<div class="info-item">
+					<h6>Chinese Punctuation</h6>
+					<p id="symbolChinese">0</p>
+				</div>
+				<div class="info-item">
+					<h6>English Punctuation</h6>
+					<p id="symbolEnglish">0</p>
+				</div>
+			</div>
+			<div class="operations">
+				<div class="btn-group">
+					<dt class="btn-group-title">Remove</dt>
+					<dl class="btn-list">
+						<dd class="btn" onclick="regReplace(REMOVE.all)">ALL</dd>
+						<dd class="btn" onclick="regReplace(REMOVE.space)">Spaces</dd>
+						<dd class="btn" onclick="regReplace(REMOVE.whiteReturn)">Blank Lines</dd>
+						<dd class="btn" onclick="regReplace(REMOVE.tab)">Tab</dd>
+						<dd class="btn" onclick="regReplace(REMOVE.htmlTag)">HTML Tags</dd>
+					</dl>
+				</div>
+
+				<div class="btn-group">
+					<dt class="btn-group-title">Convert to Chinese</dt>
+					<dl class="btn-list">
+						<dd class="btn" onclick="regReplace(TOZH.all)">ALL</dd>
+						<dd class="btn" onclick="regReplace(TOZH.space)">Spaces</dd>
+						<dd class="btn" onclick="regReplace(TOZH.comma)">，。</dd>
+						<dd class="btn" onclick="regReplace(TOZH.questionmark)">！？</dd>
+						<dd class="btn" onclick="regReplace(TOZH.colon)">；：</dd>
+						<dd class="btn" onclick="regReplace(TOZH.bracket)">（）</dd>
+						<dd class="btn" onclick="regReplace(TOZH.quot)">“ ”</dd>
+						<dd class="btn" onclick="regReplace(TOZH.connector)">- …</dd>
+						<dd class="btn" onclick="regReplace(TOZH.squareBracket)">[]【】</dd>
+						<dd class="btn" onclick="regReplace(TOZH.book)">
+							<>《》
+						</dd>
+						<dd class="btn" onclick="regReplace(TOZH.backslash)">\ 、</dd>
+					</dl>
+				</div>
+
+				<div class="btn-group">
+					<dt class="btn-group-title">Convert to English</dt>
+					<dl class="btn-list">
+						<dd class="btn" onclick="regReplace(TOEN.all)">ALL</dd>
+						<dd class="btn" onclick="regReplace(TOEN.space)">Spaces</dd>
+						<dd class="btn" onclick="regReplace(TOEN.comma)">, .</dd>
+						<dd class="btn" onclick="regReplace(TOEN.questionmark)">! ?</dd>
+						<dd class="btn" onclick="regReplace(TOEN.colon)">; :</dd>
+						<dd class="btn" onclick="regReplace(TOEN.bracket)">( )</dd>
+						<dd class="btn" onclick="regReplace(TOEN.quot)">" "</dd>
+						<dd class="btn" onclick="regReplace(TOEN.connector)">- …</dd>
+						<dd class="btn" onclick="regReplace(TOEN.squareBracket)">【】[]</dd>
+						<dd class="btn" onclick="regReplace(TOEN.book)">《》<>
+						</dd>
+						<dd class="btn" onclick="regReplace(TOEN.backslash)">、 \</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
