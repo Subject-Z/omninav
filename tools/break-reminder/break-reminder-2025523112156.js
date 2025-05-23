@@ -20,6 +20,7 @@
         let endTime;
         let isRunning = false;
         let selectedMinutes = 30;
+        let timerId = null; // 用于跟踪当前活动的计时器
         
         // 从localStorage加载上次选择的间隔（添加错误处理）
         try {
@@ -83,6 +84,11 @@
         function startTimer() {
             if (isRunning) return;
             
+            // 清除任何现有的计时器
+            if (timerId) {
+                cancelAnimationFrame(timerId);
+            }
+            
             const interval = selectedMinutes * 60;
             timeLeft = interval;
             endTime = Date.now() + interval * 1000;
@@ -92,6 +98,9 @@
             
             // 使用requestAnimationFrame优化计时器
             function updateTimer() {
+                // 检查是否被重置
+                if (!isRunning) return;
+                
                 timeLeft = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
                 updateDisplay();
                 
@@ -101,12 +110,12 @@
                     // 添加计时结束的视觉反馈
                     timerDisplay.classList.add('finished');
                     setTimeout(() => timerDisplay.classList.remove('finished'), 2000);
-                } else if (isRunning) {
-                    requestAnimationFrame(updateTimer);
+                } else {
+                    timerId = requestAnimationFrame(updateTimer);
                 }
             }
             
-            updateTimer();
+            timerId = requestAnimationFrame(updateTimer);
         }
         
         // 重置计时器
@@ -115,6 +124,13 @@
             timeLeft = selectedMinutes * 60;
             endTime = 0;
             updateDisplay();
+            // 清除任何可能存在的动画帧请求
+            if (timerId) {
+                cancelAnimationFrame(timerId);
+                timerId = null;
+            }
+            // 移除计时结束的视觉反馈
+            timerDisplay.classList.remove('finished');
         }
         
         // 显示通知（优化通知逻辑）
