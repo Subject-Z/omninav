@@ -1,7 +1,7 @@
 const REMOVE = {
 	space: 			[{reg: /( |　)/g, replacement: ""},],
 	tab: 				[{reg: /\t/g, replacement: ""},],
-	whiteReturn: [{reg: /(^\s*?(\n|\r\n|\r))+/g, replacement: ""},],
+	whiteReturn: [{reg: /^(\s*[\r\n])+/gm, replacement: ""},],
 	htmlTag:		[{reg: /<.+?>|<\/.+?>/g, replacement: ""},],
 	all: []
 }

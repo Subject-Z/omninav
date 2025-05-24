@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     maximumFractionDigits: 4
                 });
             } else {
-                convertedAmount.textContent = 'Rate not available';
+                convertedAmount.textContent = '0.00';
                 toAmountInput.value = '';
             }
         } else {
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     maximumFractionDigits: 4
                 });
             } else {
-                convertedAmount.textContent = 'Rate not available';
+                convertedAmount.textContent = '0.00';
                 fromAmountInput.value = '';
             }
         }

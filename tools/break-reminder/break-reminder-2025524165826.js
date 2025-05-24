@@ -136,18 +136,17 @@
         // 显示通知（优化通知逻辑）
         function showNotification() {
             if (!('Notification' in window)) return;
-            
+
             const show = () => {
-                // 添加振动API支持
                 if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                
+
                 new Notification('Break time!', {
                     body: 'Your break timer is up. Please take a rest!',
                     icon: '/images/break-reminder.webp',
                     requireInteraction: true
                 });
             };
-            
+
             if (Notification.permission === 'granted') {
                 show();
             } else if (Notification.permission !== 'denied') {
@@ -168,6 +167,21 @@
                 if (isRunning) resetTimer(); else startTimer();
             }
         });
+
+        // 调用自动开始计时的逻辑
+        setupAutoStart();
+
+        // 新增：检测页面是否处于后台状态
+        function isPageVisible() {
+            return document.visibilityState === 'visible';
+        }
+
+        // 新增：关闭页面二次确认
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = ''; // 触发浏览器的默认确认框
+        });
+
     });
     
     // 辅助函数
@@ -177,5 +191,25 @@
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, arguments), wait);
         };
+    }
+
+    // 新增：自动开始计时的逻辑
+    function setupAutoStart() {
+        let inactivityTimer;
+        const resetInactivityTimer = () => {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                if (!isRunning) {
+                    startTimer();
+                }
+            }, 5 * 60 * 1000); // 5分钟后自动开始计时
+        };
+
+        // 监听用户操作
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keydown', resetInactivityTimer);
+
+        // 页面加载时初始化
+        resetInactivityTimer();
     }
 })();

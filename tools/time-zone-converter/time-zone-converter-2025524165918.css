@@ -1,0 +1,16 @@
+/* Custom styles to supplement Tailwind CSS */
+body {
+    font-family: 'Inter', sans-serif;
+}
+select, input {
+    transition: border-color 0.2s ease-in-out;
+}
+select:focus, input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+@media (max-width: 640px) {
+    .max-w-lg {
+        margin: 1rem;
+    }
+}
