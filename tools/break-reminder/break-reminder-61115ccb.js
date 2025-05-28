@@ -133,26 +133,41 @@
             timerDisplay.classList.remove('finished');
         }
         
-        // 显示通知（优化通知逻辑）
+        // 显示通知（使用Service Worker确保后台通知）
         function showNotification() {
             if (!('Notification' in window)) return;
-
-            const show = () => {
-                if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-
-                new Notification('Break time!', {
-                    body: 'Your break timer is up. Please take a rest!',
-                    icon: '/images/break-reminder.webp',
-                    requireInteraction: true
-                });
-            };
-
-            if (Notification.permission === 'granted') {
-                show();
-            } else if (Notification.permission !== 'denied') {
-                Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') show();
-                });
+            
+            // 注册Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        registration.showNotification('Break time!', {
+                            body: 'Your break timer is up. Please take a rest!',
+                            icon: '/images/favicon.webp',
+                            vibrate: [200, 100, 200],
+                            requireInteraction: true
+                        });
+                    })
+                    .catch(err => {
+                        console.error('Service Worker registration failed:', err);
+                        // 回退到普通通知
+                        if (Notification.permission === 'granted') {
+                            new Notification('Break time!', {
+                                body: 'Your break timer is up. Please take a rest!',
+                                icon: '/images/favicon.webp',
+                                requireInteraction: true
+                            });
+                        }
+                    });
+            } else {
+                // 不支持Service Worker时的回退方案
+                if (Notification.permission === 'granted') {
+                    new Notification('Break time!', {
+                        body: 'Your break timer is up. Please take a rest!',
+                        icon: '/images/favicon.webp',
+                        requireInteraction: true
+                    });
+                }
             }
         }
         
@@ -193,23 +208,38 @@
         };
     }
 
-    // 新增：自动开始计时的逻辑
+    // 优化后的自动开始计时逻辑
     function setupAutoStart() {
         let inactivityTimer;
-        const resetInactivityTimer = () => {
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(() => {
-                if (!isRunning) {
-                    startTimer();
-                }
-            }, 5 * 60 * 1000); // 5分钟后自动开始计时
+        const startDelay = 5 * 60 * 1000; // 5分钟
+        
+        const startIfInactive = () => {
+            if (!isRunning) {
+                startTimer();
+                // 启动后移除监听
+                document.removeEventListener('mousemove', resetInactivityTimer);
+                document.removeEventListener('keydown', resetInactivityTimer);
+            }
         };
 
-        // 监听用户操作
+        const resetInactivityTimer = () => {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(startIfInactive, startDelay);
+        };
+
+        // 监听用户交互
         document.addEventListener('mousemove', resetInactivityTimer);
         document.addEventListener('keydown', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
 
-        // 页面加载时初始化
-        resetInactivityTimer();
+        // 页面加载后立即设置计时器
+        inactivityTimer = setTimeout(startIfInactive, startDelay);
+        
+        // 如果页面从后台恢复，重置计时器
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                resetInactivityTimer();
+            }
+        });
     }
 })();

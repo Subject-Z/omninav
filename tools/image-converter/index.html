@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNT4PZEK9C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-MNT4PZEK9C');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ImageConverter Pro - Transform & Optimize your images instantly. Convert between formats, compress without losing quality, and enhance your photos in seconds.">
+    <title>Image Converter - Convert, Compress & Perfect Your Images</title>
+    <meta name="keywords"
+        content="image converter, photo optimizer, image compression, format converter, jpg to png, webp converter">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ImageConverter Pro - Smart Image Processing Tool">
+    <meta property="og:description"
+        content="Transform & Optimize – Convert, Compress, and Perfect Your Images in Seconds with our powerful online tool.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/favicon.webp" type="image/webp">
+      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="image-converter-a3bd1c26.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
+</head>
+
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-4">Image Converter</h1>
+        <p class="text-center text-gray-600 mb-6">Transform and optimize your images with ease.</p>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+            <div id="dropZone" class="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="text-gray-500">Click to select or drag & drop image here</p>
+                <p class="text-xs text-gray-400 mt-1">Supports: JPG, PNG, WEBP</p>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Output Format</label>
+            <div class="flex gap-2 mb-2">
+                <button data-format="image/png" class="format-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">PNG</button>
+                <button data-format="image/jpeg" class="format-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">JPEG</button>
+                <button data-format="image/webp" class="format-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">WebP</button>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Compression Quality (JPEG/WebP)</label>
+            <div class="flex gap-2">
+                <button data-quality="0.5" class="quality-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">Low</button>
+                <button data-quality="0.8" class="quality-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">Medium</button>
+                <button data-quality="1" class="quality-btn flex-1 py-2 px-4 border rounded bg-white hover:bg-gray-50">High</button>
+            </div>
+        </div>
+        <button id="convertBtn" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Convert &
+            Download</button>
+        <p id="status" class="mt-4 text-center text-sm text-gray-600"></p>
+        <div id="preview" class="mt-4 hidden">
+            <h3 class="text-lg font-medium text-gray-700">Preview</h3>
+            <img id="previewImage" class="w-full h-auto rounded mt-2">
+        </div>
+    </div>
+    <script src="image-converter-6815353e.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #e0e7ff, #ffffff);
+    font-family: 'Georgia', serif;
+}
+
+.container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 80%;
+}
+
+#quote {
+    font-size: 2rem;
+    color: #333;
+    line-height: 1.4;
+    transition: opacity 0.5s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    #quote {
+        font-size: 1.5rem;
+    }
+}

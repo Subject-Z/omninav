@@ -1,0 +1,48 @@
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+h1 {
+    display: none;
+}
+
+#idiom, #pinyin, #translation, #explanation {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    min-height: 1.5em; /* 添加最小高度，避免内容为空时完全消失 */
+    padding: 0.5em 0; /* 添加内边距，确保容器可见 */
+}
+
+#idiom.loaded,
+#pinyin.loaded,
+#translation.loaded,
+#explanation.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#idiom {
+    transition-delay: 0.1s;
+}
+
+#pinyin {
+    transition-delay: 0.2s;
+}
+
+#translation {
+    transition-delay: 0.3s;
+}
+
+#explanation {
+    transition-delay: 0.4s;
+}
+
+button {
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(239, 68, 68, 0.3);
+}

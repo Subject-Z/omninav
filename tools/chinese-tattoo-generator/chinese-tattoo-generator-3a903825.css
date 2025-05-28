@@ -1,0 +1,60 @@
+body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+#result {
+    min-height: 4rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid #3b82f6;
+    border-radius: 0.5rem;
+    background-color: #f8fafc;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#result:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+#copyBtn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+#copyBtn:hover {
+    background-color: #2563eb;
+}
+
+input[type="radio"] {
+    accent-color: #3b82f6;
+}
+
+input[type="radio"] + span {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-show {
+    animation: fadeIn 0.5s ease forwards;
+}

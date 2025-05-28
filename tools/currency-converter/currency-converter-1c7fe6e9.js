@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let exchangeRates = {};
     let lastUpdateDate = '';
     
-    // Default currencies (KRW to CNY)
-    const DEFAULT_FROM = 'KRW';
+    // Default currencies (USD to CNY)
+    const DEFAULT_FROM = 'USD';
     const DEFAULT_TO = 'CNY';
     
     // Fetch currencies list
@@ -49,8 +49,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function setDefaultCurrencies() {
-        if (currencies[DEFAULT_FROM] && currencies[DEFAULT_TO]) {
+        // Try to load from localStorage first
+        const savedFrom = localStorage.getItem('currencyConverterFrom');
+        const savedTo = localStorage.getItem('currencyConverterTo');
+        
+        if (savedFrom && currencies[savedFrom]) {
+            fromSelect.value = savedFrom;
+        } else if (currencies[DEFAULT_FROM]) {
             fromSelect.value = DEFAULT_FROM;
+        }
+        
+        if (savedTo && currencies[savedTo]) {
+            toSelect.value = savedTo;
+        } else if (currencies[DEFAULT_TO]) {
             toSelect.value = DEFAULT_TO;
         }
     }
@@ -102,23 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 4
                 });
-                toAmountInput.value = result.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4
-                });
-                fromAmountInput.value = amount.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4
-                });
+                toAmountInput.value = result;
             } else if (toCurrency === fromCurrency) {
                 convertedAmount.textContent = amount.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 4
                 });
-                toAmountInput.value = amount.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4
-                });
+                toAmountInput.value = amount;
             } else {
                 convertedAmount.textContent = '0.00';
                 toAmountInput.value = '';
@@ -130,19 +131,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 4
                 });
-                fromAmountInput.value = result.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4
-                });
+                fromAmountInput.value = result;
             } else if (toCurrency === fromCurrency) {
                 convertedAmount.textContent = amount.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 4
                 });
-                fromAmountInput.value = amount.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4
-                });
+                fromAmountInput.value = amount;
             } else {
                 convertedAmount.textContent = '0.00';
                 fromAmountInput.value = '';
@@ -182,6 +177,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
+    // Format input on blur
+    function formatInput(input) {
+        const value = parseFloat(cleanNumberInput(input.value));
+        if (!isNaN(value)) {
+            input.value = value.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 4
+            });
+        }
+    }
+
     // Event listeners
     fromAmountInput.addEventListener('input', () => {
         toAmountInput.value = ''; // Clear to-amount when from-amount changes
@@ -191,8 +197,16 @@ document.addEventListener('DOMContentLoaded', function() {
         fromAmountInput.value = ''; // Clear from-amount when to-amount changes
         calculateConversion();
     });
-    fromSelect.addEventListener('change', fetchLatestRates);
-    toSelect.addEventListener('change', calculateConversion);
+    fromAmountInput.addEventListener('blur', () => formatInput(fromAmountInput));
+    toAmountInput.addEventListener('blur', () => formatInput(toAmountInput));
+    fromSelect.addEventListener('change', () => {
+        localStorage.setItem('currencyConverterFrom', fromSelect.value);
+        fetchLatestRates();
+    });
+    toSelect.addEventListener('change', () => {
+        localStorage.setItem('currencyConverterTo', toSelect.value);
+        calculateConversion();
+    });
     copyWithCommasBtn.addEventListener('click', () => copyToClipboard(true, false));
     copyWithoutCommasBtn.addEventListener('click', () => copyToClipboard(false, false));
     copyWithoutDecimalsBtn.addEventListener('click', () => copyToClipboard(false, true));

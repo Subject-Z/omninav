@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNT4PZEK9C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-MNT4PZEK9C');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="World Time Converter: Instantly convert your local time to any city's time worldwide with our interactive global clocks and easy time comparison tool.">
+    <title>World Time Converter - Compare Local Time with Cities Worldwide</title>
+    <meta name="keywords"
+        content="time converter, world clock, time comparison, global cities time, local to international time">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="World Time Converter - Compare Local Time with Cities Worldwide">
+    <meta property="og:description"
+        content="Quickly see what time it is in other cities compared to your local time with our easy-to-use world clock conversion tool.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="world-time-converter-546aacfb.css">
+    <script src="world-time-converter-f431b861.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <div class="container">
+        <h1>World Time Converter</h1>
+
+        <div class="time-display-container">
+            <!-- Local Time Display -->
+            <div class="card">
+                <h2>Local Time</h2>
+                <p id="local-time"></p>
+                <p id="local-timezone"></p>
+            </div>
+
+            <!-- City Selector Card -->
+            <div class="card">
+                <h2>Select City</h2>
+                <select id="city-selector" class="city-selector">
+                    <option value="">-- Select a city --</option>
+                </select>
+                <div id="selected-city-time" class="selected-city-time">
+                    <p>Select a city to see its current time</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Major Timezones -->
+        <div class="card">
+            <h2>Major Cities by Timezone</h2>
+            <table id="timezone-list" class="timezone-table">
+                <thead>
+                    <tr>
+                        <th>Timezone</th>
+                        <th>Time</th>
+                        <th>Cities</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
