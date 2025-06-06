@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNT4PZEK9C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-MNT4PZEK9C');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Coin Flipper is a realistic digital simulator for flipping coins. Get instant, fair results for heads or tails decisions - perfect for games, gambling, or any situation requiring a random 50/50 outcome.">
+    <title>Coin Flipper - Animated Probability Simulator</title>
+    <meta name="keywords"
+        content="coin flip, coin toss, heads or tails, random coin flip, probability simulator, digital coin flip, 50/50 chance, decision maker">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Coin Flipper - Realistic Coin Toss Simulator">
+    <meta property="og:description"
+        content="A digital coin flipping simulator that provides fair, random results for heads or tails. Perfect for quick decisions and probability testing.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="coin-flipper-854d9b48.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Coin Flipper</h1>
+        <p class="subtitle">A probability simulator with realistic animation and detailed statistics</p>
+
+        <div class="content">
+            <div class="coin-section">
+                <div class="coin-container">
+                    <div class="coin" id="coin">
+                        <div class="coin-face coin-heads">H</div>
+                        <div class="coin-face coin-tails">T</div>
+                    </div>
+                </div>
+
+                <div class="result-message" id="resultMessage">Ready to flip!</div>
+
+                <div class="controls">
+                    <button class="btn" id="flipBtn">Flip Coin</button>
+                    <button class="btn" id="resetBtn">Reset Stats</button>
+                </div>
+
+                <div class="flip-count">Total Flips: <span id="totalFlips">0</span></div>
+            </div>
+
+            <div class="stats-section">
+                <h2>Statistics</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Heads</div>
+                        <div class="stat-value" id="headsCount">0</div>
+                        <div class="stat-percentage" id="headsPercent">0%</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Tails</div>
+                        <div class="stat-value" id="tailsCount">0</div>
+                        <div class="stat-percentage" id="tailsPercent">0%</div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">Heads Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill heads-progress" id="headsProgress" style="width: 50%"></div>
+                    </div>
+                    <div class="progress-label">Tails Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill tails-progress" id="tailsProgress" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <div class="history-title">Flip History (Last 20)</div>
+                    <div class="history-container" id="historyContainer">
+                        <!-- History items will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="coin-flipper-a205e06b.js"></script>
+</body>
+
+</html>

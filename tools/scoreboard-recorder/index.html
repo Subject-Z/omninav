@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNT4PZEK9C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-MNT4PZEK9C');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Track game scores and statistics effortlessly with our Scoreboard Recorder - a digital scoring system for sports, competitions, and events. Record points, time, and player stats in real-time.">
+    <title>Scoreboard Recorder - Digital Scoring System | OmniNav</title>
+    <meta name="keywords"
+        content="scoreboard recorder, sports score tracker, game statistics, digital scoreboard, competition scoring, points tracker">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Scoreboard Recorder - Digital Scoring System | OmniNav">
+    <meta property="og:description"
+        content="Track points, time, and game statistics in real-time for sports events and competitions with our easy-to-use digital scoreboard.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="scoreboard-recorder-d7cfcd71.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <h2>Scoreboard Settings</h2>
+            <div class="form-group">
+                <label for="home-team-name">Home Team Name</label>
+                <input type="text" id="home-team-name" value="Home">
+            </div>
+            <div class="form-group">
+                <label for="away-team-name">Away Team Name</label>
+                <input type="text" id="away-team-name" value="Guest">
+            </div>
+            <div class="form-group">
+                <label for="modal-minutes-input">Timer Minutes</label>
+                <input type="text" id="modal-minutes-input" value="5">
+            </div>
+            <div class="form-group">
+                <label for="modal-seconds-input">Timer Seconds</label>
+                <input type="text" id="modal-seconds-input" value="0">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn" id="save-settings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-display">
+        <div class="timer-section">
+            <div class="timer-display">
+                <div class="timer-flap-container">
+                    <div class="timer-digit" id="minutes-tens">0</div>
+                    <div class="timer-digit" id="minutes-units">5</div>
+                    <div class="colon">:</div>
+                    <div class="timer-digit" id="seconds-tens">0</div>
+                    <div class="timer-digit" id="seconds-units">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="scoreboard">
+            <div class="team">
+                <h2 class="team-name" id="home-team-name-display">Home</h2>
+                <div class="score-display">
+                    <div class="score-digits">
+                        <div class="score-digit" id="team1-hundreds">0</div>
+                        <div class="score-digit" id="team1-tens">0</div>
+                        <div class="score-digit" id="team1-units">0</div>
+                    </div>
+                </div>
+                <div class="score-controls">
+                    <button class="btn" id="team1-add">+1</button>
+                    <button class="btn btn-alt" id="team1-subtract">-1</button>
+                </div>
+            </div>
+            <div class="team">
+                <h2 class="team-name" id="away-team-name-display">Guest</h2>
+                <div class="score-display">
+                    <div class="score-digits">
+                        <div class="score-digit" id="team2-hundreds">0</div>
+                        <div class="score-digit" id="team2-tens">0</div>
+                        <div class="score-digit" id="team2-units">0</div>
+                    </div>
+                </div>
+                <div class="score-controls">
+                    <button class="btn" id="team2-add">+1</button>
+                    <button class="btn btn-alt" id="team2-subtract">-1</button>
+                </div>
+            </div>
+        </div>
+        <div class="timer-controls">
+            <button class="btn" id="toggle-timer">Start</button>
+            <button class="btn btn-alt" id="reset-timer">Reset</button>
+            <button class="btn" id="open-settings">Settings</button>
+            <button class="btn" id="fullscreen-btn">Fullscreen</button>
+        </div>
+    </div>
+    <script src="scoreboard-recorder-d6413195.js"></script>
+</body>
+
+</html>

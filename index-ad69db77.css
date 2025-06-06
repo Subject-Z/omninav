@@ -93,7 +93,6 @@ main {
 .tool-card p {
     font-size: 0.9rem;
     color: #666;
-    margin-bottom: 1rem;
 }
 
 .tool-card {
@@ -123,6 +122,16 @@ footer {
 }
 
 .contact-info a:hover {
+    color: #00d4ff;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: underline;
+    margin: 0 10px;
+}
+
+.footer-link:hover {
     color: #00d4ff;
 }
 

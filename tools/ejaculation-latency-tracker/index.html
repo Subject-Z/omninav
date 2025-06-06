@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNT4PZEK9C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-MNT4PZEK9C');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ejaculation Latency Tracker: A specialized tool for measuring and monitoring ejaculation latency time to support sexual health research and clinical practice.">
+    <title>Ejaculation Latency Tracker - Sexual Health Measurement Tool</title>
+    <meta name="keywords"
+        content="ejaculation latency, premature ejaculation, sexual health tracker, fertility tool, intimacy timing, sexual performance">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ejaculation Latency Tracker">
+    <meta property="og:description"
+        content="Track and analyze ejaculation latency times for sexual health research, clinical assessment, and personal awareness.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="ejaculation-latency-tracker-045964a9.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Ejaculation Latency Tracker</h1>
+        <p class="subtitle">Professional tool for tracking and analyzing sexual health metrics</p>
+    </header>
+
+    <main>
+        <section class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Days Since Last</div>
+                </div>
+                <div class="streak-container">
+                    <div class="streak-number">0</div>
+                    <div class="streak-label">Days</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Ejaculation Frequency</div>
+                </div>
+                <div class="streak-container">
+                    <div class="streak-number">0</div>
+                    <div class="streak-label">This Week</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Last Week</span>
+                        <span>0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Change</span>
+                        <span style="color: var(--success);">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Average Duration</div>
+                </div>
+                <div class="streak-container">
+                    <div class="streak-number">0</div>
+                    <div class="streak-label">Minutes</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Last Month</span>
+                        <span>0 min</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Change</span>
+                        <span style="color: var(--success);">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="record-section">
+            <div class="form-container">
+                <h2 class="form-title">⏱️ Record New Session</h2>
+
+                <div class="mode-toggle">
+                    <div class="mode-btn active" id="timerModeBtn">Timer Mode</div>
+                    <div class="mode-btn" id="manualModeBtn">Manual Entry</div>
+                </div>
+
+                <div id="timerSection">
+                    <div class="timer-display">00:00:00</div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="startBtn">
+                            <span>▶️</span> Start
+                        </button>
+                        <button class="btn btn-success" id="finishBtn" disabled>
+                            <span>⏹️</span> Finish
+                        </button>
+                        <button class="btn btn-danger" id="resetBtn">
+                            <span>🔄</span> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div id="manualSection" style="display: none;">
+                    <div class="form-group">
+                        <label for="duration">Duration (mm:ss)</label>
+                        <input type="text" id="duration" placeholder="05:30" pattern="[0-9]{1,3}:[0-5][0-9]">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date & Time</label>
+                    <input type="datetime-local" id="date" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="partners">Partners</label>
+                    <select id="partners">
+                        <option value="solo">Solo</option>
+                        <option value="partner">With Partner</option>
+                        <option value="">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes (location, context, etc.)</label>
+                    <textarea id="notes" rows="3" placeholder="Optional notes about the session"></textarea>
+                </div>
+
+                <div class="privacy-note">
+                    <strong>Privacy Note:</strong> All data is stored locally on your device. No information is sent to
+                    any server.
+                </div>
+
+                <button class="btn btn-primary" id="saveBtn" style="width: 100%; margin-top: 15px;">
+                    💾 Save Record
+                </button>
+            </div>
+
+            <div class="history-container">
+                <div class="history-header">
+                    <h2 class="form-title">📋 Session History</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline" id="refreshBtn">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Duration</th>
+                                <th>Partners</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable">
+                            <!-- Records will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="export-section">
+            <h2 class="form-title">📤 Data Management</h2>
+            <p>Export your data for backup or transfer between devices.</p>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn btn-primary" id="exportBtn">
+                    💾 Export to JSON
+                </button>
+                <button class="btn btn-outline" id="importBtn">
+                    📤 Import Data
+                </button>
+                <button class="btn btn-warning" id="clearBtn">
+                    🗑️ Clear All Data
+                </button>
+            </div>
+
+            <div class="privacy-note" style="margin-top: 20px;">
+                <strong>Security Tip:</strong> Your data is encrypted locally before export. Keep your backup file
+                secure.
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Ejaculation Latency Tracker v1.0 | Data stored locally | For personal health tracking only</p>
+        <p>Consult a healthcare professional for medical advice</p>
+    </footer>
+
+    <script src="ejaculation-latency-tracker-7202344a.js"></script>
+</body>
+
+</html>

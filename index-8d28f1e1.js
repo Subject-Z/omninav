@@ -26,9 +26,12 @@ function searchTools() {
     });
 }
 
-// 添加Enter键搜索支持
-document.getElementById('searchInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        searchTools();
-    }
+// 确保DOM加载完成后执行
+document.addEventListener('DOMContentLoaded', () => {
+    // 添加Enter键搜索支持
+    document.getElementById('searchInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            searchTools();
+        }
+    });
 });

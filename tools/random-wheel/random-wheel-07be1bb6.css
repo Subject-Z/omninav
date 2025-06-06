@@ -1,0 +1,280 @@
+/* 基础样式 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px; /* 增加容器宽度 */
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* 轮盘容器布局 */
+.wheel-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.wheel-preview {
+    flex: 1;
+    min-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+}
+
+#wheel {
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-out;
+    width: 500px;
+    height: 500px;
+}
+
+
+.pointer {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%); /* 移除旋转 */
+    font-size: 70px; /* 增大字号 */
+    color: red; /* 改为红色 */
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* 右侧面板样式 */
+.right-panel {
+    flex: 1;
+    min-width: 200px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 控制区样式 */
+.controls {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+/* 保存记录区样式 */
+.saved-records {
+    padding: 20px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    border: 1px solid #d0e0ff;
+}
+
+#items-input {
+    width: 100%;
+    min-height: 200px;
+    max-width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+/* 美化排序按钮 */
+.sort-controls {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    flex-wrap: wrap;
+}
+
+.sort-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    background: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.sort-controls label:hover {
+    background: #e0e0e0;
+}
+
+.sort-controls input[type="radio"] {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+}
+
+#spin-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#spin-btn:hover {
+    background-color: #45a049;
+}
+
+#spin-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .wheel-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .wheel-preview {
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    #wheel {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+    }
+
+    .pointer {
+        top: -10px;
+        font-size: 40px;
+    }
+    
+    .right-panel {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .controls, .saved-records {
+        padding: 15px;
+    }
+    
+    #items-input {
+        min-height: 150px;
+    }
+}
+
+/* 超小屏幕响应式设计 (425px以下) */
+@media (max-width: 425px) {
+    body {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .container {
+        padding: 15px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .wheel-container {
+        align-items: center;
+    }
+    
+    #wheel {
+        max-width: 300px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    
+    .pointer {
+        top: -5px;
+        font-size: 30px;
+    }
+    
+    .right-panel {
+        align-items: center;
+    }
+    
+    .controls, .saved-records {
+        padding: 10px;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    #items-input {
+        min-height: 120px;
+        font-size: 14px;
+    }
+    
+    h1 {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/* 保存记录样式 */
+.saved-records {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#saved-records-list {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.saved-records div {
+    display: flex;
+    gap: 10px;
+}
+
+#save-btn, #delete-btn {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#save-btn:hover, #delete-btn:hover {
+    background: #e0e0e0;
+}

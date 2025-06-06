@@ -2,73 +2,109 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://omninav.uk/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/000/</loc>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/break-reminder/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/chinese-english-punctuation-converter/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/chinese-idiom-matcher/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/chinese-tattoo-generator/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/coin-flipper/</loc>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/currency-converter/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/ejaculation-latency-tracker/</loc>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/fortune-teller/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/image-converter/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/listen-to-allah/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/listen-to-god/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/random-picker/</loc>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/random-wheel/</loc>
+        <lastmod>2025-06-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://omninav.uk/tools/scoreboard-recorder/</loc>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/time-zone-converter/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://omninav.uk/tools/world-time-converter/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2025-06-06</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
