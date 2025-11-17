@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chinese-English punctuation converter | 中英文标点符号转换工具 - Instantly switch between Chinese and English punctuation marks, commas, quotes, and more. Perfect for bilingual writing and document formatting. | 快速转换中英文标点符号、逗号、引号等，适用于双语写作和文档排版。">
+    <meta property="og:title" content="Chinese-English Punctuation Converter | 中英文标点符号转换工具">
+    <meta property="og:description" content="Easily convert between Chinese and English punctuation marks for seamless bilingual writing and editing. | 轻松实现中英文标点符号转换，为双语写作和编辑提供便利。">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+    <title>Chinese-English Punctuation Converter | 中英文标点符号转换工具</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            font-family: "HarmonyOS Sans SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;
+            color: inherit;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            margin: 0 auto;
+            background-color: #F5F5F5;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        :focus,
+        :active {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            outline: none;
+        }
+
+        .unselectable,
+        .btn-list .btn {
+            user-select: none;
+        }
+
+        .zh {
+            color: #007AFF;
+        }
+
+        .en {
+            color: #FF2D70;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .language-switch {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background-color: #007AFF;
+            color: white;
+            border-color: #007AFF;
+        }
+
+        .content {
+            margin-top: 30px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        textarea {
+            max-width: 100%;
+            height: 50vh;
+            padding: 10px;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            transition: box-shadow 0.3s;
+        }
+
+        .info {
+            color: #666;
+            margin-right: 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 220px;
+            flex-shrink: 0;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info .info-item {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .info .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info .info-item>h6 {
+            letter-spacing: 0.5px;
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .info .info-item>p {
+            text-align: right;
+        }
+
+        .operations {
+            flex-grow: 1;
+        }
+
+        .btn-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-group-title {
+            letter-spacing: 1px;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .btn-list {
+            display: flex;
+            justify-content: flex-start;
+            flex-flow: row wrap;
+        }
+
+        .btn-list .btn {
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            margin-right: 15px;
+            min-width: 12%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            background-color: white;
+        }
+
+        .btn-list .btn:hover {
+            background-color: white;
+            color: #FF2D70;
+            border-color: #FF2D70;
+        }
+
+        .btn-list .btn:active {
+            transform: translateY(2px);
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 10px;
+            }
+
+            .content {
+                flex-flow: column nowrap;
+                margin-top: 15px;
+                align-items: flex-start;
+            }
+
+            .info {
+                margin-bottom: 20px;
+                margin-right: 0;
+                padding: 10px 15px;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                flex-flow: row wrap;
+            }
+
+            .info .info-item {
+                width: 40%;
+                margin-right: 20%;
+                line-height: 1.8;
+                margin-bottom: 0;
+            }
+
+            .info .info-item>h6 {
+                font-size: 12px;
+            }
+
+            .info .info-item>p {
+                font-size: 12px;
+            }
+
+            .info .info-item:nth-child(2n) {
+                margin-right: 0;
+            }
+
+            .btn-group {
+                padding: 0 10px;
+            }
+
+            .btn-group .btn-group-title {
+                font-size: 16px;
+                width: 100%;
+                padding-right: 10px;
+            }
+
+            .btn-group .btn-list .btn {
+                margin-right: 2%;
+                margin-bottom: 5px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="title">中英文标点符号转换器</h1>
+            <div class="language-switch">
+                <button class="lang-btn active" id="zh-btn">中文</button>
+                <button class="lang-btn" id="en-btn">English</button>
+            </div>
+        </div>
+
+        <textarea oninput="updateInfos()" class="text" id="text"></textarea>
+
+        <div class="content">
+            <div class="info">
+                <div class="info-item">
+                    <h6 id="total-chars">总字符数</h6>
+                    <p id="tol">0</p>
+                </div>
+                <div class="info-item">
+                    <h6 id="chinese-chars">中文字符</h6>
+                    <p id="chineseCharacter">0</p>
+                </div>
+                <div class="info-item">
+                    <h6 id="english-chars">英文字符</h6>
+                    <p id="englishCharacter">0</p>
+                </div>
+
+                <div class="info-item">
+                    <h6 id="chinese-punc">中文标点</h6>
+                    <p id="symbolChinese">0</p>
+                </div>
+                <div class="info-item">
+                    <h6 id="english-punc">英文标点</h6>
+                    <p id="symbolEnglish">0</p>
+                </div>
+            </div>
+            <div class="operations">
+                <div class="btn-group">
+                    <dt class="btn-group-title" id="remove-title">删除</dt>
+                    <dl class="btn-list">
+                        <dd class="btn" onclick="regReplace(REMOVE.all)" id="remove-all">全部</dd>
+                        <dd class="btn" onclick="regReplace(REMOVE.space)" id="remove-spaces">空格</dd>
+                        <dd class="btn" onclick="regReplace(REMOVE.whiteReturn)" id="remove-blank-lines">空行</dd>
+                        <dd class="btn" onclick="regReplace(REMOVE.tab)" id="remove-tabs">制表符</dd>
+                        <dd class="btn" onclick="regReplace(REMOVE.htmlTag)" id="remove-html">HTML标签</dd>
+                    </dl>
+                </div>
+
+                <div class="btn-group">
+                    <dt class="btn-group-title" id="to-chinese-title">转换为中文</dt>
+                    <dl class="btn-list">
+                        <dd class="btn" onclick="regReplace(TOZH.all)" id="to-zh-all">全部</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.space)" id="to-zh-spaces">空格</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.comma)" id="to-zh-comma">，。</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.questionmark)" id="to-zh-question">！？</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.colon)" id="to-zh-colon">；：</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.bracket)" id="to-zh-bracket">（）</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.quot)" id="to-zh-quot">" "</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.connector)" id="to-zh-connector">- …</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.squareBracket)" id="to-zh-square">[]【】</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.book)" id="to-zh-book">&lt;&gt;《》</dd>
+                        <dd class="btn" onclick="regReplace(TOZH.backslash)" id="to-zh-backslash">\ 、</dd>
+                    </dl>
+                </div>
+
+                <div class="btn-group">
+                    <dt class="btn-group-title" id="to-english-title">转换为英文</dt>
+                    <dl class="btn-list">
+                        <dd class="btn" onclick="regReplace(TOEN.all)" id="to-en-all">全部</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.space)" id="to-en-spaces">空格</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.comma)" id="to-en-comma">, .</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.questionmark)" id="to-en-question">! ?</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.colon)" id="to-en-colon">; :</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.bracket)" id="to-en-bracket">( )</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.quot)" id="to-en-quot">" "</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.connector)" id="to-en-connector">- …</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.squareBracket)" id="to-en-square">【】[]</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.book)" id="to-en-book">《》&lt;&gt;</dd>
+                        <dd class="btn" onclick="regReplace(TOEN.backslash)" id="to-en-backslash">、 \</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 语言配置
+        const languageTexts = {
+            'zh': {
+                'title': '中英文标点符号转换器',
+                'total-chars': '总字符数',
+                'chinese-chars': '中文字符',
+                'english-chars': '英文字符',
+                'chinese-punc': '中文标点',
+                'english-punc': '英文标点',
+                'remove-title': '删除',
+                'remove-all': '全部',
+                'remove-spaces': '空格',
+                'remove-blank-lines': '空行',
+                'remove-tabs': '制表符',
+                'remove-html': 'HTML标签',
+                'to-chinese-title': '转换为中文',
+                'to-zh-all': '全部',
+                'to-zh-spaces': '空格',
+                'to-zh-comma': '，。',
+                'to-zh-question': '！？',
+                'to-zh-colon': '；：',
+                'to-zh-bracket': '（）',
+                'to-zh-quot': '" "',
+                'to-zh-connector': '- …',
+                'to-zh-square': '[]【】',
+                'to-zh-book': '<>《》',
+                'to-zh-backslash': '\\ 、',
+                'to-english-title': '转换为英文',
+                'to-en-all': '全部',
+                'to-en-spaces': '空格',
+                'to-en-comma': ', .',
+                'to-en-question': '! ?',
+                'to-en-colon': '; :',
+                'to-en-bracket': '( )',
+                'to-en-quot': '" "',
+                'to-en-connector': '- …',
+                'to-en-square': '【】[]',
+                'to-en-book': '《》<>',
+                'to-en-backslash': '、 \\'
+            },
+            'en': {
+                'title': 'Chinese-English Punctuation Converter',
+                'total-chars': 'Total Characters',
+                'chinese-chars': 'Chinese Characters',
+                'english-chars': 'English Characters',
+                'chinese-punc': 'Chinese Punctuation',
+                'english-punc': 'English Punctuation',
+                'remove-title': 'Remove',
+                'remove-all': 'ALL',
+                'remove-spaces': 'Spaces',
+                'remove-blank-lines': 'Blank Lines',
+                'remove-tabs': 'Tab',
+                'remove-html': 'HTML Tags',
+                'to-chinese-title': 'Convert to Chinese',
+                'to-zh-all': 'ALL',
+                'to-zh-spaces': 'Spaces',
+                'to-zh-comma': '，。',
+                'to-zh-question': '！？',
+                'to-zh-colon': '；：',
+                'to-zh-bracket': '（）',
+                'to-zh-quot': '" "',
+                'to-zh-connector': '- …',
+                'to-zh-square': '[]【】',
+                'to-zh-book': '<>《》',
+                'to-zh-backslash': '\\ 、',
+                'to-english-title': 'Convert to English',
+                'to-en-all': 'ALL',
+                'to-en-spaces': 'Spaces',
+                'to-en-comma': ', .',
+                'to-en-question': '! ?',
+                'to-en-colon': '; :',
+                'to-en-bracket': '( )',
+                'to-en-quot': '" "',
+                'to-en-connector': '- …',
+                'to-en-square': '【】[]',
+                'to-en-book': '《》<>',
+                'to-en-backslash': '、 \\'
+            }
+        };
+
+        // 正则表达式配置
+        const REMOVE = {
+            space: 			[{reg: /( |　)/g, replacement: ""}],
+            tab: 				[{reg: /\t/g, replacement: ""}],
+            whiteReturn: [{reg: /^(\s*[\r\n])+/gm, replacement: ""}],
+            htmlTag:		[{reg: /<.+?>|<\/.+?>/g, replacement: ""}],
+            all: []
+        }
+
+        REMOVE.all = [].concat(
+            REMOVE.space, REMOVE.tab,
+            REMOVE.whiteReturn, REMOVE.htmlTag,
+        )
+
+        const TOZH = {
+            space: [
+                {reg: / /g, replacement: "　"},
+            ],
+            comma: [
+                {reg: /,/g, replacement: "，"},
+                {reg: /(?<!\.)\.(?!\.)/g, replacement: "。"},
+            ],
+            questionmark: [
+                {reg: /\?/g, replacement: "？"},
+                {reg: /!/g, replacement: "！"},
+            ],
+            colon: [
+                {reg: /;/g, replacement: "；"},
+                {reg: /:/g, replacement: "："},
+            ],
+            bracket: [
+                {reg: /\(/g, replacement: "（"},
+                {reg: /\)/g, replacement: "）"},
+            ],
+            squareBracket: [
+                {reg: /\[/g, replacement: "【"},
+                {reg: /\]/g, replacement: "】"},
+            ],
+            quot: [
+                {reg: /"(.*?)"/g, replacement: "“$1”"},
+                {reg: /'(.*?)'/g, replacement: "‘$1’"},
+            ],
+            connector: [
+                {reg: /-/g, replacement: "—"},
+                {reg: /\.\.\./g, replacement: "…"},
+            ],
+            book: [
+                {reg: /\</g, replacement: "《"},
+                {reg: /\>/g, replacement: "》"},
+            ],
+            backslash: [
+                {reg: /\\/g, replacement: "、"},
+            ],
+            all: []
+        }
+
+        TOZH.all = [].concat(
+            TOZH.space, 
+            TOZH.connector,
+            TOZH.comma,
+            TOZH.questionmark, TOZH.colon,
+            TOZH.bracket, TOZH.quot,
+            TOZH.book, TOZH.squareBracket,
+            TOZH.backslash
+        )
+
+        const TOEN = {
+            space: [
+                {reg: /　/g, replacement: " "},
+            ],
+            comma: [
+                {reg: /，/g, replacement: ","},
+                {reg: /。/g, replacement: "."},
+            ],
+            colon: [
+                {reg: /；/g, replacement: ";"},
+                {reg: /：/g, replacement: ":"},
+            ],
+            quot: [
+                {reg: /[“”]/g, replacement: "\""},
+                {reg: /[‘’]/g, replacement: "\'"},
+            ],
+            questionmark: [
+                {reg: /？/g, replacement: "?"},
+                {reg: /！/g, replacement: "!"},
+            ],
+            bracket: [
+                {reg: /（/g, replacement: "("},
+                {reg: /）/g, replacement: ")"},
+            ],
+            squareBracket: [
+                {reg: /【/g, replacement: "["},
+                {reg: /】/g, replacement: "]"},
+            ],
+            connector: [
+                {reg: /[－—–]/g, replacement: "-"},
+                {reg: /…/g, replacement: "..."},
+            ],
+            book: [
+                {reg: /《/g, replacement: "<"},
+                {reg: /》/g, replacement: ">"},
+            ],
+            backslash: [
+                {reg: /、/g, replacement: "\\"},
+            ],
+            all: []
+        }
+        TOEN.all = [].concat(
+            TOEN.space, TOEN.comma,
+            TOEN.questionmark, TOEN.colon,
+            TOEN.bracket, TOEN.quot,
+            TOEN.connector, TOEN.book, TOEN.squareBracket,
+            TOEN.backslash
+        )
+
+        const MATCH = {
+            symbolEn: /[,.:;'"!\?\[\]#@%\^\$\(\)\*\-\=\+\_\<\>\/\\{}`~]/g,
+            symbolCn: /[，。：；”…"《》、？【】『』、（）￥！・—]/g,
+            characterEn: /[a-zA-Z]/g,
+            characterCn: /[\u4e00-\u9fa5]/g
+        }
+
+        let textarea;
+        let currentLanguage = 'zh';
+
+        window.onload = function () {
+            textarea = $('#text');
+            setupLanguageButtons();
+        }
+
+        function setupLanguageButtons() {
+            const zhBtn = $('#zh-btn');
+            const enBtn = $('#en-btn');
+            
+            zhBtn.addEventListener('click', function() {
+                setLanguage('zh');
+                zhBtn.classList.add('active');
+                enBtn.classList.remove('active');
+            });
+            
+            enBtn.addEventListener('click', function() {
+                setLanguage('en');
+                enBtn.classList.add('active');
+                zhBtn.classList.remove('active');
+            });
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            const texts = languageTexts[lang];
+            
+            for (const key in texts) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = texts[key];
+                }
+            }
+        }
+
+        function regReplace(regs) {
+            regs.forEach(item => {
+                textarea.value = textarea.value.replace(item.reg, item.replacement)
+            })
+            updateInfos()
+        }
+
+        function $(selector) {
+            return document.querySelector(selector);
+        }
+
+        function updateInfos() {
+            let countSymbolChinese = textarea.value.match(MATCH.symbolCn)
+            let countSymbolEnglish = textarea.value.match(MATCH.symbolEn)
+            let countCharacterEnglish = textarea.value.match(MATCH.characterEn)
+            let countCharacterChinese = textarea.value.match(MATCH.characterCn)
+
+            $('#tol').innerText = textarea.value.length
+            $('#symbolChinese').innerText = countSymbolChinese ? countSymbolChinese.length : 0
+            $('#symbolEnglish').innerText = countSymbolEnglish ? countSymbolEnglish.length : 0
+            $('#englishCharacter').innerText = countCharacterEnglish ? countCharacterEnglish.length : 0
+            $('#chineseCharacter').innerText = countCharacterChinese ? countCharacterChinese.length : 0
+        }
+    </script>
+</body>
+</html>
