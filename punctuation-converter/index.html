@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chinese-English punctuation converter | 中英文标点符号转换工具 - Instantly switch between Chinese and English punctuation marks, commas, quotes, and more. Perfect for bilingual writing and document formatting. | 快速转换中英文标点符号、逗号、引号等，适用于双语写作和文档排版。">
+    <meta name="description"
+        content="Chinese-English punctuation converter | 中英文标点符号转换工具 - Instantly switch between Chinese and English punctuation marks, commas, quotes, and more. Perfect for bilingual writing and document formatting. | 快速转换中英文标点符号、逗号、引号等，适用于双语写作和文档排版。">
     <meta property="og:title" content="Chinese-English Punctuation Converter | 中英文标点符号转换工具">
-    <meta property="og:description" content="Easily convert between Chinese and English punctuation marks for seamless bilingual writing and editing. | 轻松实现中英文标点符号转换，为双语写作和编辑提供便利。">
+    <meta property="og:description"
+        content="Easily convert between Chinese and English punctuation marks for seamless bilingual writing and editing. | 轻松实现中英文标点符号转换，为双语写作和编辑提供便利。">
     <meta name="robots" content="index, follow">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
     <title>Chinese-English Punctuation Converter | 中英文标点符号转换工具</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
+        crossorigin="anonymous"></script>
     <style>
         * {
             padding: 0;
@@ -50,71 +57,46 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 90%;
             margin: 0 auto;
             padding: 40px;
-        }
-
-        .header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            color: #333;
-        }
-
-        .language-switch {
-            display: flex;
-            gap: 10px;
-        }
-
-        .lang-btn {
-            padding: 8px 16px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .lang-btn.active {
-            background-color: #007AFF;
-            color: white;
-            border-color: #007AFF;
-        }
-
-        .content {
-            margin-top: 30px;
-            display: flex;
+            gap: 30px;
             align-items: flex-start;
-            justify-content: space-between;
+        }
+
+        .left-panel {
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 0;
         }
 
         textarea {
             max-width: 100%;
-            height: 50vh;
-            padding: 10px;
+            min-height: 600px;
+            padding: 15px;
             font-size: 16px;
             display: block;
             width: 100%;
             border-radius: 10px;
             border: 1px solid #ccc;
             transition: box-shadow 0.3s;
+            resize: none;
+            overflow-y: hidden;
         }
 
         .info {
             color: #666;
-            margin-right: 30px;
             background-color: white;
             border: 1px solid #ccc;
-            width: 220px;
-            flex-shrink: 0;
+            width: 100%;
             padding: 15px;
             border-radius: 10px;
+            margin-bottom: 20px;
         }
 
         .info .info-item {
@@ -139,7 +121,7 @@
         }
 
         .operations {
-            flex-grow: 1;
+            width: 100%;
         }
 
         .btn-group {
@@ -187,21 +169,25 @@
         @media (max-width: 1200px) {
             .container {
                 padding: 10px;
+                flex-direction: column;
             }
 
-            .content {
-                flex-flow: column nowrap;
-                margin-top: 15px;
-                align-items: flex-start;
+            .left-panel {
+                width: 100%;
+            }
+
+            .right-panel {
+                width: 100%;
+            }
+
+            textarea {
+                min-height: 150px;
             }
 
             .info {
-                margin-bottom: 20px;
-                margin-right: 0;
                 padding: 10px 15px;
                 display: flex;
                 align-items: center;
-                width: 100%;
                 flex-flow: row wrap;
             }
 
@@ -224,14 +210,9 @@
                 margin-right: 0;
             }
 
-            .btn-group {
-                padding: 0 10px;
-            }
-
             .btn-group .btn-group-title {
                 font-size: 16px;
                 width: 100%;
-                padding-right: 10px;
             }
 
             .btn-group .btn-list .btn {
@@ -239,7 +220,7 @@
                 margin-bottom: 5px;
                 padding: 5px 10px;
                 border-radius: 5px;
-                font-size: 16px;
+                font-size: 14px;
             }
         }
     </style>
@@ -247,17 +228,7 @@
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1 id="title">中英文标点符号转换器</h1>
-            <div class="language-switch">
-                <button class="lang-btn active" id="zh-btn">中文</button>
-                <button class="lang-btn" id="en-btn">English</button>
-            </div>
-        </div>
-
-        <textarea oninput="updateInfos()" class="text" id="text"></textarea>
-
-        <div class="content">
+        <div class="left-panel">
             <div class="info">
                 <div class="info-item">
                     <h6 id="total-chars">总字符数</h6>
@@ -327,6 +298,9 @@
                     </dl>
                 </div>
             </div>
+        </div>
+        <div class="right-panel">
+            <textarea oninput="updateInfos(); autoResize(this);" class="text" id="text"></textarea>
         </div>
     </div>
 
@@ -413,10 +387,10 @@
 
         // 正则表达式配置
         const REMOVE = {
-            space: 			[{reg: /( |　)/g, replacement: ""}],
-            tab: 				[{reg: /\t/g, replacement: ""}],
-            whiteReturn: [{reg: /^(\s*[\r\n])+/gm, replacement: ""}],
-            htmlTag:		[{reg: /<.+?>|<\/.+?>/g, replacement: ""}],
+            space: [{ reg: /( |　)/g, replacement: "" }],
+            tab: [{ reg: /\t/g, replacement: "" }],
+            whiteReturn: [{ reg: /^(\s*[\r\n])+/gm, replacement: "" }],
+            htmlTag: [{ reg: /<.+?>|<\/.+?>/g, replacement: "" }],
             all: []
         }
 
@@ -427,48 +401,48 @@
 
         const TOZH = {
             space: [
-                {reg: / /g, replacement: "　"},
+                { reg: / /g, replacement: "　" },
             ],
             comma: [
-                {reg: /,/g, replacement: "，"},
-                {reg: /(?<!\.)\.(?!\.)/g, replacement: "。"},
+                { reg: /,/g, replacement: "，" },
+                { reg: /(?<!\.)\.(?!\.)/g, replacement: "。" },
             ],
             questionmark: [
-                {reg: /\?/g, replacement: "？"},
-                {reg: /!/g, replacement: "！"},
+                { reg: /\?/g, replacement: "？" },
+                { reg: /!/g, replacement: "！" },
             ],
             colon: [
-                {reg: /;/g, replacement: "；"},
-                {reg: /:/g, replacement: "："},
+                { reg: /;/g, replacement: "；" },
+                { reg: /:/g, replacement: "：" },
             ],
             bracket: [
-                {reg: /\(/g, replacement: "（"},
-                {reg: /\)/g, replacement: "）"},
+                { reg: /\(/g, replacement: "（" },
+                { reg: /\)/g, replacement: "）" },
             ],
             squareBracket: [
-                {reg: /\[/g, replacement: "【"},
-                {reg: /\]/g, replacement: "】"},
+                { reg: /\[/g, replacement: "【" },
+                { reg: /\]/g, replacement: "】" },
             ],
             quot: [
-                {reg: /"(.*?)"/g, replacement: "“$1”"},
-                {reg: /'(.*?)'/g, replacement: "‘$1’"},
+                { reg: /"(.*?)"/g, replacement: "“$1”" },
+                { reg: /'(.*?)'/g, replacement: "‘$1’" },
             ],
             connector: [
-                {reg: /-/g, replacement: "—"},
-                {reg: /\.\.\./g, replacement: "…"},
+                { reg: /-/g, replacement: "—" },
+                { reg: /\.\.\./g, replacement: "…" },
             ],
             book: [
-                {reg: /\</g, replacement: "《"},
-                {reg: /\>/g, replacement: "》"},
+                { reg: /\</g, replacement: "《" },
+                { reg: /\>/g, replacement: "》" },
             ],
             backslash: [
-                {reg: /\\/g, replacement: "、"},
+                { reg: /\\/g, replacement: "、" },
             ],
             all: []
         }
 
         TOZH.all = [].concat(
-            TOZH.space, 
+            TOZH.space,
             TOZH.connector,
             TOZH.comma,
             TOZH.questionmark, TOZH.colon,
@@ -479,42 +453,42 @@
 
         const TOEN = {
             space: [
-                {reg: /　/g, replacement: " "},
+                { reg: /　/g, replacement: " " },
             ],
             comma: [
-                {reg: /，/g, replacement: ","},
-                {reg: /。/g, replacement: "."},
+                { reg: /，/g, replacement: "," },
+                { reg: /。/g, replacement: "." },
             ],
             colon: [
-                {reg: /；/g, replacement: ";"},
-                {reg: /：/g, replacement: ":"},
+                { reg: /；/g, replacement: ";" },
+                { reg: /：/g, replacement: ":" },
             ],
             quot: [
-                {reg: /[“”]/g, replacement: "\""},
-                {reg: /[‘’]/g, replacement: "\'"},
+                { reg: /[“”]/g, replacement: "\"" },
+                { reg: /[‘’]/g, replacement: "\'" },
             ],
             questionmark: [
-                {reg: /？/g, replacement: "?"},
-                {reg: /！/g, replacement: "!"},
+                { reg: /？/g, replacement: "?" },
+                { reg: /！/g, replacement: "!" },
             ],
             bracket: [
-                {reg: /（/g, replacement: "("},
-                {reg: /）/g, replacement: ")"},
+                { reg: /（/g, replacement: "(" },
+                { reg: /）/g, replacement: ")" },
             ],
             squareBracket: [
-                {reg: /【/g, replacement: "["},
-                {reg: /】/g, replacement: "]"},
+                { reg: /【/g, replacement: "[" },
+                { reg: /】/g, replacement: "]" },
             ],
             connector: [
-                {reg: /[－—–]/g, replacement: "-"},
-                {reg: /…/g, replacement: "..."},
+                { reg: /[－—–]/g, replacement: "-" },
+                { reg: /…/g, replacement: "..." },
             ],
             book: [
-                {reg: /《/g, replacement: "<"},
-                {reg: /》/g, replacement: ">"},
+                { reg: /《/g, replacement: "<" },
+                { reg: /》/g, replacement: ">" },
             ],
             backslash: [
-                {reg: /、/g, replacement: "\\"},
+                { reg: /、/g, replacement: "\\" },
             ],
             all: []
         }
@@ -538,30 +512,18 @@
 
         window.onload = function () {
             textarea = $('#text');
-            setupLanguageButtons();
-        }
-
-        function setupLanguageButtons() {
-            const zhBtn = $('#zh-btn');
-            const enBtn = $('#en-btn');
-            
-            zhBtn.addEventListener('click', function() {
-                setLanguage('zh');
-                zhBtn.classList.add('active');
-                enBtn.classList.remove('active');
-            });
-            
-            enBtn.addEventListener('click', function() {
-                setLanguage('en');
-                enBtn.classList.add('active');
-                zhBtn.classList.remove('active');
-            });
+            // Auto-detect language based on browser settings
+            const browserLang = navigator.language || navigator.userLanguage;
+            const lang = browserLang.startsWith('zh') ? 'zh' : 'en';
+            setLanguage(lang);
+            // Initialize textarea height
+            autoResize(textarea);
         }
 
         function setLanguage(lang) {
             currentLanguage = lang;
             const texts = languageTexts[lang];
-            
+
             for (const key in texts) {
                 const element = document.getElementById(key);
                 if (element) {
@@ -593,6 +555,27 @@
             $('#englishCharacter').innerText = countCharacterEnglish ? countCharacterEnglish.length : 0
             $('#chineseCharacter').innerText = countCharacterChinese ? countCharacterChinese.length : 0
         }
+
+        function autoResize(element) {
+            // Save current scroll position before any changes
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+            // Reset height to auto to get the correct scrollHeight
+            element.style.height = 'auto';
+            // Set height to scrollHeight to fit content
+            element.style.height = element.scrollHeight + 'px';
+
+            // Restore scroll position immediately
+            window.scrollTo(scrollLeft, scrollTop);
+
+            // Use requestAnimationFrame to ensure scroll position is maintained
+            // after browser's layout calculations
+            requestAnimationFrame(() => {
+                window.scrollTo(scrollLeft, scrollTop);
+            });
+        }
     </script>
 </body>
+
 </html>
