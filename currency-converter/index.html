@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title" data-i18n="page-title">智能汇率转换器</title>
+    <link rel="stylesheet" href="style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-741630842819679"
+     crossorigin="anonymous"></script>
+    <!-- 文本通过 script.js 使用 data-i18n 属性进行翻译 -->
+</head>
+<body>
+    <div class="container">
+        <div class="top-row">
+            <h1 id="app-title" data-i18n="app-title">智能汇率转换器</h1>
+        </div>
+        <div class="input-group">
+            <label for="inputAmount" id="input-label" data-i18n="input-label">输入金额（可使用自然语言）：</label>
+            <input type="text" id="inputAmount" data-i18n-placeholder="input-placeholder" placeholder="例如：234534韩元、234亿美元、二百万日元">
+        </div>
+        
+        <div class="input-group">
+            <label for="targetCurrency" id="target-label" data-i18n="target-label">目标货币：</label>
+            <select id="targetCurrency">
+                <!-- 选项将通过JavaScript根据语言环境动态生成 -->
+            </select>
+        </div>
+        
+    <button id="convertBtn" data-i18n="convert-btn">转换</button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p id="loading-text" data-i18n="loading-text">正在处理中...</p>
+        </div>
+        
+        <div class="result" id="result">
+            <h3 data-i18n="result-title">转换结果：</h3>
+            <p id="resultText"></p>
+        </div>
+        
+        <div class="error" id="error">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 在脚本加载后应用语言设置
+    </script>
+</body>
+</html>
