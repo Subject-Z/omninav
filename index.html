@@ -7,162 +7,32 @@
 	<title>OmniNav — Tools</title>
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7416308426819679"
 		crossorigin="anonymous"></script>
-	<style>
-		:root {
-			--bg: #0f1724;
-			--card: #0b1220;
-			--muted: #9aa4b2;
-			--accent: #60a5fa
-		}
-
-		html,
-		body {
-			height: 100%
-		}
-
-		body {
-			margin: 0;
-			font-family: Inter, system-ui, Segoe UI, Arial;
-			background: linear-gradient(180deg, #051025 0%, #0b1220 100%);
-			color: #e6eef8;
-			display: flex;
-			align-items: center;
-			justify-content: center
-		}
-
-		.wrap {
-			width: min(760px, 92%);
-			padding: 36px;
-			background: rgba(255, 255, 255, 0.02);
-			border-radius: 12px;
-			box-shadow: 0 6px 30px rgba(2, 6, 23, 0.6)
-		}
-
-		ul.grid {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			display: grid;
-			gap: 12px
-		}
-
-		a.card {
-			display: block;
-			padding: 14px 16px;
-			background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-			border-radius: 8px;
-			color: inherit;
-			text-decoration: none;
-			border: 1px solid rgba(255, 255, 255, 0.03);
-			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-		}
-
-		a.card:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 12px 40px rgba(96, 165, 250, 0.15), 0 4px 12px rgba(2, 6, 23, 0.4);
-			border-color: rgba(96, 165, 250, 0.3);
-			background: linear-gradient(180deg, rgba(96, 165, 250, 0.05), rgba(96, 165, 250, 0.02))
-		}
-
-		.muted {
-			color: var(--muted);
-			font-size: 0.95rem
-		}
-
-		footer {
-			margin-top: 18px;
-			color: var(--muted);
-			font-size: 0.85rem;
-			text-align: center
-		}
-
-		footer a {
-			color: var(--accent);
-			text-decoration: none;
-			transition: opacity 0.2s ease
-		}
-
-		footer a:hover {
-			opacity: 0.8
-		}
-
-		@media (prefers-color-scheme: light) {
-			body {
-				background: #f7fafc;
-				color: #0f1724
-			}
-
-			.wrap {
-				background: #fff;
-				box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04)
-			}
-
-			a.card {
-				border-color: rgba(2, 6, 23, 0.04)
-			}
-
-			a.card:hover {
-				box-shadow: 0 12px 40px rgba(96, 165, 250, 0.1), 0 4px 12px rgba(2, 6, 23, 0.08)
-			}
-		}
-	</style>
-	<script>
-		// 立即检测并设置语言,避免闪烁
-		(function () {
-			const lang = (navigator.language || navigator.userLanguage).startsWith('zh') ? 'zh' : 'en';
-			const texts = {
-				zh: {
-					'currency-tool': '货币转换',
-					'currency-description': '快速汇率换算',
-					'punctuation-tool': '标点转换',
-					'punctuation-description': '中英标点互转工具',
-					'vpn-tool': 'VPN 推荐',
-					'vpn-description': '收集与比较常见 VPN 服务'
-				},
-				en: {
-					'currency-tool': 'Currency Converter',
-					'currency-description': 'Quick currency exchange calculator',
-					'punctuation-tool': 'Punctuation Converter',
-					'punctuation-description': 'Chinese-English punctuation conversion tool',
-					'vpn-tool': 'VPN Recommendation',
-					'vpn-description': 'Collection and comparison of common VPN services'
-				}
-			};
-			window.__OMNINAV_LANG__ = lang;
-			window.__OMNINAV_TEXTS__ = texts[lang];
-		})();
-	</script>
+	<link rel="stylesheet" href="style.css">
+	<script src="script.js"></script>
 </head>
 
 <body>
-	<main class="wrap">
-		<ul class="grid">
-			<li><a class="card" href="./currency-converter/" id="currency-tool">Currency Converter
+		<main class="wrap">
+			<header>
+				<h1>OmniNav Tools</h1>
+				<p class="subtitle">便捷实用的网络工具集合，为您的日常使用提供帮助</p>
+			</header>
+			
+			<ul class="grid">
+				<li><a class="card" href="./currency-converter/" id="currency-tool" target="_blank" rel="noopener noreferrer"><h3>Currency Converter<span class="external-icon">↗</span></h3>
 					<div class="muted" id="currency-description">Quick currency exchange calculator</div>
 				</a></li>
-			<li><a class="card" href="./punctuation-converter/" id="punctuation-tool">Punctuation Converter
+				<li><a class="card" href="./punctuation-converter/" id="punctuation-tool" target="_blank" rel="noopener noreferrer"><h3>Punctuation Converter<span class="external-icon">↗</span></h3>
 					<div class="muted" id="punctuation-description">Chinese-English punctuation conversion tool</div>
 				</a></li>
-			<li><a class="card" href="./vpn-recommendation/" id="vpn-tool">VPN Recommendation
+				<li><a class="card" href="./vpn-recommendation/" id="vpn-tool" target="_blank" rel="noopener noreferrer"><h3>VPN Recommendation<span class="external-icon">↗</span></h3>
 					<div class="muted" id="vpn-description">Collection and comparison of common VPN services</div>
 				</a></li>
-		</ul>
+			</ul>
 
-		<footer>© <span id="year"></span> OmniNav | <a href="mailto:william@omninav.uk">william@omninav.uk</a></footer>
-	</main>
-	<script>
-		// 应用语言设置(使用预加载的语言数据)
-		document.addEventListener('DOMContentLoaded', function () {
-			const texts = window.__OMNINAV_TEXTS__;
-			for (const key in texts) {
-				const element = document.getElementById(key);
-				if (element) {
-					element.textContent = texts[key];
-				}
-			}
-			document.getElementById('year').textContent = new Date().getFullYear();
-		});
-	</script>
+			<footer>© <span id="year"></span> OmniNav | <a href="mailto:william@omninav.uk">william@omninav.uk</a></footer>
+		</main>
+
 </body>
 
 </html>
