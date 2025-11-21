@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title" data-i18n="page-title">智能汇率转换器</title>
+    <title id="page-title" data-i18n="page-title">汇率换算</title>
     <link rel="stylesheet" href="style.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-741630842819679"
         crossorigin="anonymous"></script>
@@ -14,49 +14,60 @@
     <div class="main-wrapper">
         <div class="container">
             <div class="header">
-                <h1 id="app-title" data-i18n="app-title">智能汇率转换器</h1>
+                <h1 id="app-title" data-i18n="app-title">汇率换算</h1>
+                <div id="lastUpdateTime" class="last-update-time"></div>
             </div>
 
             <div class="content-area">
-                <!-- 智能模式输入区域 -->
-                <div class="input-group">
-                    <label for="inputAmount" data-i18n="input-label">输入金额（支持自然语言）：</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="inputAmount" data-i18n-placeholder="input-placeholder"
-                            placeholder="例如：234534韩元、234亿美元">
+                <div class="layout-container">
+                    <!-- 源货币区域 -->
+                    <div class="input-section">
+                        <div class="source-currency-container">
+                            <!-- 源货币选择 -->
+                            <select id="sourceCurrency">
+                                <!-- JS动态生成 -->
+                            </select>
+
+                            <!-- 输入框区域 -->
+                            <div class="input-fields">
+                                <input type="text" id="inputAmount" data-i18n-placeholder="input-placeholder"
+                                    placeholder="例如：234534韩元、234亿美元">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 换算按钮 -->
+                    <div class="button-section">
+                        <button id="convertBtn" class="convert-btn">
+                            <span data-i18n="convert-btn">换算</span>
+                        </button>
+                    </div>
+
+                    <!-- 目标货币和结果区域 -->
+                    <div class="target-result-section">
+                        <div class="target-currency-container">
+                            <!-- 目标货币选择 -->
+                            <select id="targetCurrency">
+                                <!-- JS动态生成 -->
+                            </select>
+
+                            <!-- 结果区域 -->
+                            <div class="result-container" id="result">
+                                <div id="resultText" class="result-grid">
+                                    <!-- 默认显示0的结果 -->
+                                    <div class="result-card">
+                                        <p class="value">0</p>
+                                    </div>
+                                    <div class="result-card">
+                                        <p class="value">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 目标货币选择 -->
-                <div class="input-group">
-                    <label for="targetCurrency" data-i18n="target-label">目标货币：</label>
-                    <select id="targetCurrency">
-                        <!-- JS动态生成 -->
-                    </select>
-                </div>
 
-                <button id="convertBtn" class="convert-btn">
-                    <span data-i18n="convert-btn">开始转换</span>
-
-                </button>
-
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p id="loading-text" data-i18n="loading-text">正在处理中...</p>
-                </div>
-
-                <div class="result-container" id="result">
-                    <div class="result-header">
-                        <h3 data-i18n="result-title">转换结果</h3>
-                        <span class="rate-tag">实时汇率</span>
-                    </div>
-                    <div id="resultText" class="result-grid"></div>
-                </div>
-
-                <div class="error" id="error">
-
-                    <span id="errorMessage"></span>
-                </div>
             </div>
         </div>
     </div>

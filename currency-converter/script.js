@@ -3,15 +3,17 @@ const ZHIPU_API_KEY = 'fa198e102b4441368c5fd32c68bbf589.m78MpoR4G8iT8xkL';
 const ZHIPU_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
 const FRANKFURTER_API_URL = 'https://api.frankfurter.app/latest';
 
+let exchangeRates = null;
+let ratesDate = null;
+
 // DOM元素
 const inputAmount = document.getElementById('inputAmount'); // 智能输入
+const sourceCurrency = document.getElementById('sourceCurrency'); // 源货币
 const targetCurrency = document.getElementById('targetCurrency');
 const convertBtn = document.getElementById('convertBtn');
-const loading = document.getElementById('loading');
 const result = document.getElementById('result');
 const resultText = document.getElementById('resultText');
-const error = document.getElementById('error');
-const errorMessage = document.getElementById('errorMessage');
+const lastUpdateTime = document.getElementById('lastUpdateTime');
 
 // 语言检测与翻译数据
 function detectLanguage() {
@@ -36,44 +38,34 @@ let currentLang = detectLanguage();
 
 const translations = {
     zh: {
-        'page-title': '智能汇率转换器',
-        'app-title': '智能汇率转换器',
+        'page-title': '汇率换算',
+        'app-title': '汇率换算',
+        'source-label': '源货币：',
         'input-label': '输入金额（支持自然语言）：',
-        'input-placeholder': '例如：234534韩元、234亿美元',
+        'input-placeholder': '任意文本，例如：234亿、两百、435',
+        'numeric-label': '仅数字：',
         'target-label': '目标货币：',
-        'convert-btn': '开始转换',
-        'loading-text': '正在处理中...',
+        'convert-btn': '换算',
         'result-title': '转换结果',
-        'error-no-amount': '请输入有效的金额',
-        'error-parse-failed': '无法解析输入内容，请确保格式正确',
-        'error-model-failed': 'AI服务暂时不可用，请稍后再试',
-        'error-rate-failed': '获取实时汇率失败，请检查网络',
+        'error-model-failed': '服务暂时不可用，请稍后再试',
         processing: '正在处理中...',
         copied: '已复制',
-        format_numeric: '数字格式',
-        format_with_units: '带单位格式',
-        format_chinese: '中文数字',
-        format_chinese_formal: '大写中文'
+        'rate-date-label': '汇率数据日期：'
     },
     en: {
-        'page-title': 'Smart Currency Converter',
-        'app-title': 'Smart Currency Converter',
+        'page-title': 'Currency Conversion',
+        'app-title': 'Currency Conversion',
+        'source-label': 'From:',
         'input-label': 'Enter amount (natural language):',
-        'input-placeholder': 'e.g., 234534 KRW, 2 billion USD',
+        'input-placeholder': 'Any text, e.g., 2 billion, two hundred, 435',
+        'numeric-label': 'Numbers only:',
         'target-label': 'To:',
-        'convert-btn': 'Convert Now',
-        'loading-text': 'Processing...',
+        'convert-btn': 'Convert',
         'result-title': 'Conversion Result',
-        'error-no-amount': 'Please enter a valid amount',
-        'error-parse-failed': 'Unable to parse input. Please check the format.',
-        'error-model-failed': 'AI Service unavailable. Please try again later.',
-        'error-rate-failed': 'Failed to fetch exchange rates. Check connection.',
+        'error-model-failed': 'Service temporarily unavailable, please try again later.',
         processing: 'Processing...',
         copied: 'Copied',
-        format_numeric: 'Numeric Format',
-        format_with_units: 'With Units',
-        format_chinese: 'Chinese Numerals',
-        format_chinese_formal: 'Formal Chinese'
+        'rate-date-label': 'Exchange rate date: '
     }
 };
 
@@ -81,40 +73,48 @@ let t = translations[currentLang];
 
 const currencyNames = {
     zh: {
-        'AUD': '澳大利亚元 (AUD)', 'BGN': '保加利亚列弗 (BGN)', 'BRL': '巴西雷亚尔 (BRL)',
-        'CAD': '加拿大元 (CAD)', 'CHF': '瑞士法郎 (CHF)', 'CNY': '人民币 (CNY)',
-        'CZK': '捷克克朗 (CZK)', 'DKK': '丹麦克朗 (DKK)', 'EUR': '欧元 (EUR)',
-        'GBP': '英镑 (GBP)', 'HKD': '港元 (HKD)', 'HUF': '匈牙利福林 (HUF)',
-        'IDR': '印尼盾 (IDR)', 'ILS': '以色列新谢克尔 (ILS)', 'INR': '印度卢比 (INR)',
-        'ISK': '冰岛克朗 (ISK)', 'JPY': '日元 (JPY)', 'KRW': '韩元 (KRW)',
-        'MXN': '墨西哥比索 (MXN)', 'MYR': '马来西亚林吉特 (MYR)', 'NOK': '挪威克朗 (NOK)',
-        'NZD': '新西兰元 (NZD)', 'PHP': '菲律宾比索 (PHP)', 'PLN': '波兰兹罗提 (PLN)',
-        'RON': '罗马尼亚列伊 (RON)', 'SEK': '瑞典克朗 (SEK)', 'SGD': '新加坡元 (SGD)',
-        'THB': '泰铢 (THB)', 'TRY': '土耳其里拉 (TRY)', 'USD': '美元 (USD)',
-        'ZAR': '南非兰特 (ZAR)'
+        'AUD': 'AUD 澳大利亚元', 'BGN': 'BGN 保加利亚列弗', 'BRL': 'BRL 巴西雷亚尔',
+        'CAD': 'CAD 加拿大元', 'CHF': 'CHF 瑞士法郎', 'CNY': 'CNY 人民币',
+        'CZK': 'CZK 捷克克朗', 'DKK': 'DKK 丹麦克朗', 'EUR': 'EUR 欧元',
+        'GBP': 'GBP 英镑', 'HKD': 'HKD 港元', 'HUF': 'HUF 匈牙利福林',
+        'IDR': 'IDR 印尼盾', 'ILS': 'ILS 以色列新谢克尔', 'INR': 'INR 印度卢比',
+        'ISK': 'ISK 冰岛克朗', 'JPY': 'JPY 日元', 'KRW': 'KRW 韩元',
+        'MXN': 'MXN 墨西哥比索', 'MYR': 'MYR 马来西亚林吉特', 'NOK': 'NOK 挪威克朗',
+        'NZD': 'NZD 新西兰元', 'PHP': 'PHP 菲律宾比索', 'PLN': 'PLN 波兰兹罗提',
+        'RON': 'RON 罗马尼亚列伊', 'SEK': 'SEK 瑞典克朗', 'SGD': 'SGD 新加坡元',
+        'THB': 'THB 泰铢', 'TRY': 'TRY 土耳其里拉', 'USD': 'USD 美元',
+        'ZAR': 'ZAR 南非兰特'
     },
     en: {
-        'AUD': 'Australian Dollar (AUD)', 'BGN': 'Bulgarian Lev (BGN)', 'BRL': 'Brazilian Real (BRL)',
-        'CAD': 'Canadian Dollar (CAD)', 'CHF': 'Swiss Franc (CHF)', 'CNY': 'Chinese Yuan (CNY)',
-        'CZK': 'Czech Koruna (CZK)', 'DKK': 'Danish Krone (DKK)', 'EUR': 'Euro (EUR)',
-        'GBP': 'British Pound (GBP)', 'HKD': 'Hong Kong Dollar (HKD)', 'HUF': 'Hungarian Forint (HUF)',
-        'IDR': 'Indonesian Rupiah (IDR)', 'ILS': 'Israeli New Shekel (ILS)', 'INR': 'Indian Rupee (INR)',
-        'ISK': 'Icelandic Krona (ISK)', 'JPY': 'Japanese Yen (JPY)', 'KRW': 'South Korean Won (KRW)',
-        'MXN': 'Mexican Peso (MXN)', 'MYR': 'Malaysian Ringgit (MYR)', 'NOK': 'Norwegian Krone (NOK)',
-        'NZD': 'New Zealand Dollar (NZD)', 'PHP': 'Philippine Peso (PHP)', 'PLN': 'Polish Zloty (PLN)',
-        'RON': 'Romanian Leu (RON)', 'SEK': 'Swedish Krona (SEK)', 'SGD': 'Singapore Dollar (SGD)',
-        'THB': 'Thai Baht (THB)', 'TRY': 'Turkish Lira (TRY)', 'USD': 'US Dollar (USD)',
-        'ZAR': 'South African Rand (ZAR)'
+        'AUD': 'AUD Australian Dollar', 'BGN': 'BGN Bulgarian Lev', 'BRL': 'BRL Brazilian Real',
+        'CAD': 'CAD Canadian Dollar', 'CHF': 'CHF Swiss Franc', 'CNY': 'CNY Chinese Yuan',
+        'CZK': 'CZK Czech Koruna', 'DKK': 'DKK Danish Krone', 'EUR': 'EUR Euro',
+        'GBP': 'GBP British Pound', 'HKD': 'HKD Hong Kong Dollar', 'HUF': 'HUF Hungarian Forint',
+        'IDR': 'IDR Indonesian Rupiah', 'ILS': 'ILS Israeli New Shekel', 'INR': 'INR Indian Rupee',
+        'ISK': 'ISK Icelandic Krona', 'JPY': 'JPY Japanese Yen', 'KRW': 'KRW South Korean Won',
+        'MXN': 'MXN Mexican Peso', 'MYR': 'MYR Malaysian Ringgit', 'NOK': 'NOK Norwegian Krone',
+        'NZD': 'NZD New Zealand Dollar', 'PHP': 'PHP Philippine Peso', 'PLN': 'PLN Polish Zloty',
+        'RON': 'RON Romanian Leu', 'SEK': 'SEK Swedish Krona', 'SGD': 'SGD Singapore Dollar',
+        'THB': 'THB Thai Baht', 'TRY': 'TRY Turkish Lira', 'USD': 'USD US Dollar',
+        'ZAR': 'ZAR South African Rand'
     }
 };
 
 function populateCurrencyOptions() {
     const currentCurrencyNames = currencyNames[currentLang];
     
+    // 填充源货币
+    sourceCurrency.innerHTML = '';
     // 填充目标货币
     targetCurrency.innerHTML = '';
 
     Object.keys(currentCurrencyNames).forEach(currencyCode => {
+        // 源货币选项
+        const optionS = document.createElement('option');
+        optionS.value = currencyCode;
+        optionS.textContent = currentCurrencyNames[currencyCode];
+        sourceCurrency.appendChild(optionS);
+        
         // 目标货币选项
         const optionT = document.createElement('option');
         optionT.value = currencyCode;
@@ -123,6 +123,14 @@ function populateCurrencyOptions() {
     });
     
     // 恢复上次选择
+    const savedSource = localStorage.getItem('sourceCurrency');
+    if (savedSource && currencyNames[currentLang][savedSource]) {
+        sourceCurrency.value = savedSource;
+    } else {
+        // 默认选择人民币
+        sourceCurrency.value = 'CNY';
+    }
+    
     const savedTarget = localStorage.getItem('targetCurrency');
     if (savedTarget && currencyNames[currentLang][savedTarget]) {
         targetCurrency.value = savedTarget;
@@ -146,8 +154,6 @@ function applyLanguage(lang) {
         if (t[key]) el.placeholder = t[key];
     });
 
-    const loadingText = document.getElementById('loading-text');
-    if (loadingText && t['loading-text']) loadingText.textContent = t['loading-text'];
 
     populateCurrencyOptions();
     try { localStorage.setItem('lang', lang); } catch (e) {}
@@ -156,32 +162,61 @@ function applyLanguage(lang) {
 document.addEventListener('DOMContentLoaded', function() {
     applyLanguage(currentLang);
     
+    // 页面加载后立即预加载汇率数据
+    preloadExchangeRates();
+    
+    // 初始化默认显示0的结果
+    showDefaultResult();
+    
     convertBtn.addEventListener('click', convertCurrency);
     
     // 保存选择
+    sourceCurrency.addEventListener('change', () => {
+        localStorage.setItem('sourceCurrency', sourceCurrency.value);
+    });
     targetCurrency.addEventListener('change', () => {
         localStorage.setItem('targetCurrency', targetCurrency.value);
     });
+    
+    // 添加键盘事件监听器，支持Enter键触发换算
+    inputAmount.addEventListener('keydown', handleKeyDown);
+    sourceCurrency.addEventListener('keydown', handleKeyDown);
+    targetCurrency.addEventListener('keydown', handleKeyDown);
 });
 
 async function convertCurrency() {
+    const source = sourceCurrency.value;
     const target = targetCurrency.value;
     let amount, currency;
     
-    showLoading();
+    // 禁用按钮并改变背景色
+    convertBtn.disabled = true;
+    convertBtn.style.backgroundColor = '#9ca3af'; // 灰色
     
     try {
         // 智能模式：走大模型解析流程
         const userInput = inputAmount.value.trim();
-        if (!userInput) throw new Error(t['error-no-amount']);
+        if (!userInput) throw new Error(t['error-model-failed']);
         
-        const normalizedInput = await normalizeInput(userInput);
-        const parsed = parseNormalizedInput(normalizedInput);
-        amount = parsed.amount;
-        currency = parsed.currency;
+        let amount, currency;
+        if (/^\s*\d+(\.\d+)?\s*$/.test(userInput)) {
+            amount = parseFloat(userInput);
+            currency = source;
+            if (isNaN(amount) || amount <= 0) {
+                throw new Error(t['error-model-failed']);
+            }
+        } else {
+            const normalizedInput = await normalizeInput(userInput, source);
+            const parsed = parseNormalizedInput(normalizedInput);
+            amount = parsed.amount;
+            currency = parsed.currency;
+            if (!currency) {
+                currency = source;
+            }
+        }
         
         if (!amount || !currency) {
-            throw new Error(t['error-parse-failed']);
+            throw new Error(t['error-model-failed']);
         }
         
         // 获取汇率并转换
@@ -192,22 +227,71 @@ async function convertCurrency() {
         
     } catch (err) {
         showError(err.message);
+    } finally {
+        // 恢复按钮状态
+        convertBtn.disabled = false;
+        convertBtn.style.backgroundColor = ''; // 恢复默认颜色
     }
 }
 
+
+// 处理键盘事件，支持Enter键触发换算
+function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 防止表单提交或其他默认行为
+        convertCurrency();
+    }
+}
+
+// 显示默认结果（0）
+function showDefaultResult() {
+    const convertedNum = 0;
+    resultText.innerHTML = '';
+
+    const formats = [
+        { val: formatNumber(convertedNum, currentLang) },
+        { val: formatWithUnits(convertedNum, currentLang) }
+    ];
+
+    formats.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.style.cursor = 'pointer';
+        
+        const value = document.createElement('p');
+        value.className = 'value';
+        value.textContent = f.val;
+        
+        // 点击整个卡片复制内容
+        card.addEventListener('click', () => {
+            copyToClipboard(f.val);
+        });
+        
+        card.appendChild(value);
+        resultText.appendChild(card);
+    });
+
+    result.style.display = 'block';
+}
+
 // 保持原有的 LLM 相关函数不变
-async function normalizeInput(input) {
-    const prompt = currentLang === 'zh' ? 
-        `请将以下用户输入的货币金额转换为标准格式 "[数值][货币代码]" 的形式，只返回这个标准格式，不要其他内容。
+async function normalizeInput(input, sourceCurrency) {
+    const systemPrompt = `请将用户输入的货币金额转换为标准格式 "[数值][货币代码]" 的形式，只返回这个标准格式，不要其他内容。
+
+默认源货币代码：\${sourceCurrency}
+
+规则：
+1. 如果用户输入明确包含货币名称或代码（如“美元”、“USD”、“韩元”、“日元”），则解析并使用该货币代码。
+2. 如果用户输入没有指定任何货币（如纯数字、"两亿"、"100"），则使用默认源货币代码 \${sourceCurrency}。
+
 示例：
-用户输入："234534韩元" → 输出："234534KRW"
-用户输入："234亿美元" → 输出："23400000000USD"
-用户输入："二百万日元" → 输出："2000000JPY"
-用户输入："${input}"
-输出：` :
-        `Please convert the following user input currency amount into the standard format "[value][currency code]", only return this standard format.
-User input: "${input}"
-Output:`;
+用户输入："234534韩元" → "234534KRW"
+用户输入："234亿美元" → "23400000000USD"
+用户输入："二百万日元" → "2000000JPY"
+用户输入："两亿" → "200000000\${sourceCurrency}"
+用户输入："100" → "100\${sourceCurrency}"`;
+
+    const userPrompt = `${input}`;
 
     const response = await fetch(ZHIPU_API_URL, {
         method: 'POST',
@@ -218,10 +302,13 @@ Output:`;
         body: JSON.stringify({
             model: 'glm-4.5-flash',
             messages: [
-                { role: 'system', content: 'You are a helpful AI assistant specialized in standardizing currency amounts.' },
-                { role: 'user', content: prompt }
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
             ],
-            temperature: 0.1 // 降低温度以获得更确定的结果
+            thinking: {
+                type: "disabled"    // 禁用深度思考模式
+            },
+            temperature: 1
         })
     });
 
@@ -236,21 +323,62 @@ function parseNormalizedInput(normalized) {
     if (match) {
         return { amount: parseFloat(match[1]), currency: match[2] };
     }
-    throw new Error(t['error-parse-failed']);
+    // Fallback: if pure number without currency code, return amount with null currency
+    const trimmed = normalized.trim();
+    const num = parseFloat(trimmed);
+    if (!isNaN(num) && num > 0) {
+        return { amount: num, currency: null };
+    }
+    throw new Error(t['error-model-failed']);
 }
 
 async function getExchangeRate(fromCurrency, toCurrency, amount) {
     if (fromCurrency === toCurrency) return amount;
     
+    // 优先使用预加载的缓存汇率
+    if (exchangeRates && ratesDate && exchangeRates[fromCurrency] && exchangeRates[toCurrency]) {
+        const rateFrom = exchangeRates[fromCurrency];
+        const rateTo = exchangeRates[toCurrency];
+        updateLastUpdateTime(ratesDate);
+        return (amount * (rateTo / rateFrom)).toFixed(2);
+    }
+    
+    // 回退到实时获取特定货币对汇率
     try {
         const response = await fetch(`${FRANKFURTER_API_URL}?from=${fromCurrency}&to=${toCurrency}`);
-        if (!response.ok) throw new Error(t['error-rate-failed']);
+        if (!response.ok) throw new Error(t['error-model-failed']);
         const data = await response.json();
         const rate = data.rates[toCurrency];
+        
+        // 更新最后获取时间
+        updateLastUpdateTime(data.date);
+        
         return (amount * rate).toFixed(2);
     } catch (e) {
-        throw new Error(t['error-rate-failed']);
+        throw new Error(t['error-model-failed']);
     }
+}
+
+// 获取汇率数据日期（用于页面加载时显示）
+async function preloadExchangeRates() {
+    try {
+        const response = await fetch(FRANKFURTER_API_URL);
+        if (!response.ok) throw new Error(t['error-rate-failed']);
+        const data = await response.json();
+        exchangeRates = data.rates;
+        ratesDate = data.date;
+        updateLastUpdateTime(ratesDate);
+    } catch (e) {
+        // 如果获取失败，显示当前日期作为备用
+        updateLastUpdateTime(new Date().toISOString().split('T')[0]);
+    }
+}
+
+function updateLastUpdateTime(dateString) {
+    // 格式化日期显示
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US');
+    lastUpdateTime.textContent = `${t['rate-date-label'] || (currentLang === 'zh' ? '汇率数据日期：' : 'Exchange rate date: ')}${formattedDate}`;
 }
 
 // 数字格式化辅助函数
@@ -270,117 +398,24 @@ function formatNumber(num, lang) {
 
 function formatWithUnits(num, lang) {
     const absNum = Math.abs(num);
+    const formatOneDecimal = (n) => {
+        const fixed = n.toFixed(1);
+        return fixed.endsWith('.0') ? fixed.slice(0, -2) : fixed;
+    };
     if (lang === 'zh') {
-        if (absNum >= 1e8) return (num / 1e8).toFixed(2) + '亿';
-        if (absNum >= 1e4) return (num / 1e4).toFixed(2) + '万';
+        if (absNum >= 1e12) return formatOneDecimal(num / 1e12) + '万亿';
+        if (absNum >= 1e8) return formatOneDecimal(num / 1e8) + '亿';
+        if (absNum >= 1e4) return formatOneDecimal(num / 1e4) + '万';
     } else {
-        if (absNum >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-        if (absNum >= 1e6) return (num / 1e6).toFixed(2) + 'M';
-        if (absNum >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+        if (absNum >= 1e12) return formatOneDecimal(num / 1e12) + 'T';
+        if (absNum >= 1e9) return formatOneDecimal(num / 1e9) + 'B';
+        if (absNum >= 1e6) return formatOneDecimal(num / 1e6) + 'M';
+        if (absNum >= 1e3) return formatOneDecimal(num / 1e3) + 'K';
     }
-    return num.toFixed(2);
+    return formatOneDecimal(num);
 }
 
-function formatChineseNumerals(num) {
-    // (简化版，保持原逻辑基本不变，仅作代码整理)
-    const chineseNums = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
-    const units = ['', '十', '百', '千'];
-    const bigUnits = ['', '万', '亿'];
-    if (num === 0) return chineseNums[0];
-    let integerPart = Math.floor(Math.abs(num));
-    let decimalPart = Math.round((Math.abs(num) - integerPart) * 100);
-    
-    function convertInteger(n) {
-        if (n === 0) return '';
-        let result = '';
-        let bigUnitIndex = 0;
-        while (n > 0) {
-            let part = n % 10000;
-            if (part !== 0) {
-                let partStr = '';
-                let temp = part;
-                let uIndex = 0;
-                while (temp > 0) {
-                    let digit = temp % 10;
-                    if (digit !== 0) partStr = chineseNums[digit] + units[uIndex] + partStr;
-                    else if (partStr !== '' && !partStr.startsWith(chineseNums[0])) partStr = chineseNums[0] + partStr;
-                    temp = Math.floor(temp / 10);
-                    uIndex++;
-                }
-                result = partStr + bigUnits[bigUnitIndex] + result;
-            }
-            n = Math.floor(n / 10000);
-            bigUnitIndex++;
-        }
-        // 修正一十开头
-        if (result.startsWith('一十')) result = result.substring(1);
-        return result || chineseNums[0];
-    }
-    
-    let result = convertInteger(integerPart);
-    if (decimalPart > 0) {
-        result += '点' + chineseNums[Math.floor(decimalPart/10)] + chineseNums[decimalPart%10];
-    }
-    return num < 0 ? '负' + result : result;
-}
 
-function formatFormalChinese(num) {
-    const formalNums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
-    const formalUnits = ['', '拾', '佰', '仟'];
-    const formalBigUnits = ['', '万', '亿'];
-    if (num === 0) return '零元整';
-    let integerPart = Math.floor(Math.abs(num));
-    let decimalPart = Math.round((Math.abs(num) - integerPart) * 100);
-    
-    function convertInteger(n) {
-        if (n === 0) return '';
-        let result = '';
-        let bigUnitIndex = 0;
-        while (n > 0) {
-            let part = n % 10000;
-            if (part !== 0) {
-                let partStr = '';
-                let temp = part;
-                let uIndex = 0;
-                while (temp > 0) {
-                    let digit = temp % 10;
-                    if (digit !== 0) partStr = formalNums[digit] + formalUnits[uIndex] + partStr;
-                    else if (partStr !== '' && !partStr.startsWith(formalNums[0])) partStr = formalNums[0] + partStr;
-                    temp = Math.floor(temp / 10);
-                    uIndex++;
-                }
-                result = partStr + formalBigUnits[bigUnitIndex] + result;
-            }
-            n = Math.floor(n / 10000);
-            bigUnitIndex++;
-        }
-        return result;
-    }
-    
-    let result = convertInteger(integerPart);
-    result += result ? '元' : '';
-    if (decimalPart > 0) {
-        if (Math.floor(decimalPart/10) > 0) result += formalNums[Math.floor(decimalPart/10)] + '角';
-        if (decimalPart%10 > 0) result += formalNums[decimalPart%10] + '分';
-    } else {
-        result += '整';
-    }
-    return num < 0 ? '负' + result : result;
-}
-
-function showLoading() {
-    loading.style.display = 'block';
-    result.style.display = 'none';
-    error.style.display = 'none';
-    convertBtn.disabled = true;
-    convertBtn.style.opacity = '0.7';
-}
-
-function hideLoading() {
-    loading.style.display = 'none';
-    convertBtn.disabled = false;
-    convertBtn.style.opacity = '1';
-}
 
 async function copyToClipboard(text) {
     try {
@@ -423,27 +458,18 @@ function showCopyFeedback() {
 }
 
 function showResult(originalAmount, originalCurrency, convertedAmount, targetCurrency) {
-    hideLoading();
     const convertedNum = parseFloat(convertedAmount);
     resultText.innerHTML = '';
 
     const formats = [
-        { title: t.format_numeric, val: formatNumber(convertedNum, currentLang) },
-        { title: t.format_with_units, val: formatWithUnits(convertedNum, currentLang) }
+        { val: formatNumber(convertedNum, currentLang) },
+        { val: formatWithUnits(convertedNum, currentLang) }
     ];
-
-    if (currentLang === 'zh') {
-        formats.push({ title: t.format_chinese, val: formatChineseNumerals(convertedNum) });
-        formats.push({ title: t.format_chinese_formal, val: formatFormalChinese(convertedNum) });
-    }
 
     formats.forEach(f => {
         const card = document.createElement('div');
         card.className = 'result-card';
         card.style.cursor = 'pointer';
-        
-        const title = document.createElement('h4');
-        title.textContent = f.title;
         
         const value = document.createElement('p');
         value.className = 'value';
@@ -454,7 +480,6 @@ function showResult(originalAmount, originalCurrency, convertedAmount, targetCur
             copyToClipboard(f.val);
         });
         
-        card.appendChild(title);
         card.appendChild(value);
         resultText.appendChild(card);
     });
@@ -463,7 +488,47 @@ function showResult(originalAmount, originalCurrency, convertedAmount, targetCur
 }
 
 function showError(message) {
-    hideLoading();
-    errorMessage.textContent = message;
-    error.style.display = 'flex';
+    const mainWrapper = document.querySelector('.main-wrapper');
+    
+    // Remove existing error message if any
+    const existing = mainWrapper ? mainWrapper.querySelector('.error-message') : null;
+    if (existing) {
+        existing.remove();
+    }
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+        margin: 20px 0;
+        padding: 12px 20px;
+        background: var(--error-bg);
+        color: var(--error-text);
+        border-radius: 8px;
+        font-size: 14px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 100%;
+    `;
+    
+    if (mainWrapper) {
+        mainWrapper.appendChild(errorDiv);
+        
+        // Fade in
+        requestAnimationFrame(() => {
+            errorDiv.style.opacity = '1';
+        });
+        
+        // Fade out after 4 seconds
+        setTimeout(() => {
+            errorDiv.style.opacity = '0';
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 300);
+        }, 4000);
+    }
 }
