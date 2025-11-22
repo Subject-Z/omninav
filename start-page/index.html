@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的网址导航</title>
+    <link rel="icon" href="../favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <button class="settings-toggle" onclick="toggleSettings()">⚙️</button>
+</header>
+
+<div class="grid-container" id="gridContainer">
+    <!-- 图标将通过 JS 动态生成 -->
+</div>
+
+<!-- 编辑/添加 弹窗 -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h2 id="modalTitle">编辑快捷方式</h2>
+        <div class="form-group">
+            <label>网站名称</label>
+            <input type="text" id="inputName" placeholder="例如：百度">
+        </div>
+        <div class="form-group">
+            <label>链接地址 (URL)</label>
+            <input type="text" id="inputUrl" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>图标地址 (URL)</label>
+            <input type="text" id="inputIcon" placeholder="https://.../logo.png">
+            <small style="color: #888; display: block; margin-top: 4px;">提示：若无图片，可使用 http://api.btstu.cn/sjtx/api.php 随机头像</small>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-delete" id="btnDelete" onclick="deleteCurrentItem()">删除</button>
+            <div>
+                <button class="btn-cancel" onclick="closeModal()">取消</button>
+                <button class="btn-save" onclick="saveItem()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="settings-panel" id="settingsPanel">
+    <div class="panel-header">
+        <span>设置</span>
+        <button class="panel-close" onclick="toggleSettings()">×</button>
+    </div>
+    <div class="panel-body">
+        <button onclick="exportData()">导出数据</button>
+        <button onclick="triggerImport()">导入数据</button>
+        <input type="file" id="fileInput" accept=".json" onchange="importData(this)">
+        
+        <!-- 壁纸设置 -->
+        <div class="setting-item">
+            <label class="setting-label">使用每日壁纸</label>
+            <label class="switch">
+                <input type="checkbox" id="bingWallpaperToggle" onchange="toggleBingWallpaper(this)">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
