@@ -1,11 +1,72 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import { getCollection } from "astro:content";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const allArticles = await getCollection("articles");
+const sortedArticles = allArticles.sort(
+	(a, b) => b.data.releaseDate.valueOf() - a.data.releaseDate.valueOf(),
+);
+const firstPageArticles = sortedArticles.slice(0, 20);
+const totalPages = Math.ceil(sortedArticles.length / 20);
+
+const page = {
+	url: {
+		prev: undefined,
+		next: totalPages > 1 ? "/page/2" : undefined,
+	},
+	currentPage: 1,
+	lastPage: totalPages,
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="OmniNav - Home">
+	<div class="grid">
+		{firstPageArticles.map((article) => <Card article={article} />)}
+	</div>
+
+	{
+		totalPages > 1 && (
+			<nav class="pagination">
+				<span class="btn disabled">Previous</span>
+				<span class="info">Page 1 of {totalPages}</span>
+				<a href="/page/2" class="btn">
+					Next
+				</a>
+			</nav>
+		)
+	}
 </Layout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 2rem;
+	}
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+	.btn {
+		padding: 0.5rem 1rem;
+		background: #264653;
+		color: white;
+		text-decoration: none;
+		border-radius: 4px;
+		transition: background 0.3s;
+	}
+	.btn:hover:not(.disabled) {
+		background: #555;
+	}
+	.btn.disabled {
+		background: #ccc;
+		cursor: not-allowed;
+	}
+	.info {
+		color: #666;
+	}
+</style>

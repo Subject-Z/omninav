@@ -1,0 +1,193 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const articles = await getCollection("articles");
+    return articles.map((article) => ({
+        params: { slug: article.slug },
+        props: { article },
+    }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<Layout title={article.data.title} description={article.data.description}>
+    <article class="article-detail">
+        <!-- Info Section -->
+        <section class="info-section">
+            <div class="poster">
+                <img
+                    src={article.data.poster || "https://placehold.co/300x450"}
+                    alt={article.data.title}
+                    onerror="this.onerror=null; this.src='https://placehold.co/300x450?text=Image+Not+Found';"
+                />
+            </div>
+            <div class="details">
+                <h1>{article.data.title}</h1>
+                <div class="meta-row">
+                    <span class="label">Chinese Name:</span>
+                    <span class="value">{article.data.chineseName}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="label">Author:</span>
+                    <span class="value">{article.data.author}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="label">Release Date:</span>
+                    <span class="value"
+                        >{
+                            article.data.releaseDate.toISOString().split("T")[0]
+                        }</span
+                    >
+                </div>
+                <div class="meta-row">
+                    <span class="label">Category:</span>
+                    <span class="value capitalize">{article.data.category}</span
+                    >
+                </div>
+                {
+                    article.data.tags && (
+                        <div class="meta-row">
+                            <span class="label">Tags:</span>
+                            <div class="tags-value">
+                                {article.data.tags.map((tag) => (
+                                    <span class="tag">{tag}</span>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+                {
+                    article.data.officialLink && (
+                        <div class="meta-row">
+                            <span class="label">Official Link:</span>
+                            <a
+                                href={article.data.officialLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="value link"
+                            >
+                                Visit Website
+                            </a>
+                        </div>
+                    )
+                }
+            </div>
+        </section>
+
+        <hr />
+
+        <!-- Intro Section -->
+        <section class="intro-section">
+            <h2>Introduction</h2>
+            <div class="content">
+                <Content />
+            </div>
+        </section>
+    </article>
+</Layout>
+
+<style>
+    .article-detail {
+        background: #faf8f2;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .info-section {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    .poster {
+        flex-shrink: 0;
+        width: 300px;
+    }
+    .poster img {
+        width: 100%;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .details {
+        flex-grow: 1;
+    }
+    h1 {
+        margin-top: 0;
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .meta-row {
+        display: flex;
+        margin-bottom: 0.8rem;
+        font-size: 1.1rem;
+    }
+    .label {
+        font-weight: bold;
+        width: 150px;
+        color: #555;
+    }
+    .value {
+        color: #333;
+    }
+    .capitalize {
+        text-transform: capitalize;
+    }
+    hr {
+        border: 0;
+        border-top: 1px solid #eee;
+        margin: 2rem 0;
+    }
+    .intro-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .content {
+        line-height: 1.6;
+        color: #444;
+    }
+
+    .tags-value {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .tag {
+        background: #f0f0f0;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+    .link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .info-section {
+            flex-direction: column;
+            align-items: center;
+        }
+        .poster {
+            width: 100%;
+            max-width: 300px;
+        }
+        .details {
+            width: 100%;
+        }
+        .meta-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .label {
+            width: 100%;
+            margin-bottom: 0.2rem;
+        }
+    }
+</style>

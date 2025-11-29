@@ -1,0 +1,68 @@
+---
+interface Props {
+    page: {
+        url: {
+            prev: string | undefined;
+            next: string | undefined;
+        };
+        currentPage: number;
+        lastPage: number;
+    };
+}
+
+const { page } = Astro.props;
+---
+
+<nav class="pagination">
+    {
+        page.url.prev ? (
+            <a href={page.url.prev} class="btn">
+                Previous
+            </a>
+        ) : (
+            <span class="btn disabled">Previous</span>
+        )
+    }
+
+    <span class="info">
+        Page {page.currentPage} of {page.lastPage}
+    </span>
+
+    {
+        page.url.next ? (
+            <a href={page.url.next} class="btn">
+                Next
+            </a>
+        ) : (
+            <span class="btn disabled">Next</span>
+        )
+    }
+</nav>
+
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .btn {
+        padding: 0.5rem 1rem;
+        background: #264653;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background 0.3s;
+    }
+    .btn:hover:not(.disabled) {
+        background: #555;
+    }
+    .btn.disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+    .info {
+        color: #666;
+    }
+</style>

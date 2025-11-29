@@ -1,0 +1,39 @@
+---
+const today = new Date();
+---
+
+<footer>
+    <div class="footer-content">
+        &copy; {today.getFullYear()} OmniNav. All rights reserved.
+        <span class="separator">|</span>
+        <a href="mailto:william@omninav.uk">william@omninav.uk</a>
+    </div>
+</footer>
+
+<style>
+    footer {
+        padding: 2em 1em 2em 1em;
+        background: linear-gradient(var(--gray-gradient)) no-repeat;
+        color: rgb(var(--gray));
+        text-align: center;
+        margin-top: auto;
+        border-top: 1px solid rgba(var(--accent), 0.2);
+    }
+    .footer-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+        flex-wrap: wrap;
+    }
+    .separator {
+        color: rgba(var(--accent), 0.5);
+    }
+    a {
+        color: rgb(var(--accent));
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
