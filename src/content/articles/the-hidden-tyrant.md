@@ -1,5 +1,6 @@
 ---
 title: "The Hidden Tyrant"
+metaTitle: "Beyond the Mask: 'The Hidden Tyrant' Unveils a Wastrel's Secret - A Gripping Tale of Genius, Intrigue, and Love"
 chineseName: "天下第一纨绔"
 author: "Tencent"
 releaseDate: 2025-11-29

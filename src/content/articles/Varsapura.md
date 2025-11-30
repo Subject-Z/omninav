@@ -1,5 +1,6 @@
 ---
 title: "Varsapura"
+metaTitle: "Rain of Thought, Rot of Mind: The Dark Urban Secrets of Varsapura"
 chineseName: "雨之城"
 author: "HoYoverse"
 releaseDate: 2025-11-21
