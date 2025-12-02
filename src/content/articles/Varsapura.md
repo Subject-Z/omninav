@@ -10,6 +10,8 @@ description: "Join the Shadow Emergency Alliance (SEAL) in a world where human t
 poster: "https://upload-os-bbs.hoyolab.com/upload/2025/11/20/e512f0f264b8ce0f7e59ee790ef97c53_6014922918173433.jpeg"
 ---
 
+# Varsapura: The Hollow One and the Rain of Thought
+
 **Varsapura** is an upcoming urban fantasy action RPG developed by **HoYoverse**. Set in a mysterious, high-tech metropolis plagued by a parapsychological phenomenon known as "Mind Rot," the game places players in the shoes of a "Hollow One"—a protagonist with a fractured identity and a unique, shifting appearance.
 
 The 31-minute gameplay demo introduces players to the **Shadow Emergency Alliance (SEAL)**, an organization dedicated to containing anomalies caused by humanity's collective consciousness. With its signature HoYoverse anime aesthetics, likely powered by advanced rendering (the demo explicitly mentions capture on an RTX 4090), Varsapura promises a dark, immersive narrative combined with high-octane combat and stealth mechanics.

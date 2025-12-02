@@ -10,6 +10,8 @@ description: "To uncover the truth behind his mother's death, a martial arts gen
 poster: "https://cover.netshort.com/tos-vod-mya-v-da59d5a2040f5f77/imageG/production/1992053719850127362/1764384066508-3590727971322953-3%E6%AF%944jpg~tplv-vod-noop.image"
 ---
 
+# Unmasking the Dandy: The Hidden Genius Who Saved an Empire
+
 **The Hidden Tyrant** is a gripping historical short drama that masterfully employs the "hidden genius" trope, blending high-stakes political intrigue, martial arts action, and a compelling romance born of misunderstanding. The story follows Su Yu, the second son of the Marquis of Zhenbei, who has spent fifteen years cultivating a reputation as the capital’s most useless wastrel to survive the machinations of his treacherous stepmother and formidable grandfather. Beneath the guise of a drunken womanizer, however, lies a grandmaster martial artist and a patriot dedicated to the Great Yan Dynasty.
 
 ### The Art of Deception

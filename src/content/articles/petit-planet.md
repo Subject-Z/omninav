@@ -11,6 +11,8 @@ poster: "https://assetsio.gnwcdn.com/coak1r.jpg?width=2238&height=1046&fit=bound
 
 ---
 
+# Petit Planet: HoYoverse’s Animal Crossing Among the Stars
+
 In the vast, action-packed landscape of modern gaming, where high-octane combat and competitive leaderboards often reign supreme, a quiet revolution is brewing among the stars. HoYoverse, the titan of industry known for the sweeping open-world action of *Genshin Impact* and the turn-based strategy of *Honkai: Star Rail*, is pivoting toward something entirely different. They are trading swords for shovels and combat for cultivation. Enter *Petit Planet* (known in Chinese as *Xing Bugu Di*), a whimsical, life-simulation game that promises to be the digital sanctuary players have been waiting for.
 
 Described by early testers as a fusion of *Animal Crossing*’s charm and *The Little Prince*’s philosophical wonder, *Petit Planet* invites players to leave their earthly worries behind and step onto a spherical world of their very own. It is a game about patience, creativity, and the warmth of connection—both with the fuzzy neighbors next door and friends across the galaxy.

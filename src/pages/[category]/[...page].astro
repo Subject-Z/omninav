@@ -45,7 +45,6 @@ const description =
 ---
 
 <Layout title={`OmniNav - ${title}`} description={description}>
-    <h1>{title}</h1>
     <div class="grid">
         {page.data.map((article) => <Card article={article} />)}
     </div>
@@ -54,10 +53,6 @@ const description =
 </Layout>
 
 <style>
-    h1 {
-        margin-bottom: 2rem;
-        text-transform: capitalize;
-    }
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

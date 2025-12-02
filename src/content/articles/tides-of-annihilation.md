@@ -10,17 +10,13 @@ description: "London has shattered. As Gwendolyn, the last hope, summon legendar
 poster: "https://image.api.playstation.com/vulcan/ap/rnd/202501/2008/9e421ef33a521be60004a66fbbfd0f064e77130cbf42ba0c.png"
 ---
 
-### About This Game
-
-**Reality has shattered. The Round Table is dead. You are the only hope left.**
+# Reality has shattered. The Round Table is dead. You are the only hope left.
 
 In **Tides of Annihilation**, a high-octane Action RPG, the boundaries between worlds have collapsed. An unknown dimension has devoured modern London, twisting landmarks into alien structures and transmuting organic life into cold, inorganic matter.
 
 As **Gwendolyn**, the sole survivor of this cataclysm, you must journey through a fragmented cityscape where fantasy and reality violently collide. Armed with the power to summon legendary spirits, you will hunt for the shards of the Holy Grail, challenge the corruption of the Otherworld, and rewrite a destiny that has already been written.
 
 ---
-
-### Key Features
 
 #### **A Broken London, A Twisted Reality**
 Explore a stunning, apocalyptic vision of London. Iconic streets and landmarks have been torn apart, floating in a void of "Folded Realms." Navigate a world where gravity shifts and the environment itself is hostile, seeking to uncover the mystery of the invasion that erased humanity—and how to reverse it.
