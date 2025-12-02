@@ -3,8 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
 import Pagination from "../../components/Pagination.astro";
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
 
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths({ paginate }: { paginate: any }) {
     const allArticles = await getCollection("articles");
     const categories = ["drama", "movie", "game", "anime", "novel"];
 
@@ -29,24 +31,27 @@ const { category } = Astro.params;
 const title = category.charAt(0).toUpperCase() + category.slice(1);
 
 const categoryDescriptions = {
-    drama: "Discover the latest and most popular Chinese dramas, including reviews, cast info, and more.",
-    movie: "Explore top-rated Chinese movies, from blockbusters to indie gems, with detailed insights.",
-    game: "Stay updated with the newest Chinese video games, guides, and industry news.",
-    anime: "Dive into the world of Chinese anime (Donghua) with recommendations and series overviews.",
-    novel: "Read about trending Chinese novels, web fiction, and literary works.",
+    drama: "Discover the latest and most popular dramas, including reviews, cast info, and more.",
+    movie: "Explore top-rated movies, from blockbusters to indie gems, with detailed insights.",
+    game: "Stay updated with the newest video games, guides, and industry news.",
+    anime: "Dive into the world of anime (Donghua) with recommendations and series overviews.",
+    novel: "Read about trending novels, web fiction, and literary works.",
 };
 
 const baseDescription =
-    categoryDescriptions[category] || `Browse our collection of ${title}.`;
+    categoryDescriptions[category as keyof typeof categoryDescriptions] || `Browse our collection of ${title}.`;
 const description =
     page.currentPage > 1
         ? `${baseDescription} - Page ${page.currentPage}`
         : baseDescription;
+const pageTitle = page.currentPage > 1
+    ? `${title} | OmniNav - Entertainment Reviews - Page ${page.currentPage}`
+    : `${title} | OmniNav - Entertainment Reviews`;
 ---
 
-<Layout title={`OmniNav - ${title}`} description={description}>
+<Layout title={pageTitle} description={description}>
     <div class="grid">
-        {page.data.map((article) => <Card article={article} />)}
+        {page.data.map((article: CollectionEntry<"articles">) => <Card article={article} />)}
     </div>
 
     <Pagination page={page} />
