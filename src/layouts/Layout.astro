@@ -5,12 +5,16 @@ import Footer from "../components/Footer.astro";
 interface Props {
 	title: string;
 	description?: string;
+	canonical?: string;
 }
 
 const {
 	title,
 	description = "Focusing on publishing information about Chinese entertainment products.",
+	canonical,
 } = Astro.props;
+
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -20,6 +24,7 @@ const {
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/webp" href="/favicon.webp" />
+		<link rel="canonical" href={canonicalURL} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<!-- Google AdSense -->

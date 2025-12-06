@@ -19,9 +19,9 @@ const page = (Astro.props as any).page;
 if (page.currentPage === 1) {
     return Astro.redirect("/");
 }
----
 
 const description = `Discover in-depth reviews, guides, and latest updates on entertainment: Drama, Movies, Games, Anime, and Novels. Your ultimate source for pop culture. - Page ${page.currentPage}`;
+---
 
 <Layout title={`OmniNav | Reviews & Guides for Drama, Movie, Game, Anime, Novel - Page ${page.currentPage}`} description={description}>
     <div class="grid">
